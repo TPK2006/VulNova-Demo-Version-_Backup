@@ -1,167 +1,19 @@
-body { font-family: 'Inter', system-ui, sans-serif; }
+/* Base Styles */
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+  margin: 0;
+  background-color: #f9fafb;
+}
+
+/* Sidebar Styles */
 .sidebar-collapsed { width: 64px !important; }
 .sidebar-expanded { width: 220px !important; }
 .sidebar-icon { min-width: 2rem; }
-
-/* Comprehensive Responsive CSS */
-/* General body styles */
-body {
-  font-family: 'Inter', sans-serif;
-  background-color: #f9f9f9;
-  color: #333;
-  line-height: 1.6;
+.sidebar-logo {
+  transition: opacity 0.2s ease;
 }
 
-/* Layout and structure */
-.container {
-  width: 95%;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 20px;
-}
-
-/* Typography */
-h1, h2, h3, h4, h5, h6 {
-  font-weight: 600;
-  margin-bottom: 0.5em;
-  line-height: 1.2;
-}
-
-h1 { font-size: 2.5em; }
-h2 { font-size: 2em; }
-h3 { font-size: 1.75em; }
-h4 { font-size: 1.5em; }
-h5 { font-size: 1.25em; }
-h6 { font-size: 1em; }
-
-p {
-  margin-bottom: 1em;
-  font-size: 1rem;
-  color: #555;
-}
-
-/* Links */
-a {
-  color: #007bff;
-  text-decoration: none;
-}
-
-
-
-/* Buttons */
-button, .button {
-  display: inline-block;
-  padding: 10px 20px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 1rem;
-  transition: background-color 0.3s ease;
-}
-
-button:hover, .button:hover {
-  background-color: #0056b3;
-}
-
-/* Forms */
-input[type="text"],
-input[type="email"],
-input[type="password"],
-textarea,
-select {
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 15px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  font-size: 1rem;
-}
-
-input[type="text"]:focus,
-input[type="email"]:focus,
-input[type="password"]:focus,
-textarea:focus,
-select:focus {
-  border-color: #007bff;
-  outline: none;
-  box-shadow: 0 0 5px rgba(0, 123, 255, 0.2);
-}
-
-/* Lists */
-ul, ol {
-  margin-bottom: 1em;
-  padding-left: 20px;
-}
-
-li {
-  margin-bottom: 0.5em;
-}
-
-/* Tables */
-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-bottom: 1em;
-}
-
-th, td {
-  padding: 12px 15px;
-  text-align: left;
-  border-bottom: 1px solid #eee;
-}
-
-th {
-  background-color: #f5f5f5;
-  font-weight: 600;
-}
-
-/* Media Queries for Responsiveness */
-
-/* Small screens - Mobile devices */
-@media (max-width: 576px) {
-  .container {
-    width: 90%;
-    padding: 10px;
-  }
-
-  h1 { font-size: 2em; }
-  h2 { font-size: 1.75em; }
-
-  button, .button, input[type="submit"] {
-    width: 100%;
-    margin-bottom: 10px;
-  }
-}
-
-/* Medium screens - Tablets */
-@media (min-width: 577px) and (max-width: 992px) {
-  .container {
-    width: 85%;
-    padding: 15px;
-  }
-
-  h1 { font-size: 2.25em; }
-  h2 { font-size: 2em; }
-}
-
-/* Large screens - Desktops */
-@media (min-width: 993px) {
-  .container {
-    width: 80%;
-  }
-}
-
-/* Extra large screens - Large desktops */
-@media (min-width: 1200px) {
-  .container {
-    width: 75%;
-  }
-}
-
-
-/* Update existing .sidebar-link styles in threat-intelligence.css */
+/* Sidebar Links */
 .sidebar-link {
   display: flex;
   align-items: center;
@@ -169,9 +21,6 @@ th {
   color: #374151;
   border-radius: 0.375rem;
   transition: all 0.2s;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 .sidebar-link:hover {
@@ -181,4 +30,106 @@ th {
 .sidebar-link.text-primary-700 {
   color: #1d4ed8;
   font-weight: 600;
+}
+
+/* Main Layout */
+#mainContent {
+  transition: margin-left 0.3s ease;
+}
+
+#topHeader {
+  transition: left 0.3s ease;
+}
+
+main {
+  margin-top: 80px;
+  padding: 1.5rem;
+  min-height: calc(100vh - 80px);
+}
+
+/* Mobile Sidebar Behavior */
+@media (max-width: 768px) {
+  #sidebar {
+    transform: translateX(-100%);
+    transition: transform 0.3s ease-in-out;
+    width: 280px !important;
+  }
+  
+  #sidebar.mobile-open {
+    transform: translateX(0);
+  }
+  
+  #mainContent {
+    margin-left: 0 !important;
+  }
+  
+  #topHeader {
+    left: 0 !important;
+  }
+  
+  /* Responsive Grid */
+  .md\:grid-cols-2 {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .sm\:px-6 {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}
+
+/* Report Card Styles */
+.report-card {
+  transition: all 0.3s ease;
+  border: 1px solid #e5e7eb;
+}
+
+.report-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+/* Chart Container */
+.chart-container {
+  height: 320px;
+  position: relative;
+}
+
+/* Compliance Status Bars */
+.compliance-bar {
+  height: 8px;
+  border-radius: 4px;
+  background-color: #e5e7eb;
+}
+
+.compliance-fill {
+  height: 100%;
+  border-radius: 4px;
+}
+
+/* Table Styles */
+.overflow-x-auto {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+tbody tr:hover {
+  background-color: #f9fafb;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #d1d5db;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: #f1f1f1;
 }

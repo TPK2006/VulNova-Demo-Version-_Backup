@@ -1,54 +1,18 @@
-body { 
-  font-family: 'Inter', system-ui, sans-serif; 
-  margin: 0; /* Remove default body margin */
+/* Base Styles */
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+  margin: 0;
 }
+
+/* Sidebar Styles */
 .sidebar-collapsed { width: 64px !important; }
 .sidebar-expanded { width: 220px !important; }
 .sidebar-icon { min-width: 2rem; }
-/* Fixed sidebar */
-aside#sidebar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  height: 100vh;
-  z-index: 30;
+.sidebar-logo {
+  transition: opacity 0.2s ease;
 }
-/* Fixed header */
-header {
-  position: fixed;
-  top: 0;
-  left: 220px; /* Match sidebar-expanded width */
-  right: 0;
-  z-index: 20;
-}
-/* Adjust main content to prevent overlap */
-main {
-  margin-top: 80px; /* Height of header */
-  margin-left: 220px; /* Match sidebar-expanded width */
-  height: calc(100vh - 80px); /* Full height minus header */
-  overflow-y: auto; /* Enable scrolling */
-  padding-bottom: 2rem; /* Add padding to prevent content cutoff */
-}
-/* Adjust main content when sidebar is collapsed */
-.sidebar-collapsed ~ #mainContent header {
-  left: 64px !important; /* Match sidebar-collapsed width */
-}
-.sidebar-collapsed ~ #mainContent main {
-  margin-left: 64px !important; /* Match sidebar-collapsed width */
-}
-/* Ensure smooth scrolling */
-main::-webkit-scrollbar {
-  width: 8px;
-}
-main::-webkit-scrollbar-thumb {
-  background-color: #d1d5db;
-  border-radius: 4px;
-}
-main::-webkit-scrollbar-track {
-  background-color: #f1f1f1;
-} 
 
-/* Add these styles to vulnerabilities.css */
+/* Sidebar Links */
 .sidebar-link {
   display: flex;
   align-items: center;
@@ -65,4 +29,87 @@ main::-webkit-scrollbar-track {
 .sidebar-link.text-primary-700 {
   color: #1d4ed8;
   font-weight: 600;
+}
+
+/* Main Layout */
+#mainContent {
+  transition: margin-left 0.3s ease;
+}
+
+#topHeader {
+  transition: left 0.3s ease;
+}
+
+main {
+  margin-top: 80px;
+  padding: 1.5rem;
+  min-height: calc(100vh - 80px);
+}
+
+/* Mobile Sidebar Behavior */
+@media (max-width: 768px) {
+  #sidebar {
+    transform: translateX(-100%);
+    transition: transform 0.3s ease-in-out;
+    width: 280px !important;
+  }
+  
+  #sidebar.mobile-open {
+    transform: translateX(0);
+  }
+  
+  #mainContent {
+    margin-left: 0 !important;
+  }
+  
+  #topHeader {
+    left: 0 !important;
+  }
+  
+  /* Responsive Grid */
+  .md\:grid-cols-4 {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .md\:grid-cols-4 {
+    grid-template-columns: 1fr !important;
+  }
+  
+  .sm\:px-6 {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}
+
+/* Vulnerability Specific Styles */
+.bg-red-50 { background-color: #fef2f2; }
+.bg-orange-50 { background-color: #fff7ed; }
+.bg-yellow-50 { background-color: #fefce8; }
+.bg-green-50 { background-color: #f0fdf4; }
+
+/* Table Styles */
+.overflow-x-auto {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+tbody tr:hover {
+  background-color: #f9fafb;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #d1d5db;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: #f1f1f1;
 }

@@ -1,6 +1,8 @@
+/* Threat Intelligence Page Specific Styles */
 body { 
-  font-family: 'Inter', system-ui, sans-serif; 
-  margin: 0; /* Remove default body margin */
+  font-family: 'Inter', system-ui, sans-serif;
+  margin: 0;
+  background-color: #f9fafb;
 }
 
 .sidebar-collapsed { 
@@ -13,63 +15,11 @@ body {
   min-width: 2rem; 
 }
 
-/* Sidebar link styling */
-.sidebar-link {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+.sidebar-logo {
+  transition: opacity 0.2s ease;
 }
 
-/* Fixed sidebar */
-aside#sidebar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  height: 100vh;
-  z-index: 30;
-}
-
-/* Fixed header */
-header {
-  position: fixed;
-  top: 0;
-  left: 220px; /* Match sidebar-expanded width */
-  right: 0;
-  z-index: 20;
-}
-
-/* Adjust main content to prevent overlap */
-main {
-  margin-top: 80px; /* Height of header */
-  margin-left: 220px; /* Match sidebar-expanded width */
-  height: calc(100vh - 80px); /* Full height minus header */
-  overflow-y: auto; /* Enable scrolling */
-  padding-bottom: 2rem; /* Add padding to prevent content cutoff */
-}
-
-/* Adjust main content when sidebar is collapsed */
-.sidebar-collapsed ~ #mainContent header {
-  left: 64px !important; /* Match sidebar-collapsed width */
-}
-.sidebar-collapsed ~ #mainContent main {
-  margin-left: 64px !important; /* Match sidebar-collapsed width */
-}
-
-/* Ensure smooth scrolling */
-main::-webkit-scrollbar {
-  width: 8px;
-}
-main::-webkit-scrollbar-thumb {
-  background-color: #d1d5db;
-  border-radius: 4px;
-}
-main::-webkit-scrollbar-track {
-  background-color: #f1f1f1;
-}
-
-
-
-/* Update existing .sidebar-link styles in threat-intelligence.css */
+/* Sidebar link styles */
 .sidebar-link {
   display: flex;
   align-items: center;
@@ -89,4 +39,119 @@ main::-webkit-scrollbar-track {
 .sidebar-link.text-primary-700 {
   color: #1d4ed8;
   font-weight: 600;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .md\:grid-cols-4 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .md\:grid-cols-3 {
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+  }
+  .md\:hidden {
+    display: none;
+  }
+  .md\:flex-row {
+    flex-direction: column;
+  }
+  .md\:items-center {
+    align-items: stretch;
+  }
+
+  /* Sidebar and Header Adjustments */
+  #sidebar {
+    transform: translateX(-100%);
+    transition: transform 0.3s ease-in-out;
+    width: 280px !important;
+  }
+  #sidebar.mobile-open {
+    transform: translateX(0);
+  }
+  #mainContent {
+    margin-left: 0 !important;
+  }
+  #topHeader {
+    left: 0 !important;
+  }
+  .sidebar-label {
+    display: block !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .sm\:px-6 {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+}
+
+/* Threat Intelligence specific styles */
+.threat-card {
+  transition: all 0.3s ease;
+  border: 1px solid #e5e7eb;
+}
+
+.threat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+/* Severity indicators */
+.severity-critical {
+  background-color: #fee2e2;
+  color: #991b1b;
+}
+
+.severity-high {
+  background-color: #fef3c7;
+  color: #92400e;
+}
+
+.severity-medium {
+  background-color: #d1fae5;
+  color: #065f46;
+}
+
+/* IOC table styles */
+.ioc-table-row {
+  transition: background-color 0.2s ease;
+}
+
+.ioc-table-row:hover {
+  background-color: #f9fafb;
+}
+
+/* Status indicators */
+.status-indicator {
+  font-size: 0.75rem;
+  font-weight: 500;
+  padding: 0.25rem 0.5rem;
+  border-radius: 9999px;
+  display: inline-block;
+}
+
+.status-active {
+  background-color: #d1fae5;
+  color: #065f46;
+}
+
+.status-inactive {
+  background-color: #fee2e2;
+  color: #991b1b;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #d1d5db;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: #f1f1f1;
 }
