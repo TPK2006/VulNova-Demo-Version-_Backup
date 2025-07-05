@@ -48,8 +48,6 @@ main::-webkit-scrollbar-track {
   background-color: #f1f1f1;
 } 
 
-
-
 /* Add these styles to vulnerabilities.css */
 .sidebar-link {
   display: flex;

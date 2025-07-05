@@ -29,7 +29,12 @@ const vulnerabilities = [
     source: 'Orca Security',
     description: 'Apache Log4j2 contains a remote code execution vulnerability via the JNDI LDAP endpoint.',
     firstDetected: '2024-01-15',
-    lastSeen: '2024-07-01'
+    lastSeen: '2024-07-01',
+    epssScore: 0.92,
+    exploitAvailable: true,
+    affectedAssets: 86,
+    mitreTactic: 'Initial Access (T1078)',
+    priorityScore: 96
   },
   {
     id: 2,
@@ -43,7 +48,12 @@ const vulnerabilities = [
     source: 'Tenable',
     description: 'Spring Framework contains a remote code execution vulnerability in the Data Binding mechanism.',
     firstDetected: '2024-02-10',
-    lastSeen: '2024-07-02'
+    lastSeen: '2024-07-02',
+    epssScore: 0.87,
+    exploitAvailable: true,
+    affectedAssets: 42,
+    mitreTactic: 'Initial Access (T1078)',
+    priorityScore: 89
   },
   {
     id: 3,
@@ -57,7 +67,12 @@ const vulnerabilities = [
     source: 'SonarQube',
     description: 'Multiple SQL injection vulnerabilities in database queries.',
     firstDetected: '2024-03-05',
-    lastSeen: '2024-07-03'
+    lastSeen: '2024-07-03',
+    epssScore: 0.45,
+    exploitAvailable: false,
+    affectedAssets: 12,
+    mitreTactic: 'Persistence (T1078)',
+    priorityScore: 72
   },
   {
     id: 4,
@@ -71,7 +86,12 @@ const vulnerabilities = [
     source: 'Qualys',
     description: 'Authentication bypass vulnerability in firewall management interface.',
     firstDetected: '2024-01-20',
-    lastSeen: '2024-06-15'
+    lastSeen: '2024-06-15',
+    epssScore: 0.32,
+    exploitAvailable: true,
+    affectedAssets: 5,
+    mitreTactic: 'Initial Access (T1078)',
+    priorityScore: 85
   },
   {
     id: 5,
@@ -85,7 +105,12 @@ const vulnerabilities = [
     source: 'Tenable',
     description: 'Local privilege escalation vulnerability in system service.',
     firstDetected: '2024-04-12',
-    lastSeen: '2024-07-04'
+    lastSeen: '2024-07-04',
+    epssScore: 0.18,
+    exploitAvailable: false,
+    affectedAssets: 23,
+    mitreTactic: 'Privilege Escalation (T1068)',
+    priorityScore: 58
   }
 ];
 
@@ -100,6 +125,20 @@ const vulnTypes = [
 const sources = ['Orca Security', 'Tenable', 'SonarQube', 'Qualys'];
 const statuses = ['Open', 'In Progress', 'Fixed', 'False Positive'];
 const severities = ['Critical', 'High', 'Medium', 'Low'];
+const mitreTactics = [
+  'Initial Access (T1078)', 
+  'Execution (T1203)', 
+  'Persistence (T1098)', 
+  'Privilege Escalation (T1068)',
+  'Defense Evasion (T1027)',
+  'Credential Access (T1110)',
+  'Discovery (T1016)',
+  'Lateral Movement (T1021)',
+  'Collection (T1119)',
+  'Command and Control (T1071)',
+  'Exfiltration (T1048)',
+  'Impact (T1489)'
+];
 
 // Generate additional vulnerabilities
 for (let i = 6; i <= 100; i++) {
@@ -108,6 +147,7 @@ for (let i = 6; i <= 100; i++) {
   const severity = severities[Math.floor(Math.random() * severities.length)];
   const source = sources[Math.floor(Math.random() * sources.length)];
   const status = statuses[Math.floor(Math.random() * statuses.length)];
+  const tactic = mitreTactics[Math.floor(Math.random() * mitreTactics.length)];
   
   let cvssScore;
   switch(severity) {
@@ -129,7 +169,12 @@ for (let i = 6; i <= 100; i++) {
     source: source,
     description: `${severity} severity ${vulnType.toLowerCase()} vulnerability requiring attention.`,
     firstDetected: `2024-0${Math.floor(Math.random() * 6) + 1}-${String(Math.floor(Math.random() * 28) + 1).padStart(2, '0')}`,
-    lastSeen: `2024-07-0${Math.floor(Math.random() * 4) + 1}`
+    lastSeen: `2024-07-0${Math.floor(Math.random() * 4) + 1}`,
+    epssScore: parseFloat((Math.random() * 1).toFixed(2)),
+    exploitAvailable: Math.random() > 0.5,
+    affectedAssets: Math.floor(Math.random() * 100) + 1,
+    mitreTactic: tactic,
+    priorityScore: Math.floor(Math.random() * 100) + 1
   });
 }
 
@@ -148,11 +193,9 @@ function displayVulnerabilities(vulns) {
     'Low': 'bg-green-100 text-green-800'
   };
 
-  const statusColors = {
-    'Open': 'bg-red-100 text-red-800',
-    'In Progress': 'bg-yellow-100 text-yellow-800',
-    'Fixed': 'bg-green-100 text-green-800',
-    'False Positive': 'bg-gray-100 text-gray-800'
+  const exploitColors = {
+    true: 'bg-red-100 text-red-800',
+    false: 'bg-green-100 text-green-800'
   };
   
   tbody.innerHTML = vulns.slice(0, 50).map(vuln => `
@@ -161,38 +204,34 @@ function displayVulnerabilities(vulns) {
         <input type="checkbox" class="vuln-checkbox" value="${vuln.id}">
       </td>
       <td class="px-6 py-4 whitespace-nowrap">
-        <div class="flex items-center">
-          <div>
-            <div class="text-sm font-medium text-gray-900">${vuln.assetName}</div>
-            <div class="text-sm text-gray-500">${vuln.ipAddress}</div>
-          </div>
-        </div>
+        <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full ${severityColors[vuln.severity]}">${vuln.severity}</span>
+      </td>
+      <td class="px-6 py-4 whitespace-nowrap">
+        <div class="text-sm text-blue-600 hover:underline cursor-pointer" onclick="showCVEDetails('${vuln.cve}')">${vuln.cve}</div>
       </td>
       <td class="px-6 py-4">
         <div class="text-sm text-gray-900">${vuln.vulnerability}</div>
         <div class="text-sm text-gray-500">${vuln.description.substring(0, 60)}...</div>
       </td>
       <td class="px-6 py-4 whitespace-nowrap">
-        <div class="text-sm text-blue-600 hover:underline cursor-pointer" onclick="showCVEDetails('${vuln.cve}')">${vuln.cve}</div>
-      </td>
-      <td class="px-6 py-4 whitespace-nowrap">
-        <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full ${severityColors[vuln.severity]}">${vuln.severity}</span>
-      </td>
-      <td class="px-6 py-4 whitespace-nowrap">
         <div class="text-sm text-gray-900 font-medium">${vuln.cvssScore}</div>
       </td>
       <td class="px-6 py-4 whitespace-nowrap">
-        <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full ${statusColors[vuln.status]}">${vuln.status}</span>
+        <div class="text-sm text-gray-900">${vuln.epssScore}</div>
       </td>
       <td class="px-6 py-4 whitespace-nowrap">
-        <div class="text-sm text-gray-900">${vuln.source}</div>
+        <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full ${exploitColors[vuln.exploitAvailable]}">
+          ${vuln.exploitAvailable ? 'Yes' : 'No'}
+        </span>
       </td>
-      <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-        <div class="flex space-x-2">
-          <button class="text-primary-600 hover:text-primary-900" onclick="viewVulnerability(${vuln.id})">View</button>
-          <button class="text-green-600 hover:text-green-900" onclick="markFixed(${vuln.id})">Fix</button>
-          <button class="text-gray-600 hover:text-gray-900" onclick="assignVulnerability(${vuln.id})">Assign</button>
-        </div>
+      <td class="px-6 py-4 whitespace-nowrap">
+        <div class="text-sm text-gray-900">${vuln.affectedAssets}</div>
+      </td>
+      <td class="px-6 py-4 whitespace-nowrap">
+        <div class="text-sm text-gray-900">${vuln.mitreTactic}</div>
+      </td>
+      <td class="px-6 py-4 whitespace-nowrap">
+        <div class="text-sm text-gray-900 font-bold">${vuln.priorityScore}</div>
       </td>
     </tr>
   `).join('');
@@ -255,14 +294,6 @@ function sortTable(field) {
     let aVal, bVal;
     
     switch(field) {
-      case 'asset':
-        aVal = a.assetName;
-        bVal = b.assetName;
-        break;
-      case 'vulnerability':
-        aVal = a.vulnerability;
-        bVal = b.vulnerability;
-        break;
       case 'severity':
         const severityOrder = { 'Critical': 0, 'High': 1, 'Medium': 2, 'Low': 3 };
         aVal = severityOrder[a.severity];
@@ -271,6 +302,18 @@ function sortTable(field) {
       case 'cvss':
         aVal = a.cvssScore;
         bVal = b.cvssScore;
+        break;
+      case 'epss':
+        aVal = a.epssScore;
+        bVal = b.epssScore;
+        break;
+      case 'priority':
+        aVal = a.priorityScore;
+        bVal = b.priorityScore;
+        break;
+      case 'assets':
+        aVal = a.affectedAssets;
+        bVal = b.affectedAssets;
         break;
       default:
         return 0;
@@ -296,16 +339,17 @@ function toggleSelectAll() {
 // Function to export vulnerabilities report
 function exportVulnerabilitiesReport() {
   const csvContent = [
-    ['Asset Name', 'IP Address', 'Vulnerability', 'CVE', 'Severity', 'CVSS Score', 'Status', 'Source', 'Description', 'First Detected', 'Last Seen'],
+    ['Affected', 'CVE ID', 'Title', 'CVSS', 'EPSS', 'Exploit', 'Assets', 'MITRE Tactic', 'Priority Score', 'Description', 'First Detected', 'Last Seen'],
     ...filteredVulnerabilities.map(vuln => [
-      vuln.assetName,
-      vuln.ipAddress,
-      vuln.vulnerability,
-      vuln.cve,
       vuln.severity,
+      vuln.cve,
+      vuln.vulnerability,
       vuln.cvssScore,
-      vuln.status,
-      vuln.source,
+      vuln.epssScore,
+      vuln.exploitAvailable ? 'Yes' : 'No',
+      vuln.affectedAssets,
+      vuln.mitreTactic,
+      vuln.priorityScore,
       vuln.description,
       vuln.firstDetected,
       vuln.lastSeen
@@ -342,7 +386,10 @@ function bulkActions() {
 
 // Placeholder functions for actions
 function viewVulnerability(id) {
-  alert(`Viewing vulnerability details for ID: ${id}`);
+  const vuln = vulnerabilities.find(v => v.id === id);
+  if (vuln) {
+    alert(`Viewing vulnerability details:\n\nCVE: ${vuln.cve}\nTitle: ${vuln.vulnerability}\nSeverity: ${vuln.severity}\nCVSS: ${vuln.cvssScore}\nEPSS: ${vuln.epssScore}\nExploit: ${vuln.exploitAvailable ? 'Yes' : 'No'}\nAssets: ${vuln.affectedAssets}\nMITRE: ${vuln.mitreTactic}\nPriority: ${vuln.priorityScore}\n\n${vuln.description}`);
+  }
 }
 
 function markFixed(id) {
@@ -362,7 +409,7 @@ function assignVulnerability(id) {
 }
 
 function showCVEDetails(cve) {
-  alert(`Showing details for ${cve}`);
+  alert(`Showing details for ${cve}\n\nThis would typically open a detailed view or external CVE database information.`);
 }
 
 function refreshVulnerabilities() {
