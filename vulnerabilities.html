@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VulNova - Vulnerabilities</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <link href="vulnerabilities.css" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+</head>
+<body class="bg-gray-50 min-h-screen">
+  <div class="flex min-h-screen">
+    <!-- Sidebar -->
+    <aside id="sidebar" class="w-56 transition-all duration-300 bg-white shadow-lg h-screen flex-shrink-0 flex flex-col sidebar-expanded">
+      <div class="flex items-center justify-between px-4 py-5 border-b border-gray-200">
+        <div class="flex items-center space-x-2">
+          <div class="h-8 w-8 bg-gradient-to-br from-purple-600 to-blue-600 rounded-lg flex items-center justify-center">
+             <img src="favicon.svg" alt="VulNova Logo" class="h-8 w-8">
+          </div>
+          <span class="font-extrabold text-primary-800 text-lg sidebar-label">VulNova</span>
+        </div>
+        <button id="sidebarToggle" class="text-gray-500 focus:outline-none">
+          <i data-lucide="menu" class="w-6 h-6"></i>
+        </button>
+      </div>
+      <nav class="flex-1 mt-4">
+        <ul class="space-y-2">
+          <li><a href="index.html" class="flex items-center px-4 py-3 text-gray-700 hover:bg-primary-50 rounded transition sidebar-link"><i data-lucide="layout-dashboard" class="sidebar-icon mr-3"></i><span class="sidebar-label">Dashboard</span></a></li>
+          <li><a href="assets.html" class="flex items-center px-4 py-3 text-gray-700 hover:bg-primary-50 rounded transition sidebar-link"><i data-lucide="server" class="sidebar-icon mr-3"></i><span class="sidebar-label">Assets</span></a></li>
+          <li><a href="vulnerabilities.html" class="flex items-center px-4 py-3 text-primary-700 font-semibold hover:bg-primary-50 rounded transition sidebar-link"><i data-lucide="alert-triangle" class="sidebar-icon mr-3"></i><span class="sidebar-label">Vulnerabilities</span></a></li>
+          <li><a href="reporting.html" class="flex items-center px-4 py-3 text-gray-700 hover:bg-primary-50 rounded transition sidebar-link"><i data-lucide="bar-chart-3" class="sidebar-icon mr-3"></i><span class="sidebar-label">Reporting</span></a></li>
+          <li><a href="integrations.html" class="flex items-center px-4 py-3 text-gray-700 hover:bg-primary-50 rounded transition sidebar-link"><i data-lucide="settings" class="sidebar-icon mr-3"></i><span class="sidebar-label">Integrations</span></a></li>
+          <li><a href="threat-intelligence.html" class="flex items-center px-4 py-3 text-gray-700 hover:bg-primary-50 rounded transition sidebar-link"><i data-lucide="shield" class="sidebar-icon mr-3"></i><span class="sidebar-label">Threat Intelligence</span></a></li>
+          <li><a href="support.html" class="flex items-center px-4 py-3 text-gray-700 hover:bg-primary-50 rounded transition sidebar-link"><i data-lucide="life-buoy" class="sidebar-icon mr-3"></i><span class="sidebar-label">Support</span></a></li>
+        </ul>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="flex-1 flex flex-col min-h-screen transition-all duration-300" id="mainContent">
+      <!-- Top Bar -->
+      <header class="bg-white shadow flex items-center px-6 py-4">
+        <button id="sidebarHamburger" class="md:hidden mr-4 text-gray-500 focus:outline-none">
+          <i data-lucide="menu" class="w-7 h-7"></i>
+        </button>
+        <span class="text-2xl font-extrabold text-primary-800">Vulnerabilities</span>
+      </header>
+      
+      <main class="flex-1 p-6">
+        <!-- Vulnerabilities Page Header -->
+        <div class="mb-8">
+          <div class="flex items-center justify-between mb-4">
+            <div>
+              <h1 class="text-3xl font-bold text-gray-900 mb-2">Vulnerability Management</h1>
+              <p class="text-gray-600">Comprehensive view of all vulnerabilities across your environment</p>
+            </div>
+            <div class="flex space-x-3">
+              <button onclick="exportVulnerabilitiesReport()" class="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-lg transition-colors flex items-center space-x-2">
+                <i data-lucide="download" class="w-4 h-4"></i>
+                <span>Export Report</span>
+              </button>
+              <button onclick="bulkActions()" class="bg-primary-600 hover:bg-primary-700 text-white px-6 py-2 rounded-lg transition-colors flex items-center space-x-2">
+                <i data-lucide="settings" class="w-4 h-4"></i>
+                <span>Bulk Actions</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Vulnerability Summary Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+          <div class="bg-red-50 rounded-xl p-6 border border-red-200 cursor-pointer hover:bg-red-100 transition-colors" onclick="filterBySeverity('Critical')">
+            <div class="flex items-center justify-between mb-4">
+              <i data-lucide="alert-triangle" class="w-8 h-8 text-red-600"></i>
+              <span class="text-2xl font-bold text-red-600">120</span>
+            </div>
+            <h3 class="text-lg font-semibold text-gray-900 mb-1">Critical</h3>
+            <p class="text-sm text-gray-600">Requires immediate attention</p>
+            <div class="mt-2 text-xs text-red-600">+5 from last week</div>
+          </div>
+          <div class="bg-orange-50 rounded-xl p-6 border border-orange-200 cursor-pointer hover:bg-orange-100 transition-colors" onclick="filterBySeverity('High')">
+            <div class="flex items-center justify-between mb-4">
+              <i data-lucide="alert-octagon" class="w-8 h-8 text-orange-500"></i>
+              <span class="text-2xl font-bold text-orange-500">340</span>
+            </div>
+            <h3 class="text-lg font-semibold text-gray-900 mb-1">High</h3>
+            <p class="text-sm text-gray-600">Address within 30 days</p>
+            <div class="mt-2 text-xs text-orange-600">-12 from last week</div>
+          </div>
+          <div class="bg-yellow-50 rounded-xl p-6 border border-yellow-200 cursor-pointer hover:bg-yellow-100 transition-colors" onclick="filterBySeverity('Medium')">
+            <div class="flex items-center justify-between mb-4">
+              <i data-lucide="alert-circle" class="w-8 h-8 text-yellow-500"></i>
+              <span class="text-2xl font-bold text-yellow-500">1,200</span>
+            </div>
+            <h3 class="text-lg font-semibold text-gray-900 mb-1">Medium</h3>
+            <p class="text-sm text-gray-600">Address within 90 days</p>
+            <div class="mt-2 text-xs text-yellow-600">+23 from last week</div>
+          </div>
+          <div class="bg-green-50 rounded-xl p-6 border border-green-200 cursor-pointer hover:bg-green-100 transition-colors" onclick="filterBySeverity('Low')">
+            <div class="flex items-center justify-between mb-4">
+              <i data-lucide="check-circle" class="w-8 h-8 text-green-600"></i>
+              <span class="text-2xl font-bold text-green-600">2,100</span>
+            </div>
+            <h3 class="text-lg font-semibold text-gray-900 mb-1">Low</h3>
+            <p class="text-sm text-gray-600">Monitor and review</p>
+            <div class="mt-2 text-xs text-green-600">-8 from last week</div>
+          </div>
+        </div>
+
+        <!-- Filters and Search -->
+        <div class="bg-white rounded-xl shadow p-6 mb-8">
+          <div class="flex flex-col md:flex-row gap-4 items-center justify-between">
+            <div class="flex flex-col md:flex-row gap-4 flex-1">
+              <input type="text" id="searchVulns" placeholder="Search vulnerabilities, CVEs, assets..." 
+                     class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                     onkeyup="filterVulnerabilities()">
+              <select id="severityFilter" class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                      onchange="filterVulnerabilities()">
+                <option value="">All Severities</option>
+                <option value="Critical">Critical</option>
+                <option value="High">High</option>
+                <option value="Medium">Medium</option>
+                <option value="Low">Low</option>
+              </select>
+              <select id="statusFilter" class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                      onchange="filterVulnerabilities()">
+                <option value="">All Status</option>
+                <option value="Open">Open</option>
+                <option value="In Progress">In Progress</option>
+                <option value="Fixed">Fixed</option>
+                <option value="False Positive">False Positive</option>
+              </select>
+              <select id="sourceFilter" class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                      onchange="filterVulnerabilities()">
+                <option value="">All Sources</option>
+                <option value="Orca Security">Orca Security</option>
+                <option value="Tenable">Tenable</option>
+                <option value="SonarQube">SonarQube</option>
+                <option value="Qualys">Qualys</option>
+              </select>
+            </div>
+            <div class="flex items-center space-x-4">
+              <span class="text-sm text-gray-600">
+                Showing <span id="showingVulnsCount">3,760</span> of <span id="totalVulnsCount">3,760</span> vulnerabilities
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Vulnerabilities Table -->
+        <div class="bg-white rounded-xl shadow overflow-hidden">
+          <div class="p-6 border-b border-gray-200">
+            <div class="flex items-center justify-between">
+              <h2 class="text-xl font-semibold text-gray-900">All Vulnerabilities</h2>
+              <div class="flex items-center space-x-2">
+                <button class="text-gray-500 hover:text-gray-700" onclick="refreshVulnerabilities()">
+                  <i data-lucide="refresh-cw" class="w-5 h-5"></i>
+                </button>
+                <button class="text-gray-500 hover:text-gray-700" onclick="toggleTableView()">
+                  <i data-lucide="table" class="w-5 h-5"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="min-w-full">
+              <thead class="bg-gray-50">
+                <tr>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <input type="checkbox" id="selectAll" onchange="toggleSelectAll()">
+                  </th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer" onclick="sortTable('asset')">
+                    Asset <i data-lucide="chevron-up-down" class="w-4 h-4 inline ml-1"></i>
+                  </th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer" onclick="sortTable('vulnerability')">
+                    Vulnerability <i data-lucide="chevron-up-down" class="w-4 h-4 inline ml-1"></i>
+                  </th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">CVE</th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer" onclick="sortTable('severity')">
+                    Severity <i data-lucide="chevron-up-down" class="w-4 h-4 inline ml-1"></i>
+                  </th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer" onclick="sortTable('cvss')">
+                    CVSS <i data-lucide="chevron-up-down" class="w-4 h-4 inline ml-1"></i>
+                  </th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Source</th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="allVulnsTableBody" class="bg-white divide-y divide-gray-200">
+                <!-- Table content will be populated by JavaScript -->
+              </tbody>
+            </table>
+          </div>
+          
+          <!-- Pagination -->
+          <div class="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6">
+            <div class="flex-1 flex justify-between sm:hidden">
+              <button class="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">Previous</button>
+              <button class="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">Next</button>
+            </div>
+            <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
+              <div>
+                <p class="text-sm text-gray-700">
+                  Showing <span class="font-medium">1</span> to <span class="font-medium">50</span> of <span class="font-medium">3,760</span> results
+                </p>
+              </div>
+              <div>
+                <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
+                  <button class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+                    <i data-lucide="chevron-left" class="w-5 h-5"></i>
+                  </button>
+                  <button class="bg-primary-50 border-primary-500 text-primary-600 relative inline-flex items-center px-4 py-2 border text-sm font-medium">1</button>
+                  <button class="bg-white border-gray-300 text-gray-500 hover:bg-gray-50 relative inline-flex items-center px-4 py-2 border text-sm font-medium">2</button>
+                  <button class="bg-white border-gray-300 text-gray-500 hover:bg-gray-50 relative inline-flex items-center px-4 py-2 border text-sm font-medium">3</button>
+                  <button class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+                    <i data-lucide="chevron-right" class="w-5 h-5"></i>
+                  </button>
+                </nav>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="vulnerabilities.js"></script>
+</body>
+</html>

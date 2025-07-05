@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VulNova Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <link href="styles.css" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+</head>
+<body class="bg-gray-50 min-h-screen">
+  <div class="flex min-h-screen">
+    <!-- Sidebar -->
+    <aside id="sidebar" class="fixed left-0 top-0 w-56 transition-all duration-300 bg-white shadow-lg h-screen flex-shrink-0 flex flex-col z-30">
+      <div class="flex items-center justify-between px-4 py-5 border-b border-gray-200">
+        <div class="flex items-center space-x-2">
+          <div class="h-8 w-8 bg-gradient-to-br from-purple-600 to-blue-600 rounded-lg flex items-center justify-center">
+            <img src="favicon.svg" alt="VulNova Logo" class="h-8 w-8">
+          </div>
+          <span class="font-extrabold text-primary-800 text-lg sidebar-label">VulNova</span>
+        </div>
+        <button id="sidebarToggle" class="text-gray-500 focus:outline-none">
+          <i data-lucide="menu" class="w-6 h-6"></i>
+        </button>
+      </div>
+      <nav class="flex-1 mt-4">
+        <ul class="space-y-2">
+          <li><a href="index.html" class="flex items-center px-4 py-3 text-primary-700 font-semibold hover:bg-primary-50 rounded transition sidebar-link"><i data-lucide="layout-dashboard" class="sidebar-icon mr-3"></i><span class="sidebar-label">Dashboard</span></a></li>
+          <li><a href="assets.html" class="flex items-center px-4 py-3 text-gray-700 hover:bg-primary-50 rounded transition sidebar-link"><i data-lucide="server" class="sidebar-icon mr-3"></i><span class="sidebar-label">Assets</span></a></li>
+          <li><a href="vulnerabilities.html" class="flex items-center px-4 py-3 text-gray-700 hover:bg-primary-50 rounded transition sidebar-link"><i data-lucide="alert-triangle" class="sidebar-icon mr-3"></i><span class="sidebar-label">Vulnerabilities</span></a></li>
+          <li><a href="reporting.html" class="flex items-center px-4 py-3 text-gray-700 hover:bg-primary-50 rounded transition sidebar-link"><i data-lucide="bar-chart-3" class="sidebar-icon mr-3"></i><span class="sidebar-label">Reporting</span></a></li>
+          <li><a href="integrations.html" class="flex items-center px-4 py-3 text-gray-700 hover:bg-primary-50 rounded transition sidebar-link"><i data-lucide="settings" class="sidebar-icon mr-3"></i><span class="sidebar-label">Integrations</span></a></li>
+          <li><a href="threat-intelligence.html" class="flex items-center px-4 py-3 text-gray-700 hover:bg-primary-50 rounded transition sidebar-link"><i data-lucide="shield" class="sidebar-icon mr-3"></i><span class="sidebar-label">Threat Intelligence</span></a></li>
+          <li><a href="support.html" class="flex items-center px-4 py-3 text-gray-700 hover:bg-primary-50 rounded transition sidebar-link"><i data-lucide="life-buoy" class="sidebar-icon mr-3"></i><span class="sidebar-label">Support</span></a></li>
+        </ul>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="flex-1 flex flex-col min-h-screen transition-all duration-300 ml-56" id="mainContent">
+      <!-- Top Bar -->
+      <header class="bg-white shadow flex items-center px-6 py-4 fixed top-0 right-0 left-56 z-20 transition-all duration-300" id="topHeader">
+        <button id="sidebarHamburger" class="md:hidden mr-4 text-gray-500 focus:outline-none">
+          <i data-lucide="menu" class="w-7 h-7"></i>
+        </button>
+        <span class="text-2xl font-extrabold text-primary-800">Dashboard</span>
+      </header>
+      <main class="flex-1 p-6 pt-20">
+        <!-- Risk Score and Vuln Summary Row -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8 items-center">
+          <!-- Risk Score Gauge -->
+          <div class="bg-white rounded-xl shadow p-6 flex flex-col items-center justify-center">
+            <svg class="gauge" viewBox="0 0 400 220" width="400" height="220">
+              <defs>
+                <circle id="gauge-arc" cx="200" cy="200" r="160" fill="none" />
+              </defs>
+              <!-- Background track -->
+              <path d="M40,200 A160,160 0 1,1 360,200" fill="none" stroke="#e5e7eb" stroke-width="32" />
+              <!-- Green zone (0-300, 180° to 126°) -->
+              <path d="M40,200 A160,160 0 0,1 121.2,56.2" fill="none" stroke="#22c55e" stroke-width="32" />
+              <!-- Yellow zone (301-700, 126° to 54°) -->
+              <path d="M121.2,56.2 A160,160 0 0,1 278.8,56.2" fill="none" stroke="#eab308" stroke-width="32" />
+              <!-- Red zone (701-1000, 54° to 0°) -->
+              <path d="M278.8,56.2 A160,160 0 0,1 360,200" fill="none" stroke="#ef4444" stroke-width="32" />
+              <!-- Risk score indicator (720, about 130.5° from left, or 49.5° from right) -->
+              <g>
+                <line x1="200" y1="200" x2="287.7" y2="49.1" stroke="#ef4444" stroke-width="12" stroke-linecap="round" />
+                <circle cx="287.7" cy="49.1" r="14" fill="#ef4444" />
+              </g>
+            </svg>
+            
+            <div class="flex flex-col items-center mt-4">
+              <span id="risk-score-label" class="text-base text-gray-600 mb-1">Risk Score</span>
+              <span id="risk-score-text" style="font-size:1.6rem;font-weight:700;color:#ef4444;line-height:1;">720</span>
+              <div id="risk-status" class="text-lg font-semibold text-red-600 mt-1 mb-1">High Risk</div>
+              <div class="text-sm text-gray-600 mb-4">Your risk score is above the industry average</div>
+              
+              <!-- Color Zone Labels -->
+              <div class="flex space-x-6">
+                <div class="flex items-center space-x-2">
+                  <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+                  <div>
+                    <div class="text-xs font-medium text-gray-700">0-300</div>
+                    <div class="text-xs text-gray-500">Low Risk</div>
+                  </div>
+                </div>
+                <div class="flex items-center space-x-2">
+                  <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                  <div>
+                    <div class="text-xs font-medium text-gray-700">301-700</div>
+                    <div class="text-xs text-gray-500">Medium Risk</div>
+                  </div>
+                </div>
+                <div class="flex items-center space-x-2">
+                  <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+                  <div>
+                    <div class="text-xs font-medium text-gray-700">701-1000</div>
+                    <div class="text-xs text-gray-500">High Risk</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Unified Vulnerability Summary Box -->
+          <div class="bg-white rounded-xl shadow p-6 flex flex-col items-center justify-center">
+            <h3 class="text-lg font-bold mb-4 text-primary-800">Vulnerability Summary</h3>
+            <div class="grid grid-cols-2 gap-3 w-full">
+              <div class="bg-red-50 rounded-lg p-3 flex flex-col items-center justify-center cursor-pointer hover:bg-red-100 transition-colors" onclick="window.location.href='vulnerabilities.html#critical'">
+                <i data-lucide="alert-triangle" class="w-5 h-5 text-red-600 mb-1"></i>
+                <span class="text-lg font-bold text-red-600">120</span>
+                <span class="text-red-700 text-xs">Critical</span>
+              </div>
+              <div class="bg-orange-50 rounded-lg p-3 flex flex-col items-center justify-center cursor-pointer hover:bg-orange-100 transition-colors" onclick="window.location.href='vulnerabilities.html#high'">
+                <i data-lucide="alert-octagon" class="w-5 h-5 text-orange-500 mb-1"></i>
+                <span class="text-lg font-bold text-orange-500">340</span>
+                <span class="text-orange-700 text-xs">High</span>
+              </div>
+              <div class="bg-yellow-50 rounded-lg p-3 flex flex-col items-center justify-center cursor-pointer hover:bg-yellow-100 transition-colors" onclick="window.location.href='vulnerabilities.html#medium'">
+                <i data-lucide="alert-circle" class="w-5 h-5 text-yellow-500 mb-1"></i>
+                <span class="text-lg font-bold text-yellow-500">1,200</span>
+                <span class="text-yellow-700 text-xs">Medium</span>
+              </div>
+              <div class="bg-green-50 rounded-lg p-3 flex flex-col items-center justify-center cursor-pointer hover:bg-green-100 transition-colors" onclick="window.location.href='vulnerabilities.html#low'">
+                <i data-lucide="check-circle" class="w-5 h-5 text-green-600 mb-1"></i>
+                <span class="text-lg font-bold text-green-600">2,100</span>
+                <span class="text-green-700 text-xs">Low</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Second Row: Riskiest Assets & Threat News -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+          <!-- Riskiest Assets Table -->
+          <div class="col-span-2 bg-white rounded-xl shadow p-6">
+            <div class="flex items-center justify-between mb-4">
+              <h2 class="text-xl font-bold text-primary-800">Riskiest Assets</h2>
+              <a href="assets.html" class="text-primary-600 hover:text-primary-800 text-sm font-medium">View All →</a>
+            </div>
+            <div class="overflow-x-auto">
+              <table class="min-w-full text-sm text-left border border-gray-200">
+                <thead>
+                  <tr class="bg-primary-100 text-primary-800">
+                    <th class="py-2 px-3 border-b">Asset Name</th>
+                    <th class="py-2 px-3 border-b">Risk Score</th>
+                    <th class="py-2 px-3 border-b">Critical Vulns</th>
+                    <th class="py-2 px-3 border-b">Last Seen</th>
+                  </tr>
+                </thead>
+                <tbody id="riskiest-assets-tbody"></tbody>
+              </table>
+            </div>
+          </div>
+          <!-- Threat Intelligence News -->
+          <div class="bg-white rounded-xl shadow p-6">
+            <div class="flex items-center justify-between mb-4">
+              <h2 class="text-xl font-bold text-primary-800">Threat Intelligence</h2>
+              <a href="threat-intelligence.html" class="text-primary-600 hover:text-primary-800 text-sm font-medium">View All →</a>
+            </div>
+            <ul id="threat-news-list" class="space-y-4"></ul>
+          </div>
+        </div>
+        <!-- Third Row: Mini Dashboards -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- Assets Missing EDR -->
+          <div class="bg-white rounded-xl shadow p-6">
+            <h2 class="text-lg font-bold mb-2 text-primary-800">Assets Missing EDR</h2>
+            <div class="flex items-center space-x-4 mb-2">
+              <span class="text-3xl font-bold text-red-600" id="missing-edr-count">37</span>
+              <span class="text-gray-500">devices</span>
+            </div>
+            <ul id="missing-edr-list" class="text-sm text-gray-600 list-disc pl-5"></ul>
+            <a href="assets.html#missing-edr" class="text-primary-600 hover:text-primary-800 text-sm font-medium mt-2 inline-block">View Details →</a>
+          </div>
+          <!-- Assets Not Getting Scanned -->
+          <div class="bg-white rounded-xl shadow p-6">
+            <h2 class="text-lg font-bold mb-2 text-primary-800">Assets Not Scanned</h2>
+            <div class="flex items-center space-x-4 mb-2">
+              <span class="text-3xl font-bold text-orange-500" id="not-scanned-count">22</span>
+              <span class="text-gray-500">devices</span>
+            </div>
+            <ul id="not-scanned-list" class="text-sm text-gray-600 list-disc pl-5"></ul>
+            <a href="assets.html#not-scanned" class="text-primary-600 hover:text-primary-800 text-sm font-medium mt-2 inline-block">View Details →</a>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html> 

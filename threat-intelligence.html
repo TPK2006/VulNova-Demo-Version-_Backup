@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VulNova - Threat Intelligence</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <link href="threat-intelligence.css" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+</head>
+<body class="bg-gray-50 min-h-screen">
+  <div class="flex min-h-screen">
+    <!-- Sidebar -->
+    <aside id="sidebar" class="w-56 transition-all duration-300 bg-white shadow-lg h-screen flex-shrink-0 flex flex-col sidebar-expanded">
+      <div class="flex items-center justify-between px-4 py-5 border-b border-gray-200">
+        <div class="flex items-center space-x-2">
+          <div class="h-8 w-8 bg-gradient-to-br from-purple-600 to-blue-600 rounded-lg flex items-center justify-center">
+             <img src="favicon.svg" alt="VulNova Logo" class="h-8 w-8">
+          </div>
+          <span class="font-extrabold text-primary-800 text-lg sidebar-label">VulNova</span>
+        </div>
+        <button id="sidebarToggle" class="text-gray-500 focus:outline-none">
+          <i data-lucide="menu" class="w-6 h-6"></i>
+        </button>
+      </div>
+      <nav class="flex-1 mt-4">
+        <ul class="space-y-2">
+          <li><a href="index.html" class="flex items-center px-4 py-3 text-gray-700 hover:bg-primary-50 rounded transition sidebar-link"><i data-lucide="layout-dashboard" class="sidebar-icon mr-3"></i><span class="sidebar-label">Dashboard</span></a></li>
+          <li><a href="assets.html" class="flex items-center px-4 py-3 text-gray-700 hover:bg-primary-50 rounded transition sidebar-link"><i data-lucide="server" class="sidebar-icon mr-3"></i><span class="sidebar-label">Assets</span></a></li>
+          <li><a href="vulnerabilities.html" class="flex items-center px-4 py-3 text-gray-700 hover:bg-primary-50 rounded transition sidebar-link"><i data-lucide="alert-triangle" class="sidebar-icon mr-3"></i><span class="sidebar-label">Vulnerabilities</span></a></li>
+          <li><a href="reporting.html" class="flex items-center px-4 py-3 text-gray-700 hover:bg-primary-50 rounded transition sidebar-link"><i data-lucide="bar-chart-3" class="sidebar-icon mr-3"></i><span class="sidebar-label">Reporting</span></a></li>
+          <li><a href="integrations.html" class="flex items-center px-4 py-3 text-gray-700 hover:bg-primary-50 rounded transition sidebar-link"><i data-lucide="settings" class="sidebar-icon mr-3"></i><span class="sidebar-label">Integrations</span></a></li>
+          <li><a href="threat-intelligence.html" class="flex items-center px-4 py-3 text-primary-700 font-semibold hover:bg-primary-50 rounded transition sidebar-link"><i data-lucide="shield" class="sidebar-icon mr-3"></i><span class="sidebar-label">Threat Intelligence</span></a></li>
+          <li><a href="support.html" class="flex items-center px-4 py-3 text-gray-700 hover:bg-primary-50 rounded transition sidebar-link"><i data-lucide="life-buoy" class="sidebar-icon mr-3"></i><span class="sidebar-label">Support</span></a></li>
+        </ul>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="flex-1 flex flex-col min-h-screen transition-all duration-300" id="mainContent">
+      <!-- Top Bar -->
+      <header class="bg-white shadow flex items-center px-6 py-4">
+        <button id="sidebarHamburger" class="md:hidden mr-4 text-gray-500 focus:outline-none">
+          <i data-lucide="menu" class="w-7 h-7"></i>
+        </button>
+        <span class="text-2xl font-extrabold text-primary-800">Threat Intelligence</span>
+      </header>
+      
+      <main class="flex-1 p-6">
+        <!-- Threat Intelligence Page Header -->
+        <div class="mb-8">
+          <div class="flex items-center justify-between mb-4">
+            <div>
+              <h1 class="text-3xl font-bold text-gray-900 mb-2">Threat Intelligence</h1>
+              <p class="text-gray-600">Stay informed about the latest security threats and vulnerabilities</p>
+            </div>
+            <div class="flex space-x-3">
+              <button onclick="configureFeed()" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg transition-colors flex items-center space-x-2">
+                <i data-lucide="rss" class="w-4 h-4"></i>
+                <span>Configure Feeds</span>
+              </button>
+              <button onclick="exportIntelligence()" class="bg-primary-600 hover:bg-primary-700 text-white px-6 py-2 rounded-lg transition-colors flex items-center space-x-2">
+                <i data-lucide="download" class="w-4 h-4"></i>
+                <span>Export Intel</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Threat Level Overview -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+          <div class="bg-red-50 rounded-xl p-6 border border-red-200">
+            <div class="flex items-center justify-between mb-4">
+              <i data-lucide="alert-triangle" class="w-8 h-8 text-red-600"></i>
+              <span class="text-2xl font-bold text-red-600">Critical</span>
+            </div>
+            <h3 class="text-lg font-semibold text-gray-900 mb-1">Threat Level</h3>
+            <p class="text-sm text-gray-600">Active campaigns detected</p>
+            <div class="mt-2 text-xs text-red-600">3 new threats today</div>
+          </div>
+          <div class="bg-white rounded-xl p-6 border border-gray-200">
+            <div class="flex items-center justify-between mb-4">
+              <i data-lucide="trending-up" class="w-8 h-8 text-blue-600"></i>
+              <span class="text-2xl font-bold text-gray-900">847</span>
+            </div>
+            <h3 class="text-lg font-semibold text-gray-900 mb-1">IOCs Tracked</h3>
+            <p class="text-sm text-gray-600">Indicators of Compromise</p>
+            <div class="mt-2 text-xs text-blue-600">+12 new IOCs</div>
+          </div>
+          <div class="bg-white rounded-xl p-6 border border-gray-200">
+            <div class="flex items-center justify-between mb-4">
+              <i data-lucide="globe" class="w-8 h-8 text-green-600"></i>
+              <span class="text-2xl font-bold text-gray-900">23</span>
+            </div>
+            <h3 class="text-lg font-semibold text-gray-900 mb-1">Active Feeds</h3>
+            <p class="text-sm text-gray-600">Intelligence sources</p>
+            <div class="mt-2 text-xs text-green-600">All feeds operational</div>
+          </div>
+          <div class="bg-white rounded-xl p-6 border border-gray-200">
+            <div class="flex items-center justify-between mb-4">
+              <i data-lucide="shield-check" class="w-8 h-8 text-purple-600"></i>
+              <span class="text-2xl font-bold text-gray-900">156</span>
+            </div>
+            <h3 class="text-lg font-semibold text-gray-900 mb-1">Blocked Threats</h3>
+            <p class="text-sm text-gray-600">This week</p>
+            <div class="mt-2 text-xs text-purple-600">98.7% success rate</div>
+          </div>
+        </div>
+
+        <!-- Latest Threat Intelligence -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+          <!-- Recent Threats -->
+          <div class="bg-white rounded-xl shadow p-6">
+            <div class="flex items-center justify-between mb-6">
+              <h2 class="text-xl font-semibold text-gray-900">Recent Threats</h2>
+              <button onclick="viewAllThreats()" class="text-primary-600 hover:text-primary-800 text-sm font-medium">View All</button>
+            </div>
+            <div class="space-y-4" id="recentThreats">
+              <!-- Recent threats will be populated by JavaScript -->
+            </div>
+          </div>
+
+          <!-- CVE Alerts -->
+          <div class="bg-white rounded-xl shadow p-6">
+            <div class="flex items-center justify-between mb-6">
+              <h2 class="text-xl font-semibold text-gray-900">CVE Alerts</h2>
+              <button onclick="viewAllCVEs()" class="text-primary-600 hover:text-primary-800 text-sm font-medium">View All</button>
+            </div>
+            <div class="space-y-4" id="cveAlerts">
+              <!-- CVE alerts will be populated by JavaScript -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Threat Actor Profiles -->
+        <div class="bg-white rounded-xl shadow p-6 mb-8">
+          <div class="flex items-center justify-between mb-6">
+            <h2 class="text-xl font-semibold text-gray-900">Active Threat Actors</h2>
+            <button onclick="viewThreatActorDatabase()" class="text-primary-600 hover:text-primary-800 text-sm font-medium">View Database</button>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6" id="threatActors">
+            <!-- Threat actors will be populated by JavaScript -->
+          </div>
+        </div>
+
+        <!-- IOC Management -->
+        <div class="bg-white rounded-xl shadow overflow-hidden">
+          <div class="p-6 border-b border-gray-200">
+            <div class="flex items-center justify-between">
+              <h2 class="text-xl font-semibold text-gray-900">Indicators of Compromise (IOCs)</h2>
+              <div class="flex items-center space-x-4">
+                <input type="text" id="searchIOCs" placeholder="Search IOCs..." 
+                       class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                       onkeyup="filterIOCs()">
+                <select id="iocTypeFilter" class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                        onchange="filterIOCs()">
+                  <option value="">All Types</option>
+                  <option value="IP">IP Address</option>
+                  <option value="Domain">Domain</option>
+                  <option value="Hash">File Hash</option>
+                  <option value="URL">URL</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="min-w-full">
+              <thead class="bg-gray-50">
+                <tr>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">IOC</th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Threat</th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Severity</th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">First Seen</th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Source</th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="iocTableBody" class="bg-white divide-y divide-gray-200">
+                <!-- Table content will be populated by JavaScript -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="threat-intelligence.js"></script>
+</body>
+</html>
