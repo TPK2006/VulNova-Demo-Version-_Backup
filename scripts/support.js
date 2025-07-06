@@ -15,274 +15,204 @@ function toggleSidebar() {
 if (sidebarToggle) sidebarToggle.onclick = toggleSidebar;
 if (sidebarHamburger) sidebarHamburger.onclick = toggleSidebar;
 
-// Sample support data
-const supportTickets = [
-  {
-    id: 'TICK-001',
-    title: 'Integration Issue with Tenable.io',
-    status: 'Open',
-    priority: 'High',
-    created: '2024-07-04 10:30',
-    lastUpdate: '2024-07-04 14:20'
-  },
-  {
-    id: 'TICK-002',
-    title: 'False Positive in Vulnerability Scan',
-    status: 'In Progress',
-    priority: 'Medium',
-    created: '2024-07-03 16:45',
-    lastUpdate: '2024-07-04 09:15'
-  },
-  {
-    id: 'TICK-003',
-    title: 'Report Generation Timeout',
-    status: 'Resolved',
-    priority: 'Low',
-    created: '2024-07-02 11:20',
-    lastUpdate: '2024-07-03 13:30'
-  }
-];
-
-const systemStatus = [
-  {
-    service: 'Vulnerability Scanning',
-    status: 'Operational',
-    uptime: '99.9%',
-    lastIncident: 'None'
-  },
-  {
-    service: 'Asset Discovery',
-    status: 'Operational',
-    uptime: '99.8%',
-    lastIncident: 'None'
-  },
-  {
-    service: 'Threat Intelligence',
-    status: 'Operational',
-    uptime: '100%',
-    lastIncident: 'None'
-  },
-  {
-    service: 'Reporting Engine',
-    status: 'Degraded Performance',
-    uptime: '98.5%',
-    lastIncident: '2 hours ago'
-  },
-  {
-    service: 'API Services',
-    status: 'Operational',
-    uptime: '99.9%',
-    lastIncident: 'None'
-  }
-];
-
-const knowledgeBaseArticles = [
-  {
-    id: 1,
-    title: 'Getting Started with VulNova',
-    category: 'Getting Started',
-    views: 1250,
-    lastUpdated: '2024-07-01',
-    description: 'Complete guide to setting up and configuring VulNova for your organization'
-  },
-  {
-    id: 2,
-    title: 'Configuring Vulnerability Scanners',
-    category: 'Configuration',
-    views: 890,
-    lastUpdated: '2024-06-28',
-    description: 'Step-by-step guide to integrate and configure vulnerability scanning tools'
-  },
-  {
-    id: 3,
-    title: 'Understanding Risk Scores',
-    category: 'Risk Management',
-    views: 756,
-    lastUpdated: '2024-06-25',
-    description: 'Learn how VulNova calculates and interprets risk scores for your assets'
-  },
-  {
-    id: 4,
-    title: 'API Authentication Guide',
-    category: 'API',
-    views: 623,
-    lastUpdated: '2024-06-20',
-    description: 'Complete guide to authenticating and using the VulNova API'
-  },
-  {
-    id: 5,
-    title: 'Troubleshooting Common Issues',
-    category: 'Troubleshooting',
-    views: 1100,
-    lastUpdated: '2024-07-02',
-    description: 'Solutions to frequently encountered problems and error messages'
-  },
-  {
-    id: 6,
-    title: 'Custom Report Templates',
-    category: 'Reporting',
-    views: 445,
-    lastUpdated: '2024-06-15',
-    description: 'Create and customize report templates for your specific needs'
-  }
-];
-
-let filteredArticles = [...knowledgeBaseArticles];
-
 // Function to display support tickets
-function displaySupportTickets() {
+async function displaySupportTickets() {
   const container = document.getElementById('supportTickets');
   if (!container) return;
 
-  const statusColors = {
-    'Open': 'bg-red-100 text-red-800',
-    'In Progress': 'bg-yellow-100 text-yellow-800',
-    'Resolved': 'bg-green-100 text-green-800',
-    'Closed': 'bg-gray-100 text-gray-800'
-  };
+  try {
+    const response = await fetch('/api/support/tickets');
+    const supportTickets = await response.json();
 
-  const priorityColors = {
-    'High': 'bg-red-100 text-red-800',
-    'Medium': 'bg-yellow-100 text-yellow-800',
-    'Low': 'bg-green-100 text-green-800'
-  };
+    const statusColors = {
+      'Open': 'bg-red-100 text-red-800',
+      'In Progress': 'bg-yellow-100 text-yellow-800',
+      'Resolved': 'bg-green-100 text-green-800',
+      'Closed': 'bg-gray-100 text-gray-800'
+    };
 
-  container.innerHTML = supportTickets.map(ticket => `
-    <div class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow cursor-pointer" onclick="viewTicketDetails('${ticket.id}')">
-      <div class="flex items-start justify-between mb-2">
-        <div>
-          <h3 class="font-semibold text-gray-900 text-sm">${ticket.id}</h3>
-          <p class="text-sm text-gray-600">${ticket.title}</p>
+    const priorityColors = {
+      'High': 'bg-red-100 text-red-800',
+      'Medium': 'bg-yellow-100 text-yellow-800',
+      'Low': 'bg-green-100 text-green-800'
+    };
+
+    container.innerHTML = supportTickets.map(ticket => `
+      <div class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow cursor-pointer" onclick="viewTicketDetails('${ticket.id}')">
+        <div class="flex items-start justify-between mb-2">
+          <div>
+            <h3 class="font-semibold text-gray-900 text-sm">${ticket.id}</h3>
+            <p class="text-sm text-gray-600">${ticket.title}</p>
+          </div>
+          <div class="flex space-x-2">
+            <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full ${statusColors[ticket.status]}">${ticket.status}</span>
+            <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full ${priorityColors[ticket.priority]}">${ticket.priority}</span>
+          </div>
         </div>
-        <div class="flex space-x-2">
-          <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full ${statusColors[ticket.status]}">${ticket.status}</span>
-          <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full ${priorityColors[ticket.priority]}">${ticket.priority}</span>
+        <div class="flex items-center justify-between text-xs text-gray-500 mt-3">
+          <span>Created: ${new Date(ticket.created).toLocaleString()}</span>
+          <span>Updated: ${new Date(ticket.lastUpdate).toLocaleString()}</span>
         </div>
       </div>
-      <div class="flex items-center justify-between text-xs text-gray-500 mt-3">
-        <span>Created: ${ticket.created}</span>
-        <span>Updated: ${ticket.lastUpdate}</span>
-      </div>
-    </div>
-  `).join('');
+    `).join('');
+  } catch (error) {
+    console.error('Error loading support tickets:', error);
+    container.innerHTML = '<p class="text-red-500">Error loading support tickets. Please try again later.</p>';
+  }
 }
 
 // Function to display system status
-function displaySystemStatus() {
+async function displaySystemStatus() {
   const container = document.getElementById('systemStatus');
   if (!container) return;
 
-  const statusColors = {
-    'Operational': 'bg-green-100 text-green-800',
-    'Degraded Performance': 'bg-yellow-100 text-yellow-800',
-    'Partial Outage': 'bg-orange-100 text-orange-800',
-    'Major Outage': 'bg-red-100 text-red-800'
-  };
+  try {
+    const response = await fetch('/api/support/status');
+    const systemStatus = await response.json();
 
-  container.innerHTML = systemStatus.map(service => `
-    <div class="flex items-center justify-between p-3 border border-gray-200 rounded-lg">
-      <div>
-        <h3 class="font-medium text-gray-900">${service.service}</h3>
-        <p class="text-sm text-gray-600">Uptime: ${service.uptime}</p>
+    const statusColors = {
+      'Operational': 'bg-green-100 text-green-800',
+      'Degraded Performance': 'bg-yellow-100 text-yellow-800',
+      'Partial Outage': 'bg-orange-100 text-orange-800',
+      'Major Outage': 'bg-red-100 text-red-800'
+    };
+
+    container.innerHTML = systemStatus.map(service => `
+      <div class="flex items-center justify-between p-3 border border-gray-200 rounded-lg">
+        <div>
+          <h3 class="font-medium text-gray-900">${service.service}</h3>
+          <p class="text-sm text-gray-600">Uptime: ${service.uptime}</p>
+        </div>
+        <div class="text-right">
+          <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full ${statusColors[service.status]}">${service.status}</span>
+          <p class="text-xs text-gray-500 mt-1">Last incident: ${service.lastIncident}</p>
+        </div>
       </div>
-      <div class="text-right">
-        <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full ${statusColors[service.status]}">${service.status}</span>
-        <p class="text-xs text-gray-500 mt-1">Last incident: ${service.lastIncident}</p>
-      </div>
-    </div>
-  `).join('');
+    `).join('');
+  } catch (error) {
+    console.error('Error loading system status:', error);
+    container.innerHTML = '<p class="text-red-500">Error loading system status. Please try again later.</p>';
+  }
 }
 
 // Function to display knowledge base articles
-function displayKnowledgeBase(articles = filteredArticles) {
+async function displayKnowledgeBase(articles = null) {
   const container = document.getElementById('knowledgeBase');
   if (!container) return;
 
-  const categoryColors = {
-    'Getting Started': 'bg-blue-100 text-blue-800',
-    'Configuration': 'bg-green-100 text-green-800',
-    'Risk Management': 'bg-purple-100 text-purple-800',
-    'API': 'bg-orange-100 text-orange-800',
-    'Troubleshooting': 'bg-red-100 text-red-800',
-    'Reporting': 'bg-yellow-100 text-yellow-800'
-  };
+  try {
+    if (!articles) {
+      const response = await fetch('/api/support/knowledge-base');
+      articles = await response.json();
+    }
 
-  container.innerHTML = articles.map(article => `
-    <div class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow cursor-pointer" onclick="viewArticle(${article.id})">
-      <div class="flex items-start justify-between mb-3">
-        <h3 class="font-semibold text-gray-900 text-sm">${article.title}</h3>
-        <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full ${categoryColors[article.category]}">${article.category}</span>
+    const categoryColors = {
+      'Getting Started': 'bg-blue-100 text-blue-800',
+      'Configuration': 'bg-green-100 text-green-800',
+      'Risk Management': 'bg-purple-100 text-purple-800',
+      'API': 'bg-orange-100 text-orange-800',
+      'Troubleshooting': 'bg-red-100 text-red-800',
+      'Reporting': 'bg-yellow-100 text-yellow-800'
+    };
+
+    container.innerHTML = articles.map(article => `
+      <div class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow cursor-pointer" onclick="viewArticle(${article.id})">
+        <div class="flex items-start justify-between mb-3">
+          <h3 class="font-semibold text-gray-900 text-sm">${article.title}</h3>
+          <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full ${categoryColors[article.category]}">${article.category}</span>
+        </div>
+        <p class="text-sm text-gray-600 mb-3">${article.description}</p>
+        <div class="flex items-center justify-between text-xs text-gray-500">
+          <span>${article.views} views</span>
+          <span>Updated: ${new Date(article.lastUpdated).toLocaleDateString()}</span>
+        </div>
       </div>
-      <p class="text-sm text-gray-600 mb-3">${article.description}</p>
-      <div class="flex items-center justify-between text-xs text-gray-500">
-        <span>${article.views} views</span>
-        <span>Updated: ${article.lastUpdated}</span>
-      </div>
-    </div>
-  `).join('');
+    `).join('');
+  } catch (error) {
+    console.error('Error loading knowledge base:', error);
+    container.innerHTML = '<p class="text-red-500">Error loading knowledge base. Please try again later.</p>';
+  }
 }
 
 // Function to search knowledge base
-function searchKnowledgeBase() {
+async function searchKnowledgeBase() {
   const searchInput = document.getElementById('searchKB');
   if (!searchInput) return;
   
   const searchTerm = searchInput.value.toLowerCase();
   
-  filteredArticles = knowledgeBaseArticles.filter(article => {
-    return !searchTerm || 
-      article.title.toLowerCase().includes(searchTerm) ||
-      article.description.toLowerCase().includes(searchTerm) ||
-      article.category.toLowerCase().includes(searchTerm);
-  });
-  
-  displayKnowledgeBase(filteredArticles);
-}
-
-// Placeholder functions for actions
-function openLiveChat() {
-  alert('Opening Live Chat...\n\nConnecting you with a support representative.\nAverage wait time: 2 minutes');
-}
-
-function createTicket() {
-  alert('Create Support Ticket\n\nTicket creation form would open here with fields for:\n• Issue category\n• Priority level\n• Detailed description\n• File attachments');
-}
-
-function openDocumentation() {
-  alert('Opening Documentation Portal\n\nAccess comprehensive guides for:\n• Getting Started\n• API Reference\n• Integration Guides\n• Best Practices');
-}
-
-function viewVideoTutorials() {
-  alert('Video Tutorial Library\n\nAccess video content including:\n• Platform Overview\n• Feature Walkthroughs\n• Integration Tutorials\n• Best Practices');
-}
-
-function viewFAQ() {
-  alert('Frequently Asked Questions\n\nFind answers to common questions about:\n• Account Management\n• Feature Usage\n• Troubleshooting\n• Billing & Licensing');
-}
-
-function contactSupport() {
-  alert('Contact Support Options\n\n• Phone: +1 (555) 123-4567\n• Email: support@vulnova.com\n• Live Chat: Available 9 AM - 6 PM EST\n• Emergency: 24/7 phone support');
-}
-
-function viewAllTickets() {
-  alert('Navigate to complete support ticket history and management interface');
-}
-
-function viewStatusPage() {
-  alert('Opening System Status Page\n\nReal-time status of all VulNova services and infrastructure components');
-}
-
-function viewTicketDetails(ticketId) {
-  const ticket = supportTickets.find(t => t.id === ticketId);
-  if (ticket) {
-    alert(`Ticket Details: ${ticket.id}\n\nTitle: ${ticket.title}\nStatus: ${ticket.status}\nPriority: ${ticket.priority}\nCreated: ${ticket.created}\nLast Update: ${ticket.lastUpdate}`);
+  try {
+    const response = await fetch(`/api/support/knowledge-base?search=${encodeURIComponent(searchTerm)}`);
+    const articles = await response.json();
+    displayKnowledgeBase(articles);
+  } catch (error) {
+    console.error('Error searching knowledge base:', error);
   }
 }
 
-function viewArticle(articleId) {
-  const article = knowledgeBaseArticles.find(a => a.id === articleId);
-  if (article) {
-    alert(`Knowledge Base Article: ${article.title}\n\nCategory: ${article.category}\nViews: ${article.views}\nLast Updated: ${article.lastUpdated}\n\n${article.description}`);
+// Placeholder functions for actions
+async function openLiveChat() {
+  alert('Opening Live Chat...\n\nConnecting you with a support representative.\nAverage wait time: 2 minutes');
+}
+
+async function createTicket() {
+  const title = prompt('Enter ticket title:');
+  if (!title) return;
+  
+  const description = prompt('Enter detailed description:');
+  if (!description) return;
+  
+  const priority = prompt('Enter priority (High/Medium/Low):');
+  if (!priority) return;
+  
+  try {
+    const response = await fetch('/api/support/tickets', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ title, description, priority })
+    });
+    
+    const result = await response.json();
+    
+    if (result.success) {
+      alert(`Ticket created successfully!\nTicket ID: ${result.id}`);
+      displaySupportTickets();
+    } else {
+      alert('Failed to create ticket. Please try again.');
+    }
+  } catch (error) {
+    console.error('Error creating ticket:', error);
+    alert('Error creating ticket. Please try again later.');
+  }
+}
+
+async function viewTicketDetails(ticketId) {
+  try {
+    const response = await fetch(`/api/support/tickets/${ticketId}`);
+    const ticket = await response.json();
+    
+    if (ticket) {
+      alert(`Ticket Details: ${ticket.id}\n\nTitle: ${ticket.title}\nStatus: ${ticket.status}\nPriority: ${ticket.priority}\nCreated: ${new Date(ticket.created).toLocaleString()}\nLast Update: ${new Date(ticket.lastUpdate).toLocaleString()}\n\nDescription:\n${ticket.description}`);
+    }
+  } catch (error) {
+    console.error('Error fetching ticket details:', error);
+    alert('Error loading ticket details. Please try again later.');
+  }
+}
+
+async function viewArticle(articleId) {
+  try {
+    const response = await fetch(`/api/support/knowledge-base/${articleId}`);
+    const article = await response.json();
+    
+    if (article) {
+      alert(`Knowledge Base Article: ${article.title}\n\nCategory: ${article.category}\nViews: ${article.views}\nLast Updated: ${new Date(article.lastUpdated).toLocaleDateString()}\n\n${article.description}\n\n${article.content || ''}`);
+    }
+  } catch (error) {
+    console.error('Error fetching article:', error);
+    alert('Error loading article. Please try again later.');
   }
 }
 

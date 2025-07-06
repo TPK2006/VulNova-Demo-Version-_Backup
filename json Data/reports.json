@@ -1,0 +1,108 @@
+{
+  "reports": [
+    {
+      "id": 1,
+      "name": "Monthly Security Executive Summary - July 2024",
+      "type": "Executive",
+      "generated": "2024-07-04T09:00:00Z",
+      "status": "Completed",
+      "size": "2.3 MB",
+      "format": "PDF",
+      "content": "Base64 encoded report content or S3 path",
+      "createdAt": "2024-07-04T09:00:00Z",
+      "createdBy": "admin@example.com"
+    },
+    {
+      "id": 2,
+      "name": "Vulnerability Assessment Report - Q2 2024",
+      "type": "Technical",
+      "generated": "2024-07-01T14:30:00Z",
+      "status": "Completed",
+      "size": "15.7 MB",
+      "format": "PDF",
+      "content": "Base64 encoded report content or S3 path",
+      "createdAt": "2024-07-01T14:30:00Z",
+      "createdBy": "scanner@example.com"
+    },
+    {
+      "id": 3,
+      "name": "SOC 2 Compliance Report - June 2024",
+      "type": "Compliance",
+      "generated": "2024-06-30T16:45:00Z",
+      "status": "Completed",
+      "size": "8.9 MB",
+      "format": "PDF",
+      "content": "Base64 encoded report content or S3 path",
+      "createdAt": "2024-06-30T16:45:00Z",
+      "createdBy": "auditor@example.com"
+    },
+    {
+      "id": 4,
+      "name": "Weekly Threat Intelligence Brief",
+      "type": "Intelligence",
+      "generated": "2024-07-04T08:00:00Z",
+      "status": "Scheduled",
+      "size": "-",
+      "format": "PDF",
+      "content": "",
+      "createdAt": "2024-07-03T10:00:00Z",
+      "createdBy": "analyst@example.com"
+    },
+    {
+      "id": 5,
+      "name": "Asset Inventory Report - July 2024",
+      "type": "Technical",
+      "generated": "2024-07-03T11:20:00Z",
+      "status": "Completed",
+      "size": "4.2 MB",
+      "format": "Excel",
+      "content": "Base64 encoded report content or S3 path",
+      "createdAt": "2024-07-03T11:20:00Z",
+      "createdBy": "inventory@example.com"
+    }
+  ],
+  "report_templates": [
+    {
+      "id": 1,
+      "name": "Executive Summary",
+      "type": "Executive",
+      "description": "High-level security posture overview for leadership",
+      "icon": "briefcase",
+      "color": "blue",
+      "fields": [
+        "risk_score_trends",
+        "key_metrics",
+        "compliance_status",
+        "recommendations"
+      ]
+    },
+    {
+      "id": 2,
+      "name": "Technical Report",
+      "type": "Technical",
+      "description": "Detailed vulnerability analysis and remediation guidance",
+      "icon": "code",
+      "color": "green",
+      "fields": [
+        "vulnerability_analysis",
+        "asset_inventory",
+        "remediation_priorities",
+        "technical_recommendations"
+      ]
+    },
+    {
+      "id": 3,
+      "name": "Compliance Report",
+      "type": "Compliance",
+      "description": "Regulatory compliance status and audit trails",
+      "icon": "shield-check",
+      "color": "purple",
+      "fields": [
+        "regulatory_status",
+        "audit_findings",
+        "control_effectiveness",
+        "remediation_plans"
+      ]
+    }
+  ]
+}

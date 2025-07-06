@@ -1,0 +1,172 @@
+{
+  "integrations": [
+     {
+      "_id": "101",
+      "name": "Nessus Professional",
+      "category": "vulnerability-scanners",
+      "status": "available",
+      "icon": "shield",
+      "color": "green",
+      "description": "Industry-standard vulnerability assessment solution with comprehensive scanning capabilities",
+      "popular": true,
+      "features": [
+        "Agent-based and agentless scanning",
+        "65,000+ vulnerability checks",
+        "Compliance auditing"
+      ]
+    },
+
+
+    {
+      "_id": "1",
+      "name": "Tenable.io",
+      "category": "vulnerability-scanners",
+      "status": "active",
+      "lastSync": "2024-07-04T16:30:00Z",
+      "icon": "scan",
+      "color": "blue",
+      "description": "Comprehensive vulnerability scanning solution",
+      "popular": true
+    },
+    {
+      "_id": "2",
+      "name": "Splunk Enterprise",
+      "category": "siem-tools",
+      "status": "active",
+      "lastSync": "2024-07-04T16:45:00Z",
+      "icon": "activity",
+      "color": "green",
+      "description": "Security information and event management",
+      "popular": true
+    },
+    {
+      "_id": "3",
+      "name": "Jira Service Management",
+      "category": "ticketing-systems",
+      "status": "active",
+      "lastSync": "2024-07-04T15:20:00Z",
+      "icon": "ticket",
+      "color": "purple",
+      "description": "IT service management platform",
+      "popular": true
+    },
+    {
+      "_id": "4",
+      "name": "Slack",
+      "category": "communication",
+      "status": "active",
+      "lastSync": "2024-07-04T17:00:00Z",
+      "icon": "message-square",
+      "color": "orange",
+      "description": "Team communication platform",
+      "popular": true
+    },
+    {
+      "_id": "5",
+      "name": "Microsoft Teams",
+      "category": "communication",
+      "status": "active",
+      "lastSync": "2024-07-04T16:55:00Z",
+      "icon": "message-circle",
+      "color": "blue",
+      "description": "Collaboration and communication platform",
+      "popular": false
+    },
+    {
+      "_id": "6",
+      "name": "AWS Security Hub",
+      "category": "cloud-security",
+      "status": "active",
+      "lastSync": "2024-07-04T16:40:00Z",
+      "icon": "cloud",
+      "color": "yellow",
+      "description": "Cloud security posture management",
+      "popular": false
+    },
+    {
+      "_id": "7",
+      "name": "Qualys VMDR",
+      "category": "vulnerability-scanners",
+      "status": "available",
+      "icon": "scan",
+      "color": "blue",
+      "description": "Risk-based vulnerability management",
+      "popular": true
+    },
+    {
+      "_id": "8",
+      "name": "Rapid7 InsightVM",
+      "category": "vulnerability-scanners",
+      "status": "available",
+      "icon": "search",
+      "color": "red",
+      "description": "Vulnerability assessment solution",
+      "popular": false
+    },
+    {
+      "_id": "9",
+      "name": "ServiceNow ITSM",
+      "category": "ticketing-systems",
+      "status": "available",
+      "icon": "ticket",
+      "color": "green",
+      "description": "IT service management platform",
+      "popular": true
+    },
+    {
+      "_id": "10",
+      "name": "PagerDuty",
+      "category": "communication",
+      "status": "available",
+      "icon": "bell",
+      "color": "orange",
+      "description": "Incident response platform",
+      "popular": true
+    }
+  ],
+  "automation_rules": [
+    {
+      "_id": "1",
+      "name": "Critical Vulnerability Alert",
+      "trigger": "New critical vulnerability detected",
+      "action": "Create Jira ticket and send Slack notification",
+      "status": "active",
+      "lastTriggered": "2024-07-04T14:30:00Z",
+      "createdAt": "2024-06-15T09:00:00Z"
+    },
+    {
+      "_id": "2",
+      "name": "Asset Discovery Notification",
+      "trigger": "New asset discovered",
+      "action": "Send email to security team",
+      "status": "active",
+      "lastTriggered": "2024-07-03T09:15:00Z",
+      "createdAt": "2024-06-10T11:30:00Z"
+    },
+    {
+      "_id": "3",
+      "name": "Compliance Report Generation",
+      "trigger": "Weekly schedule",
+      "action": "Generate and email compliance report",
+      "status": "active",
+      "lastTriggered": "2024-07-01T08:00:00Z",
+      "createdAt": "2024-05-20T14:45:00Z"
+    },
+    {
+      "_id": "4",
+      "name": "High Risk Asset Alert",
+      "trigger": "Asset risk score > 800",
+      "action": "Create ServiceNow incident",
+      "status": "paused",
+      "lastTriggered": "2024-06-28T16:45:00Z",
+      "createdAt": "2024-05-15T10:20:00Z"
+    }
+  ]
+  
+} 
+
+
+
+
+
+

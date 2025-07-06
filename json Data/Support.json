@@ -1,0 +1,96 @@
+{
+  "supportTickets": [
+    {
+      "id": "TICK-001",
+      "title": "Integration Issue with Tenable.io",
+      "status": "Open",
+      "priority": "High",
+      "created": "2024-07-04T10:30:00Z",
+      "lastUpdate": "2024-07-04T14:20:00Z",
+      "description": "Unable to authenticate with Tenable.io API despite valid credentials",
+      "assignedTo": "support_team",
+      "createdBy": "user123"
+    },
+    {
+      "id": "TICK-002",
+      "title": "False Positive in Vulnerability Scan",
+      "status": "In Progress",
+      "priority": "Medium",
+      "created": "2024-07-03T16:45:00Z",
+      "lastUpdate": "2024-07-04T09:15:00Z",
+      "description": "Multiple false positives reported in latest vulnerability scan",
+      "assignedTo": "john_doe",
+      "createdBy": "user456"
+    },
+    {
+      "id": "TICK-003",
+      "title": "Report Generation Timeout",
+      "status": "Resolved",
+      "priority": "Low",
+      "created": "2024-07-02T11:20:00Z",
+      "lastUpdate": "2024-07-03T13:30:00Z",
+      "description": "PDF report generation times out after 5 minutes",
+      "assignedTo": "jane_smith",
+      "createdBy": "user789"
+    }
+  ],
+  "systemStatus": [
+    {
+      "service": "Vulnerability Scanning",
+      "status": "Operational",
+      "uptime": "99.9%",
+      "lastIncident": "None",
+      "lastChecked": "2024-07-05T08:00:00Z"
+    },
+    {
+      "service": "Asset Discovery",
+      "status": "Operational",
+      "uptime": "99.8%",
+      "lastIncident": "None",
+      "lastChecked": "2024-07-05T08:00:00Z"
+    },
+    {
+      "service": "Threat Intelligence",
+      "status": "Operational",
+      "uptime": "100%",
+      "lastIncident": "None",
+      "lastChecked": "2024-07-05T08:00:00Z"
+    },
+    {
+      "service": "Reporting Engine",
+      "status": "Degraded Performance",
+      "uptime": "98.5%",
+      "lastIncident": "2 hours ago",
+      "lastChecked": "2024-07-05T08:00:00Z"
+    },
+    {
+      "service": "API Services",
+      "status": "Operational",
+      "uptime": "99.9%",
+      "lastIncident": "None",
+      "lastChecked": "2024-07-05T08:00:00Z"
+    }
+  ],
+  "knowledgeBaseArticles": [
+    {
+      "id": 1,
+      "title": "Getting Started with VulNova",
+      "category": "Getting Started",
+      "views": 1250,
+      "lastUpdated": "2024-07-01T00:00:00Z",
+      "description": "Complete guide to setting up and configuring VulNova for your organization",
+      "content": "Detailed content here...",
+      "author": "admin"
+    },
+    {
+      "id": 2,
+      "title": "Configuring Vulnerability Scanners",
+      "category": "Configuration",
+      "views": 890,
+      "lastUpdated": "2024-06-28T00:00:00Z",
+      "description": "Step-by-step guide to integrate and configure vulnerability scanning tools",
+      "content": "Detailed content here...",
+      "author": "support_team"
+    }
+  ]
+}

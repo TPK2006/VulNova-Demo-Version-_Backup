@@ -1,3 +1,5 @@
+// Replace the entire integrations.js content with:
+
 // Initialize Lucide icons
 lucide.createIcons();
 
@@ -15,238 +17,119 @@ function toggleSidebar() {
 if (sidebarToggle) sidebarToggle.onclick = toggleSidebar;
 if (sidebarHamburger) sidebarHamburger.onclick = toggleSidebar;
 
-// Sample integrations data
-const activeIntegrations = [
-  {
-    id: 1,
-    name: 'Tenable.io',
-    category: 'vulnerability-scanners',
-    status: 'Connected',
-    lastSync: '2024-07-04 16:30',
-    icon: 'scan',
-    color: 'blue'
-  },
-  {
-    id: 2,
-    name: 'Splunk Enterprise',
-    category: 'siem-tools',
-    status: 'Connected',
-    lastSync: '2024-07-04 16:45',
-    icon: 'activity',
-    color: 'green'
-  },
-  {
-    id: 3,
-    name: 'Jira Service Management',
-    category: 'ticketing-systems',
-    status: 'Connected',
-    lastSync: '2024-07-04 15:20',
-    icon: 'ticket',
-    color: 'purple'
-  },
-  {
-    id: 4,
-    name: 'Slack',
-    category: 'communication',
-    status: 'Connected',
-    lastSync: '2024-07-04 17:00',
-    icon: 'message-square',
-    color: 'orange'
-  },
-  {
-    id: 5,
-    name: 'Microsoft Teams',
-    category: 'communication',
-    status: 'Connected',
-    lastSync: '2024-07-04 16:55',
-    icon: 'message-circle',
-    color: 'blue'
-  },
-  {
-    id: 6,
-    name: 'AWS Security Hub',
-    category: 'cloud-security',
-    status: 'Connected',
-    lastSync: '2024-07-04 16:40',
-    icon: 'cloud',
-    color: 'yellow'
-  },
-  {
-    id: 7,
-    name: 'Orca Security',
-    category: 'vulnerability-scanners',
-    status: 'Connected',
-    lastSync: '2024-07-04 16:35',
-    icon: 'shield',
-    color: 'green'
-  }
-];
+// Color mapping for integration icons
+const colorClasses = {
+  'blue': 'text-blue-600 bg-blue-100',
+  'green': 'text-green-600 bg-green-100',
+  'purple': 'text-purple-600 bg-purple-100',
+  'orange': 'text-orange-600 bg-orange-100',
+  'red': 'text-red-600 bg-red-100',
+  'yellow': 'text-yellow-600 bg-yellow-100'
+};
 
-const availableIntegrations = [
-  {
-    id: 8,
-    name: 'Qualys VMDR',
-    category: 'vulnerability-scanners',
-    description: 'Comprehensive vulnerability management and detection',
-    icon: 'scan',
-    color: 'blue',
-    popular: true
-  },
-  {
-    id: 9,
-    name: 'Rapid7 InsightVM',
-    category: 'vulnerability-scanners',
-    description: 'Risk-based vulnerability management',
-    icon: 'search',
-    color: 'red',
-    popular: false
-  },
-  {
-    id: 10,
-    name: 'ServiceNow ITSM',
-    category: 'ticketing-systems',
-    description: 'IT service management platform',
-    icon: 'ticket',
-    color: 'green',
-    popular: true
-  },
-  {
-    id: 11,
-    name: 'PagerDuty',
-    category: 'communication',
-    description: 'Incident response and alerting',
-    icon: 'bell',
-    color: 'orange',
-    popular: true
-  },
-  {
-    id: 12,
-    name: 'Azure Sentinel',
-    category: 'siem-tools',
-    description: 'Cloud-native SIEM and SOAR',
-    icon: 'eye',
-    color: 'blue',
-    popular: false
-  },
-  {
-    id: 13,
-    name: 'Elastic Security',
-    category: 'siem-tools',
-    description: 'Search-powered security analytics',
-    icon: 'activity',
-    color: 'yellow',
-    popular: false
-  },
-  {
-    id: 14,
-    name: 'Google Cloud Security',
-    category: 'cloud-security',
-    description: 'Google Cloud security and compliance',
-    icon: 'cloud',
-    color: 'blue',
-    popular: false
-  },
-  {
-    id: 15,
-    name: 'Okta',
-    category: 'identity-management',
-    description: 'Identity and access management',
-    icon: 'user-check',
-    color: 'purple',
-    popular: true
-  }
-];
+// Status colors for automation rules
+const statusColors = {
+  'active': 'bg-green-100 text-green-800',
+  'paused': 'bg-yellow-100 text-yellow-800',
+  'disabled': 'bg-red-100 text-red-800'
+};
 
-const automationRules = [
-  {
-    id: 1,
-    name: 'Critical Vulnerability Alert',
-    trigger: 'New critical vulnerability detected',
-    action: 'Create Jira ticket and send Slack notification',
-    status: 'Active',
-    lastTriggered: '2024-07-04 14:30'
-  },
-  {
-    id: 2,
-    name: 'Asset Discovery Notification',
-    trigger: 'New asset discovered',
-    action: 'Send email to security team',
-    status: 'Active',
-    lastTriggered: '2024-07-03 09:15'
-  },
-  {
-    id: 3,
-    name: 'Compliance Report Generation',
-    trigger: 'Weekly schedule',
-    action: 'Generate and email compliance report',
-    status: 'Active',
-    lastTriggered: '2024-07-01 08:00'
-  },
-  {
-    id: 4,
-    name: 'High Risk Asset Alert',
-    trigger: 'Asset risk score > 800',
-    action: 'Create ServiceNow incident',
-    status: 'Paused',
-    lastTriggered: '2024-06-28 16:45'
+async function fetchActiveIntegrations() {
+  try {
+    const response = await fetch('/api/integrations/active');
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    return await response.json();
+  } catch (error) {
+    console.error('Error fetching active integrations:', error);
+    throw error; // Re-throw the error to be handled by the caller
   }
-];
+}
 
-// Function to display active integrations
-function displayActiveIntegrations() {
+// Fetch available integrations from API
+async function fetchAvailableIntegrations() {
+  try {
+    const response = await fetch('/api/integrations/available');
+    if (!response.ok) throw new Error('Failed to fetch available integrations');
+    return await response.json();
+  } catch (error) {
+    console.error('Error fetching available integrations:', error);
+    return [];
+  }
+}
+
+// Fetch automation rules from API
+async function fetchAutomationRules() {
+  try {
+    const response = await fetch('/api/automation-rules');
+    if (!response.ok) throw new Error('Failed to fetch automation rules');
+    return await response.json();
+  } catch (error) {
+    console.error('Error fetching automation rules:', error);
+    return [];
+  }
+}
+
+// Replace the displayActiveIntegrations function with this corrected version:
+async function displayActiveIntegrations() {
   const container = document.getElementById('activeIntegrations');
   if (!container) return;
 
-  const colorClasses = {
-    'blue': 'text-blue-600 bg-blue-100',
-    'green': 'text-green-600 bg-green-100',
-    'purple': 'text-purple-600 bg-purple-100',
-    'orange': 'text-orange-600 bg-orange-100',
-    'red': 'text-red-600 bg-red-100',
-    'yellow': 'text-yellow-600 bg-yellow-100'
-  };
+  try {
+    // Fetch active integrations
+    const activeIntegrations = await fetchActiveIntegrations();
+    
+    // Fetch total count of integrations
+    const totalResponse = await fetch('/api/integrations');
+    if (!totalResponse.ok) throw new Error('Failed to fetch total integrations');
+    const totalIntegrations = await totalResponse.json();
+    const totalCount = totalIntegrations.length;
 
-  container.innerHTML = activeIntegrations.map(integration => `
-    <div class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
-      <div class="flex items-center justify-between mb-3">
-        <div class="flex items-center space-x-3">
-          <div class="w-10 h-10 rounded-lg ${colorClasses[integration.color]} flex items-center justify-center">
-            <i data-lucide="${integration.icon}" class="w-5 h-5"></i>
+    // Update active count display
+    const countElement = document.querySelector('#activeIntegrations + div > span');
+    if (countElement) {
+      countElement.textContent = `${activeIntegrations.length} of ${totalCount} integrations active`;
+    }
+
+    container.innerHTML = activeIntegrations.map(integration => `
+      <div class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+        <div class="flex items-center justify-between mb-3">
+          <div class="flex items-center space-x-3">
+            <div class="w-10 h-10 rounded-lg ${colorClasses[integration.color]} flex items-center justify-center">
+              <i data-lucide="${integration.icon}" class="w-5 h-5"></i>
+            </div>
+            <div>
+              <h3 class="font-semibold text-gray-900">${integration.name}</h3>
+              <p class="text-sm text-gray-600">${integration.category.replace('-', ' ')}</p>
+            </div>
           </div>
-          <div>
-            <h3 class="font-semibold text-gray-900">${integration.name}</h3>
-            <p class="text-sm text-gray-600">${integration.category.replace('-', ' ')}</p>
-          </div>
+          <span class="bg-green-100 text-green-800 text-xs font-medium px-2 py-1 rounded-full">Connected</span>
         </div>
-        <span class="bg-green-100 text-green-800 text-xs font-medium px-2 py-1 rounded-full">${integration.status}</span>
+        <div class="text-sm text-gray-600 mb-3">
+          Last sync: ${integration.lastSync ? new Date(integration.lastSync).toLocaleString() : 'Never'}
+        </div>
+        <div class="flex space-x-2">
+          <button class="text-primary-600 hover:text-primary-800 text-sm font-medium" onclick="configureIntegration('${integration._id}')">Configure</button>
+          <button class="text-gray-600 hover:text-gray-800 text-sm font-medium" onclick="testIntegration('${integration._id}')">Test</button>
+          <button class="text-red-600 hover:text-red-800 text-sm font-medium" onclick="disconnectIntegration('${integration._id}')">Disconnect</button>
+        </div>
       </div>
-      <div class="text-sm text-gray-600 mb-3">
-        Last sync: ${integration.lastSync}
-      </div>
-      <div class="flex space-x-2">
-        <button class="text-primary-600 hover:text-primary-800 text-sm font-medium" onclick="configureIntegration(${integration.id})">Configure</button>
-        <button class="text-gray-600 hover:text-gray-800 text-sm font-medium" onclick="testIntegration(${integration.id})">Test</button>
-        <button class="text-red-600 hover:text-red-800 text-sm font-medium" onclick="disconnectIntegration(${integration.id})">Disconnect</button>
-      </div>
-    </div>
-  `).join('');
+    `).join('');
 
-  lucide.createIcons();
+    lucide.createIcons();
+  } catch (error) {
+    console.error('Error displaying active integrations:', error);
+    container.innerHTML = '<p class="text-red-500">Error loading active integrations. Please try again.</p>';
+  }
 }
 
-// Function to display available integrations
-function displayAvailableIntegrations(integrations = availableIntegrations) {
+// Display available integrations
+async function displayAvailableIntegrations(filteredIntegrations = null) {
   const container = document.getElementById('availableIntegrations');
   if (!container) return;
 
-  const colorClasses = {
-    'blue': 'text-blue-600 bg-blue-100',
-    'green': 'text-green-600 bg-green-100',
-    'purple': 'text-purple-600 bg-purple-100',
-    'orange': 'text-orange-600 bg-orange-100',
-    'red': 'text-red-600 bg-red-100',
-    'yellow': 'text-yellow-600 bg-yellow-100'
-  };
+  const integrations = filteredIntegrations || await fetchAvailableIntegrations();
 
   container.innerHTML = integrations.map(integration => `
     <div class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
@@ -266,8 +149,8 @@ function displayAvailableIntegrations(integrations = availableIntegrations) {
       </div>
       <p class="text-sm text-gray-600 mb-4">${integration.description}</p>
       <div class="flex space-x-2">
-        <button class="bg-primary-600 hover:bg-primary-700 text-white text-sm font-medium px-4 py-2 rounded transition-colors" onclick="connectIntegration(${integration.id})">Connect</button>
-        <button class="text-primary-600 hover:text-primary-800 text-sm font-medium" onclick="viewIntegrationDetails(${integration.id})">Learn More</button>
+        <button class="bg-primary-600 hover:bg-primary-700 text-white text-sm font-medium px-4 py-2 rounded transition-colors" onclick="connectIntegration('${integration._id}')">Connect</button>
+        <button class="text-primary-600 hover:text-primary-800 text-sm font-medium" onclick="viewIntegrationDetails('${integration._id}')">Learn More</button>
       </div>
     </div>
   `).join('');
@@ -275,18 +158,14 @@ function displayAvailableIntegrations(integrations = availableIntegrations) {
   lucide.createIcons();
 }
 
-// Function to display automation rules
-function displayAutomationRules() {
+// Display automation rules
+async function displayAutomationRules() {
   const container = document.getElementById('automationRules');
   if (!container) return;
 
-  const statusColors = {
-    'Active': 'bg-green-100 text-green-800',
-    'Paused': 'bg-yellow-100 text-yellow-800',
-    'Disabled': 'bg-red-100 text-red-800'
-  };
+  const rules = await fetchAutomationRules();
 
-  container.innerHTML = automationRules.map(rule => `
+  container.innerHTML = rules.map(rule => `
     <div class="border border-gray-200 rounded-lg p-4">
       <div class="flex items-center justify-between mb-3">
         <div class="flex items-center space-x-3">
@@ -302,11 +181,11 @@ function displayAutomationRules() {
         <strong>Action:</strong> ${rule.action}
       </div>
       <div class="flex items-center justify-between">
-        <span class="text-sm text-gray-500">Last triggered: ${rule.lastTriggered}</span>
+        <span class="text-sm text-gray-500">${rule.lastTriggered ? 'Last triggered: ' + new Date(rule.lastTriggered).toLocaleString() : 'Never triggered'}</span>
         <div class="flex space-x-2">
-          <button class="text-primary-600 hover:text-primary-800 text-sm font-medium" onclick="editAutomationRule(${rule.id})">Edit</button>
-          <button class="text-gray-600 hover:text-gray-800 text-sm font-medium" onclick="toggleAutomationRule(${rule.id})">${rule.status === 'Active' ? 'Pause' : 'Activate'}</button>
-          <button class="text-red-600 hover:text-red-800 text-sm font-medium" onclick="deleteAutomationRule(${rule.id})">Delete</button>
+          <button class="text-primary-600 hover:text-primary-800 text-sm font-medium" onclick="editAutomationRule('${rule._id}')">Edit</button>
+          <button class="text-gray-600 hover:text-gray-800 text-sm font-medium" onclick="toggleAutomationRule('${rule._id}')">${rule.status === 'active' ? 'Pause' : 'Activate'}</button>
+          <button class="text-red-600 hover:text-red-800 text-sm font-medium" onclick="deleteAutomationRule('${rule._id}')">Delete</button>
         </div>
       </div>
     </div>
@@ -315,8 +194,8 @@ function displayAutomationRules() {
   lucide.createIcons();
 }
 
-// Function to filter integrations
-function filterIntegrations() {
+// Filter integrations based on search and category
+async function filterIntegrations() {
   const searchInput = document.getElementById('searchIntegrations');
   const categorySelect = document.getElementById('categoryFilter');
   
@@ -325,7 +204,9 @@ function filterIntegrations() {
   const searchTerm = searchInput.value.toLowerCase();
   const categoryFilter = categorySelect.value;
   
-  const filtered = availableIntegrations.filter(integration => {
+  const allIntegrations = await fetchAvailableIntegrations();
+  
+  const filtered = allIntegrations.filter(integration => {
     const matchesSearch = !searchTerm || 
       integration.name.toLowerCase().includes(searchTerm) ||
       integration.description.toLowerCase().includes(searchTerm);
@@ -338,92 +219,130 @@ function filterIntegrations() {
   displayAvailableIntegrations(filtered);
 }
 
-// Function to filter by category (called from category cards)
+// Filter by category (called from category cards)
 function filterByCategory(category) {
   document.getElementById('categoryFilter').value = category;
   filterIntegrations();
 }
 
-// Placeholder functions for actions
-function browseMarketplace() {
-  alert('Browse Integration Marketplace\n\nDiscover hundreds of pre-built integrations and connectors for your security tools.');
+// Integration actions
+async function configureIntegration(id) {
+  alert(`Configure integration with ID: ${id}\n\nSettings and configuration options would open here.`);
 }
 
-function createCustomIntegration() {
-  alert('Create Custom Integration\n\nBuild custom integrations using our API and webhook framework.');
+async function testIntegration(id) {
+  alert(`Testing integration with ID: ${id}\n\n✓ Connection successful\n✓ Authentication valid\n✓ Data sync working`);
 }
 
-function configureIntegration(id) {
-  const integration = activeIntegrations.find(i => i.id === id);
-  if (integration) {
-    alert(`Configure ${integration.name}\n\nSettings and configuration options would open here.`);
-  }
-}
-
-function testIntegration(id) {
-  const integration = activeIntegrations.find(i => i.id === id);
-  if (integration) {
-    alert(`Testing ${integration.name} connection...\n\n✓ Connection successful\n✓ Authentication valid\n✓ Data sync working`);
-  }
-}
-
-function disconnectIntegration(id) {
-  const integration = activeIntegrations.find(i => i.id === id);
-  if (integration) {
-    if (confirm(`Are you sure you want to disconnect ${integration.name}?`)) {
-      alert(`${integration.name} has been disconnected.`);
+async function disconnectIntegration(id) {
+  if (confirm('Are you sure you want to disconnect this integration?')) {
+    try {
+      const response = await fetch(`/api/integrations/${id}/status`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ status: 'available' })
+      });
+      
+      if (response.ok) {
+        alert('Integration disconnected successfully');
+        displayActiveIntegrations();
+      } else {
+        throw new Error('Failed to disconnect integration');
+      }
+    } catch (error) {
+      console.error('Error disconnecting integration:', error);
+      alert('Failed to disconnect integration');
     }
   }
 }
 
-function connectIntegration(id) {
-  const integration = availableIntegrations.find(i => i.id === id);
-  if (integration) {
-    alert(`Connecting to ${integration.name}...\n\nPlease provide your API credentials and configuration details.`);
+async function connectIntegration(id) {
+  alert(`Connecting to integration with ID: ${id}\n\nPlease provide your API credentials and configuration details.`);
+}
+
+async function viewIntegrationDetails(id) {
+  try {
+    const response = await fetch(`/api/integrations/${id}`);
+    if (!response.ok) throw new Error('Failed to fetch integration details');
+    
+    const integration = await response.json();
+    alert(`${integration.name}\n\n${integration.description}\n\nCategory: ${integration.category}\nStatus: ${integration.status}`);
+  } catch (error) {
+    console.error('Error fetching integration details:', error);
+    alert('Failed to load integration details');
   }
 }
 
-function viewIntegrationDetails(id) {
-  const integration = availableIntegrations.find(i => i.id === id);
-  if (integration) {
-    alert(`${integration.name}\n\n${integration.description}\n\nFeatures:\n• Real-time data sync\n• Automated workflows\n• Custom field mapping\n• Enterprise security`);
-  }
-}
-
-function createAutomationRule() {
+async function createAutomationRule() {
   alert('Create Automation Rule\n\nDefine triggers, conditions, and actions to automate your security workflows.');
 }
 
-function editAutomationRule(id) {
-  const rule = automationRules.find(r => r.id === id);
-  if (rule) {
-    alert(`Edit Automation Rule: ${rule.name}\n\nRule configuration editor would open here.`);
+async function editAutomationRule(id) {
+  try {
+    const response = await fetch(`/api/automation-rules/${id}`);
+    if (!response.ok) throw new Error('Failed to fetch rule details');
+    
+    const rule = await response.json();
+    alert(`Edit Automation Rule: ${rule.name}\n\nTrigger: ${rule.trigger}\nAction: ${rule.action}\nStatus: ${rule.status}`);
+  } catch (error) {
+    console.error('Error fetching rule details:', error);
+    alert('Failed to load rule details');
   }
 }
 
-function toggleAutomationRule(id) {
-  const rule = automationRules.find(r => r.id === id);
-  if (rule) {
-    const newStatus = rule.status === 'Active' ? 'Paused' : 'Active';
-    rule.status = newStatus;
-    displayAutomationRules();
-    alert(`Rule "${rule.name}" has been ${newStatus.toLowerCase()}.`);
+async function toggleAutomationRule(id) {
+  try {
+    const response = await fetch(`/api/automation-rules/${id}`);
+    if (!response.ok) throw new Error('Failed to fetch rule status');
+    
+    const rule = await response.json();
+    const newStatus = rule.status === 'active' ? 'paused' : 'active';
+    
+    const updateResponse = await fetch(`/api/automation-rules/${id}/status`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ status: newStatus })
+    });
+    
+    if (updateResponse.ok) {
+      alert(`Rule status updated to ${newStatus}`);
+      displayAutomationRules();
+    } else {
+      throw new Error('Failed to update rule status');
+    }
+  } catch (error) {
+    console.error('Error toggling rule status:', error);
+    alert('Failed to update rule status');
   }
 }
 
-function deleteAutomationRule(id) {
-  const rule = automationRules.find(r => r.id === id);
-  if (rule && confirm(`Are you sure you want to delete the rule "${rule.name}"?`)) {
-    const index = automationRules.findIndex(r => r.id === id);
-    automationRules.splice(index, 1);
-    displayAutomationRules();
-    alert(`Rule "${rule.name}" has been deleted.`);
+async function deleteAutomationRule(id) {
+  if (confirm('Are you sure you want to delete this automation rule?')) {
+    try {
+      const response = await fetch(`/api/automation-rules/${id}`, {
+        method: 'DELETE'
+      });
+      
+      if (response.ok) {
+        alert('Rule deleted successfully');
+        displayAutomationRules();
+      } else {
+        throw new Error('Failed to delete rule');
+      }
+    } catch (error) {
+      console.error('Error deleting rule:', error);
+      alert('Failed to delete rule');
+    }
   }
 }
 
 // Initialize the page
-document.addEventListener('DOMContentLoaded', function() {
-  displayActiveIntegrations();
-  displayAvailableIntegrations();
-  displayAutomationRules();
+document.addEventListener('DOMContentLoaded', async function() {
+  await displayActiveIntegrations();
+  await displayAvailableIntegrations();
+  await displayAutomationRules();
 });
