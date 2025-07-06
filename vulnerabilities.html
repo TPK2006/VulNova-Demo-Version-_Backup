@@ -84,45 +84,125 @@
           </div>
         </div>
 
-        <!-- Filters and Search -->
-        <div class="bg-white rounded-xl shadow p-6 mb-8">
-          <div class="flex flex-col md:flex-row gap-4 items-center justify-between">
-            <div class="flex flex-col md:flex-row gap-4 flex-1">
-              <input type="text" id="searchVulns" placeholder="Search vulnerabilities, CVEs, assets..." 
-                     class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
-                     onkeyup="filterVulnerabilities()">
-              <select id="severityFilter" class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
-                      onchange="filterVulnerabilities()">
-                <option value="">All Severities</option>
-                <option value="Critical">Critical</option>
-                <option value="High">High</option>
-                <option value="Medium">Medium</option>
-                <option value="Low">Low</option>
-              </select>
-              <select id="statusFilter" class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
-                      onchange="filterVulnerabilities()">
-                <option value="">All Status</option>
-                <option value="Open">Open</option>
-                <option value="In Progress">In Progress</option>
-                <option value="Fixed">Fixed</option>
-                <option value="False Positive">False Positive</option>
-              </select>
-              <select id="sourceFilter" class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
-                      onchange="filterVulnerabilities()">
-                <option value="">All Sources</option>
-                <option value="Orca Security">Orca Security</option>
-                <option value="Tenable">Tenable</option>
-                <option value="SonarQube">SonarQube</option>
-                <option value="Qualys">Qualys</option>
-              </select>
-            </div>
-            <div class="flex items-center space-x-4">
-              <span class="text-sm text-gray-600">
-                Showing <span id="showingVulnsCount">3,760</span> of <span id="totalVulnsCount">3,760</span> vulnerabilities
-              </span>
-            </div>
-          </div>
-        </div>
+<!-- Filters and Search -->
+<div class="bg-white rounded-xl shadow p-4 mb-8">
+  <div class="flex items-end gap-4 flex-wrap">
+    <!-- Search -->
+    <div class="flex-1 min-w-[200px]">
+      <label class="block text-xs font-medium text-gray-500 mb-1">Search</label>
+      <input type="text" id="searchVulns" placeholder="Search vulnerabilities..." 
+             class="px-3 py-1.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 w-full"
+             onkeyup="filterVulnerabilities()">
+    </div>
+    
+    <!-- Severity -->
+    <div class="w-32">
+      <label class="block text-xs font-medium text-gray-500 mb-1">Severity</label>
+      <select id="severityFilter" class="px-3 py-1.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 w-full"
+              onchange="filterVulnerabilities()">
+        <option value="">All Severities</option>
+        <option value="Critical">Critical</option>
+        <option value="High">High</option>
+        <option value="Medium">Medium</option>
+        <option value="Low">Low</option>
+      </select>
+    </div>
+    
+    <!-- Asset Name -->
+    <div class="w-36">
+      <label class="block text-xs font-medium text-gray-500 mb-1">Asset Name</label>
+      <input type="text" id="assetNameFilter" placeholder="Filter by asset"
+             class="px-3 py-1.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 w-full"
+             onkeyup="applyAdvancedFilters()">
+    </div>
+    
+    <!-- IP Address -->
+    <div class="w-36">
+      <label class="block text-xs font-medium text-gray-500 mb-1">IP Address</label>
+      <input type="text" id="ipAddressFilter" placeholder="Filter by IP"
+             class="px-3 py-1.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 w-full"
+             onkeyup="applyAdvancedFilters()">
+    </div>
+    
+    <!-- Asset Group -->
+    <div class="w-40">
+      <label class="block text-xs font-medium text-gray-500 mb-1">Asset Group</label>
+      <select id="assetGroupFilter" class="px-3 py-1.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 w-full"
+              onchange="applyAdvancedFilters()">
+        <option value="">All Groups</option>
+        <option value="Business Unit">Business Unit</option>
+        <option value="Environment">Environment</option>
+        <option value="Region">Region</option>
+      </select>
+    </div>
+    
+    <!-- Exploit Status -->
+    <div class="w-40">
+      <label class="block text-xs font-medium text-gray-500 mb-1">Exploit Status</label>
+      <select id="exploitStatusFilter" class="px-3 py-1.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 w-full"
+              onchange="applyAdvancedFilters()">
+        <option value="">All Status</option>
+        <option value="Known Exploits">Known Exploits</option>
+        <option value="Active Exploit">Active Exploit</option>
+      </select>
+    </div>
+    
+    <!-- Adapter Source -->
+    <div class="w-40">
+      <label class="block text-xs font-medium text-gray-500 mb-1">Adapter Source</label>
+      <select id="adapterSourceFilter" class="px-3 py-1.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 w-full"
+              onchange="applyAdvancedFilters()">
+        <option value="">All Sources</option>
+        <option value="Tenable">Tenable</option>
+        <option value="Wiz">Wiz</option>
+        <option value="Bitsight">Bitsight</option>
+        <option value="SonarQube">SonarQube</option>
+        <option value="Jamf">Jamf</option>
+        <option value="SCCM">SCCM</option>
+      </select>
+    </div>
+    
+    <!-- MITRE Attack Framework -->
+    <div class="w-48">
+      <label class="block text-xs font-medium text-gray-500 mb-1">MITRE Framework</label>
+      <select id="mitreFilter" class="px-3 py-1.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 w-full"
+              onchange="applyAdvancedFilters()">
+        <option value="">All Tactics</option>
+        <option value="Initial Access">Initial Access</option>
+        <option value="Execution">Execution</option>
+        <option value="Persistence">Persistence</option>
+        <option value="Privilege Escalation">Privilege Escalation</option>
+        <option value="Defense Evasion">Defense Evasion</option>
+        <option value="Credential Access">Credential Access</option>
+        <option value="Discovery">Discovery</option>
+        <option value="Lateral Movement">Lateral Movement</option>
+        <option value="Collection">Collection</option>
+        <option value="Command and Control">Command and Control</option>
+        <option value="Exfiltration">Exfiltration</option>
+        <option value="Impact">Impact</option>
+      </select>
+    </div>
+    
+    <!-- Threat Actor -->
+    <div class="w-48">
+      <label class="block text-xs font-medium text-gray-500 mb-1">Threat Actor</label>
+      <select id="threatActorFilter" class="px-3 py-1.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 w-full"
+              onchange="applyAdvancedFilters()">
+        <option value="">All Actors</option>
+        <option value="APT29 (Cozy Bear)">APT29 (Cozy Bear)</option>
+        <option value="Lazarus Group">Lazarus Group</option>
+        <option value="FIN7">FIN7</option>
+      </select>
+    </div>
+  </div>
+  
+  <!-- Showing Count -->
+  <div class="mt-2 flex justify-end">
+    <span class="text-xs text-gray-600">
+      Showing <span id="showingVulnsCount">3,760</span> of <span id="totalVulnsCount">3,760</span> vulnerabilities
+    </span>
+  </div>
+</div>
 
         <!-- Vulnerabilities Table -->
         <div class="bg-white rounded-xl shadow overflow-hidden">

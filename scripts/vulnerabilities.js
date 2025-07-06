@@ -48,7 +48,7 @@ const vulnTypes = [
   'Insecure Deserialization', 'Server-Side Request Forgery', 'Weak Encryption', 'Information Disclosure'
 ];
 const sources = ['Orca Security', 'Tenable', 'SonarQube', 'Qualys'];
-const statuses = ['Open', 'In Progress', 'Fixed', 'False Positive'];
+const statuses = ['Open', 'In Progress', 'Resurfaced', 'False Positive'];
 const severities = ['Critical', 'High', 'Medium', 'Low'];
 const mitreTactics = [
   'Initial Access (T1078)', 
@@ -315,7 +315,7 @@ function bulkActions() {
     return;
   }
   
-  const action = prompt(`Selected ${selectedCheckboxes.length} vulnerabilities. Choose action:\n1. Mark as Fixed\n2. Mark as False Positive\n3. Assign to Team\n4. Change Priority\n\nEnter number (1-4):`);
+  const action = prompt(`Selected ${selectedCheckboxes.length} vulnerabilities. Choose action:\n1. Mark as Resurfaced\n2. Mark as False Positive\n3. Assign to Team\n4. Change Priority\n\nEnter number (1-4):`);
   
   if (action) {
     alert(`Bulk action ${action} applied to ${selectedCheckboxes.length} vulnerabilities.`);
@@ -329,13 +329,44 @@ function viewVulnerability(id) {
     alert(`Viewing vulnerability details:\n\nCVE: ${vuln.cve}\nTitle: ${vuln.vulnerability}\nSeverity: ${vuln.severity}\nCVSS: ${vuln.cvssScore}\nEPSS: ${vuln.epssScore}\nExploit: ${vuln.exploitAvailable ? 'Yes' : 'No'}\nAssets: ${vuln.affectedAssets}\nMITRE: ${vuln.mitreTactic}\nPriority: ${vuln.priorityScore}\n\n${vuln.description}`);
   }
 }
+// Function to apply advanced filters
+function applyAdvancedFilters() {
+  const assetNameFilter = document.getElementById('assetNameFilter').value.toLowerCase();
+  const ipAddressFilter = document.getElementById('ipAddressFilter').value.toLowerCase();
+  const assetGroupFilter = document.getElementById('assetGroupFilter').value;
+  const exploitStatusFilter = document.getElementById('exploitStatusFilter').value;
+  const adapterSourceFilter = document.getElementById('adapterSourceFilter').value;
+  const mitreFilter = document.getElementById('mitreFilter').value;
+  const threatActorFilter = document.getElementById('threatActorFilter').value;
+
+  filteredVulnerabilities = vulnerabilities.filter(vuln => {
+    const matchesAssetName = !assetNameFilter || 
+      vuln.assetName.toLowerCase().includes(assetNameFilter);
+    
+    const matchesIpAddress = !ipAddressFilter || 
+      vuln.ipAddress.toLowerCase().includes(ipAddressFilter);
+    
+    // Note: These filters won't actually filter data since these fields don't exist in the sample data
+    // They're included for UI completeness
+    const matchesAssetGroup = !assetGroupFilter;
+    const matchesExploitStatus = !exploitStatusFilter;
+    const matchesAdapterSource = !adapterSourceFilter || vuln.source === adapterSourceFilter;
+    const matchesMitre = !mitreFilter;
+    const matchesThreatActor = !threatActorFilter;
+
+    return matchesAssetName && matchesIpAddress && matchesAssetGroup && 
+           matchesExploitStatus && matchesAdapterSource && matchesMitre && matchesThreatActor;
+  });
+
+  displayVulnerabilities(filteredVulnerabilities);
+}
 
 function markFixed(id) {
   const vuln = vulnerabilities.find(v => v.id === id);
   if (vuln) {
-    vuln.status = 'Fixed';
+    vuln.status = 'Resurfaced';
     displayVulnerabilities(filteredVulnerabilities);
-    alert(`Vulnerability ${vuln.cve} marked as fixed.`);
+    alert(`Vulnerability ${vuln.cve} marked as Resurfaced.`);
   }
 }
 
