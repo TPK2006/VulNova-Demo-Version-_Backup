@@ -34,20 +34,26 @@ async function connectToMongoDB() {
 
 // API Routes
 
-// Get dashboard summary data
 app.get("/api/dashboard-summary", async (req, res) => {
   try {
-    const criticalCount = await db.collection("vulnerabilities").countDocuments({ severity: "Critical" })
-    const highCount = await db.collection("vulnerabilities").countDocuments({ severity: "High" })
-    const mediumCount = await db.collection("vulnerabilities").countDocuments({ severity: "Medium" })
-    const lowCount = await db.collection("vulnerabilities").countDocuments({ severity: "Low" })
+    const criticalCount = await db.collection("vulnerabilities").countDocuments({ severity: "Critical" });
+    const highCount = await db.collection("vulnerabilities").countDocuments({ severity: "High" });
+    const mediumCount = await db.collection("vulnerabilities").countDocuments({ severity: "Medium" });
+    const lowCount = await db.collection("vulnerabilities").countDocuments({ severity: "Low" });
 
-    // Calculate risk score based on vulnerabilities
-    const riskScore = Math.min(1000, criticalCount * 8 + highCount * 2 + mediumCount * 0.5 + lowCount * 0.1)
+    // Get the actual risk score from assets collection
+    const highestRiskAsset = await db.collection("assets")
+      .find({})
+      .sort({ riskScore: -1 })
+      .limit(1)
+      .toArray();
 
-    let riskStatus = "Low Risk"
-    if (riskScore > 700) riskStatus = "High Risk"
-    else if (riskScore > 300) riskStatus = "Medium Risk"
+    const riskScore = highestRiskAsset.length > 0 ? highestRiskAsset[0].riskScore : 
+      Math.min(1000, criticalCount * 8 + highCount * 2 + mediumCount * 0.5 + lowCount * 0.1);
+
+    let riskStatus = "Low Risk";
+    if (riskScore > 700) riskStatus = "High Risk";
+    else if (riskScore > 300) riskStatus = "Medium Risk";
 
     res.json({
       riskScore: Math.round(riskScore),
@@ -58,24 +64,36 @@ app.get("/api/dashboard-summary", async (req, res) => {
         medium: mediumCount,
         low: lowCount,
       },
-    })
+    });
   } catch (error) {
-    console.error("Error fetching dashboard summary:", error)
-    res.status(500).json({ error: "Internal server error" })
+    console.error("Error fetching dashboard summary:", error);
+    res.status(500).json({ error: "Internal server error" });
   }
-})
+});
 
-// Get riskiest assets
+// Update the /api/riskiest-assets endpoint
 app.get("/api/riskiest-assets", async (req, res) => {
   try {
-    const assets = await db.collection("assets").find({}).sort({ riskScore: -1 }).limit(5).toArray()
+    const assets = await db.collection("assets")
+      .find({})
+      .sort({ riskScore: -1 })
+      .limit(5)
+      .project({
+        name: 1,
+        riskScore: 1,
+        criticalVulns: 1,
+        lastSeen: 1,
+        ipAddress: 1,
+        _id: 0
+      })
+      .toArray();
 
-    res.json(assets)
+    res.json(assets);
   } catch (error) {
-    console.error("Error fetching riskiest assets:", error)
-    res.status(500).json({ error: "Internal server error" })
+    console.error("Error fetching riskiest assets:", error);
+    res.status(500).json({ error: "Internal server error" });
   }
-})
+});
 
 // Get threat intelligence
 app.get("/api/threat-intelligence", async (req, res) => {
@@ -1016,6 +1034,7 @@ app.put('/api/support/tickets/:id/status', async (req, res) => {
   }
 });
 
+
 // Get system status
 app.get('/api/support/status', async (req, res) => {
   try {
@@ -1081,7 +1100,166 @@ app.get('/api/support/knowledge-base/:id', async (req, res) => {
     res.status(500).json({ error: 'Internal server error' });
   }
 });
+// Add this to your existing server.js routes
 
+// Get all vulnerability with filters
+app.get("/api/vulnerability", async (req, res) => {
+  try {
+    const {
+      search,
+      severity,
+      status,
+      source,
+      exploitAvailable,
+      mitreTactic,
+      page = 1,
+      limit = 50,
+      sortField = 'priorityScore',
+      sortOrder = 'desc'
+    } = req.query;
+
+    const query = {};
+    
+    if (search) {
+      query.$or = [
+        { assetName: { $regex: search, $options: 'i' } },
+        { ipAddress: { $regex: search, $options: 'i' } },
+        { vulnerability: { $regex: search, $options: 'i' } },
+        { cve: { $regex: search, $options: 'i' } },
+        { description: { $regex: search, $options: 'i' } }
+      ];
+    }
+    
+    if (severity) {
+      query.severity = severity;
+    }
+    
+    if (status) {
+      query.status = status;
+    }
+    
+    if (source) {
+      query.source = source;
+    }
+    
+    if (exploitAvailable) {
+      query.exploitAvailable = exploitAvailable === 'true';
+    }
+    
+    if (mitreTactic) {
+      query.mitreTactic = { $regex: mitreTactic, $options: 'i' };
+    }
+
+    const sortOptions = {};
+    sortOptions[sortField] = sortOrder === 'desc' ? -1 : 1;
+
+    const vulnerability = await db.collection("vulnerability")
+      .find(query)
+      .sort(sortOptions)
+      .skip((page - 1) * limit)
+      .limit(parseInt(limit))
+      .toArray();
+
+    const total = await db.collection("vulnerability").countDocuments(query);
+
+    res.json({
+      vulnerability,
+      pagination: {
+        page: parseInt(page),
+        limit: parseInt(limit),
+        total,
+        pages: Math.ceil(total / limit)
+      }
+    });
+  } catch (error) {
+    console.error("Error fetching vulnerability:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+// Get vulnerability by ID
+app.get("/api/vulnerability/:id", async (req, res) => {
+  try {
+    const vulnerability = await db.collection("vulnerability")
+      .findOne({ _id: new ObjectId(req.params.id) });
+    
+    if (!vulnerability) {
+      return res.status(404).json({ error: "Vulnerability not found" });
+    }
+    
+    res.json(vulnerability);
+  } catch (error) {
+    console.error("Error fetching vulnerability:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+// Update vulnerability status
+app.put("/api/vulnerability/:id/status", async (req, res) => {
+  try {
+    const { status } = req.body;
+    
+    if (!['Open', 'In Progress', 'Resurfaced', 'False Positive'].includes(status)) {
+      return res.status(400).json({ error: "Invalid status" });
+    }
+    
+    const result = await db.collection("vulnerability").updateOne(
+      { _id: new ObjectId(req.params.id) },
+      { $set: { status, updatedAt: new Date() } }
+    );
+    
+    if (result.matchedCount === 0) {
+      return res.status(404).json({ error: "Vulnerability not found" });
+    }
+    
+    res.json({ success: true, message: "Vulnerability status updated" });
+  } catch (error) {
+    console.error("Error updating vulnerability:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+// Get vulnerability statistics
+app.get("/api/vulnerability/stats", async (req, res) => {
+  try {
+    const stats = await db.collection("vulnerability").aggregate([
+      {
+        $group: {
+          _id: null,
+          total: { $sum: 1 },
+          critical: { $sum: { $cond: [{ $eq: ["$severity", "Critical"] }, 1, 0] } },
+          high: { $sum: { $cond: [{ $eq: ["$severity", "High"] }, 1, 0] } },
+          medium: { $sum: { $cond: [{ $eq: ["$severity", "Medium"] }, 1, 0] } },
+          low: { $sum: { $cond: [{ $eq: ["$severity", "Low"] }, 1, 0] } },
+          exploited: { $sum: { $cond: ["$exploitAvailable", 1, 0] } }
+        }
+      },
+      {
+        $project: {
+          _id: 0,
+          total: 1,
+          critical: 1,
+          high: 1,
+          medium: 1,
+          low: 1,
+          exploited: 1
+        }
+      }
+    ]).toArray();
+    
+    res.json(stats[0] || {
+      total: 0,
+      critical: 0,
+      high: 0,
+      medium: 0,
+      low: 0,
+      exploited: 0
+    });
+  } catch (error) {
+    console.error("Error fetching vulnerability stats:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
 // Helper function to calculate next run time
 function calculateNextRun(schedule) {
   // This would be more sophisticated in a real implementation

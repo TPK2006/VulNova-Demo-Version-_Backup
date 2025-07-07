@@ -1,6 +1,10 @@
 // Initialize Lucide icons
 lucide.createIcons();
 
+
+let vulnerability = [];
+let filteredVulnerability = [];
+let currentSort = { field: 'priorityScore', direction: 'desc' };
 // Sidebar toggle logic
 const sidebar = document.getElementById('sidebar');
 const sidebarToggle = document.getElementById('sidebarToggle');
@@ -15,29 +19,7 @@ function toggleSidebar() {
 if (sidebarToggle) sidebarToggle.onclick = toggleSidebar;
 if (sidebarHamburger) sidebarHamburger.onclick = toggleSidebar;
 
-// Sample vulnerability data
-const vulnerabilities = [
-  {
-    id: 1,
-    assetName: 'Server-001',
-    ipAddress: '192.168.1.100',
-    vulnerability: 'Log4j Remote Code Execution',
-    cve: 'CVE-2021-44228',
-    severity: 'Critical',
-    cvssScore: 10.0,
-    status: 'Open',
-    source: 'Orca Security',
-    description: 'Apache Log4j2 contains a remote code execution vulnerability via the JNDI LDAP endpoint.',
-    firstDetected: '2024-01-15',
-    lastSeen: '2024-07-01',
-    epssScore: 0.92,
-    exploitAvailable: true,
-    affectedAssets: 86,
-    mitreTactic: 'Initial Access (T1078)',
-    priorityScore: 96
-  },
-  // ... (rest of the sample data remains the same)
-];
+
 
 // Generate more sample data
 const assetTypes = ['Server', 'WebServer', 'Database', 'Firewall', 'Laptop', 'Router', 'Switch', 'Mobile', 'Workstation', 'IoT-Device'];
@@ -65,7 +47,7 @@ const mitreTactics = [
   'Impact (T1489)'
 ];
 
-// Generate additional vulnerabilities
+// Generate additional vulnerability
 for (let i = 6; i <= 100; i++) {
   const assetType = assetTypes[Math.floor(Math.random() * assetTypes.length)];
   const vulnType = vulnTypes[Math.floor(Math.random() * vulnTypes.length)];
@@ -82,7 +64,7 @@ for (let i = 6; i <= 100; i++) {
     case 'Low': cvssScore = (0.1 + Math.random() * 3.9).toFixed(1); break;
   }
   
-  vulnerabilities.push({
+  vulnerability.push({
     id: i,
     assetName: `${assetType}-${String(i).padStart(3, '0')}`,
     ipAddress: `192.168.${Math.floor(i/254) + 1}.${(i % 254) + 1}`,
@@ -103,11 +85,89 @@ for (let i = 6; i <= 100; i++) {
   });
 }
 
-let filteredVulnerabilities = [...vulnerabilities];
-let currentSort = { field: null, direction: 'asc' };
 
-// Function to display vulnerabilities in the table
-function displayVulnerabilities(vulns) {
+
+
+
+
+async function fetchVulnerability() {
+  try {
+    const response = await fetch('/api/vulnerability');
+    const data = await response.json();
+    vulnerability = data.vulnerability;
+    filteredVulnerability = [...vulnerability];
+    displayVulnerability(filteredVulnerability);
+    
+    // Update counts in the UI
+    updateVulnerabilityCount();
+  } catch (error) {
+    console.error('Error fetching vulnerability:', error);
+    // Fallback to sample data if API fails
+    loadSampleData();
+  }
+}
+
+// Function to load sample data as fallback
+function loadSampleData() {
+  // Use the already generated sample data
+  filteredVulnerability = [...vulnerability];
+  displayVulnerability(filteredVulnerability);
+  updateVulnerabilityCount();
+}
+
+// Function to update vulnerability counts
+async function updateVulnerabilityCount() {
+  try {
+    const response = await fetch('/api/vulnerability/stats');
+    const stats = await response.json();
+    
+    // Update the cards with real data
+    document.querySelector('.bg-red-50 span').textContent = stats.critical;
+    document.querySelector('.bg-orange-50 span').textContent = stats.high;
+    document.querySelector('.bg-yellow-50 span').textContent = stats.medium;
+    document.querySelector('.bg-green-50 span').textContent = stats.low;
+    
+    // Update showing/total counts
+    const showingCount = document.getElementById('showingVulnsCount');
+    const totalCount = document.getElementById('totalVulnsCount');
+    if (showingCount) showingCount.textContent = Math.min(filteredVulnerability.length, 50).toLocaleString();
+    if (totalCount) totalCount.textContent = filteredVulnerability.length.toLocaleString();
+  } catch (error) {
+    console.error('Error fetching vulnerability stats:', error);
+    // Fallback to calculating stats from local data
+    calculateLocalStats();
+  }
+}
+
+// Function to calculate stats from local data
+function calculateLocalStats() {
+  const stats = {
+    critical: vulnerability.filter(v => v.severity === 'Critical').length,
+    high: vulnerability.filter(v => v.severity === 'High').length,
+    medium: vulnerability.filter(v => v.severity === 'Medium').length,
+    low: vulnerability.filter(v => v.severity === 'Low').length
+  };
+  
+  // Update the cards with calculated data
+  const criticalSpan = document.querySelector('.bg-red-50 span');
+  const highSpan = document.querySelector('.bg-orange-50 span');
+  const mediumSpan = document.querySelector('.bg-yellow-50 span');
+  const lowSpan = document.querySelector('.bg-green-50 span');
+  
+  if (criticalSpan) criticalSpan.textContent = stats.critical;
+  if (highSpan) highSpan.textContent = stats.high;
+  if (mediumSpan) mediumSpan.textContent = stats.medium;
+  if (lowSpan) lowSpan.textContent = stats.low;
+  
+  // Update showing/total counts
+  const showingCount = document.getElementById('showingVulnsCount');
+  const totalCount = document.getElementById('totalVulnsCount');
+  if (showingCount) showingCount.textContent = Math.min(filteredVulnerability.length, 50).toLocaleString();
+  if (totalCount) totalCount.textContent = filteredVulnerability.length.toLocaleString();
+}
+
+// Function to display vulnerability in the table
+function displayVulnerability(vulns) {
   const tbody = document.getElementById('allVulnsTableBody');
   if (!tbody) return;
   
@@ -181,8 +241,8 @@ function displayVulnerabilities(vulns) {
 
 
 
-// Function to filter vulnerabilities
-function filterVulnerabilities() {
+// Function to filter vulnerability
+function filterVulnerability() {
   const searchInput = document.getElementById('searchVulns');
   const severitySelect = document.getElementById('severityFilter');
   const statusSelect = document.getElementById('statusFilter');
@@ -195,7 +255,7 @@ function filterVulnerabilities() {
   const statusFilter = statusSelect.value;
   const sourceFilter = sourceSelect.value;
   
-  filteredVulnerabilities = vulnerabilities.filter(vuln => {
+  filteredVulnerability = vulnerability.filter(vuln => {
     const matchesSearch = !searchTerm || 
       vuln.assetName.toLowerCase().includes(searchTerm) ||
       vuln.ipAddress.toLowerCase().includes(searchTerm) ||
@@ -210,13 +270,13 @@ function filterVulnerabilities() {
     return matchesSearch && matchesSeverity && matchesStatus && matchesSource;
   });
   
-  displayVulnerabilities(filteredVulnerabilities);
+  displayVulnerability(filteredVulnerability);
 }
 
 // Function to filter by severity (called from cards)
 function filterBySeverity(severity) {
   document.getElementById('severityFilter').value = severity;
-  filterVulnerabilities();
+  filterVulnerability();
 }
 
 // Function to sort table
@@ -228,7 +288,7 @@ function sortTable(field) {
     currentSort.direction = 'asc';
   }
 
-  filteredVulnerabilities.sort((a, b) => {
+  filteredVulnerability.sort((a, b) => {
     let aVal, bVal;
     
     switch(field) {
@@ -264,7 +324,7 @@ function sortTable(field) {
     }
   });
 
-  displayVulnerabilities(filteredVulnerabilities);
+  displayVulnerability(filteredVulnerability);
 }
 
 // Function to toggle select all
@@ -274,11 +334,11 @@ function toggleSelectAll() {
   checkboxes.forEach(cb => cb.checked = selectAll.checked);
 }
 
-// Function to export vulnerabilities report
-function exportVulnerabilitiesReport() {
+// Function to export vulnerability report
+function exportVulnerabilityReport() {
   const csvContent = [
     ['Affected', 'CVE ID', 'Title', 'CVSS', 'EPSS', 'Exploit', 'Assets', 'MITRE Tactic', 'Priority Score', 'Description', 'First Detected', 'Last Seen'],
-    ...filteredVulnerabilities.map(vuln => [
+    ...filteredVulnerability.map(vuln => [
       vuln.severity,
       vuln.cve,
       vuln.vulnerability,
@@ -298,33 +358,33 @@ function exportVulnerabilitiesReport() {
   const url = window.URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
-  a.download = `vulnerabilities_report_${new Date().toISOString().split('T')[0]}.csv`;
+  a.download = `vulnerability_report_${new Date().toISOString().split('T')[0]}.csv`;
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
   window.URL.revokeObjectURL(url);
   
-  alert(`Exported ${filteredVulnerabilities.length} vulnerabilities to CSV file.`);
+  alert(`Exported ${filteredVulnerability.length} vulnerability to CSV file.`);
 }
 
 // Function to handle bulk actions
 function bulkActions() {
   const selectedCheckboxes = document.querySelectorAll('.vuln-checkbox:checked');
   if (selectedCheckboxes.length === 0) {
-    alert('Please select vulnerabilities to perform bulk actions.');
+    alert('Please select vulnerability to perform bulk actions.');
     return;
   }
   
-  const action = prompt(`Selected ${selectedCheckboxes.length} vulnerabilities. Choose action:\n1. Mark as Resurfaced\n2. Mark as False Positive\n3. Assign to Team\n4. Change Priority\n\nEnter number (1-4):`);
+  const action = prompt(`Selected ${selectedCheckboxes.length} vulnerability. Choose action:\n1. Mark as Resurfaced\n2. Mark as False Positive\n3. Assign to Team\n4. Change Priority\n\nEnter number (1-4):`);
   
   if (action) {
-    alert(`Bulk action ${action} applied to ${selectedCheckboxes.length} vulnerabilities.`);
+    alert(`Bulk action ${action} applied to ${selectedCheckboxes.length} vulnerability.`);
   }
 }
 
 // Placeholder functions for actions
 function viewVulnerability(id) {
-  const vuln = vulnerabilities.find(v => v.id === id);
+  const vuln = vulnerability.find(v => v.id === id);
   if (vuln) {
     alert(`Viewing vulnerability details:\n\nCVE: ${vuln.cve}\nTitle: ${vuln.vulnerability}\nSeverity: ${vuln.severity}\nCVSS: ${vuln.cvssScore}\nEPSS: ${vuln.epssScore}\nExploit: ${vuln.exploitAvailable ? 'Yes' : 'No'}\nAssets: ${vuln.affectedAssets}\nMITRE: ${vuln.mitreTactic}\nPriority: ${vuln.priorityScore}\n\n${vuln.description}`);
   }
@@ -339,7 +399,7 @@ function applyAdvancedFilters() {
   const mitreFilter = document.getElementById('mitreFilter').value;
   const threatActorFilter = document.getElementById('threatActorFilter').value;
 
-  filteredVulnerabilities = vulnerabilities.filter(vuln => {
+  filteredVulnerability = vulnerability.filter(vuln => {
     const matchesAssetName = !assetNameFilter || 
       vuln.assetName.toLowerCase().includes(assetNameFilter);
     
@@ -358,14 +418,14 @@ function applyAdvancedFilters() {
            matchesExploitStatus && matchesAdapterSource && matchesMitre && matchesThreatActor;
   });
 
-  displayVulnerabilities(filteredVulnerabilities);
+  displayVulnerability(filteredVulnerability);
 }
 
 function markFixed(id) {
-  const vuln = vulnerabilities.find(v => v.id === id);
+  const vuln = vulnerability.find(v => v.id === id);
   if (vuln) {
     vuln.status = 'Resurfaced';
-    displayVulnerabilities(filteredVulnerabilities);
+    displayVulnerability(filteredVulnerability);
     alert(`Vulnerability ${vuln.cve} marked as Resurfaced.`);
   }
 }
@@ -381,18 +441,17 @@ function showCVEDetails(cve) {
   alert(`Showing details for ${cve}\n\nThis would typically open a detailed view or external CVE database information.`);
 }
 
-function refreshVulnerabilities() {
+function refreshVulnerability() {
   alert('Refreshing vulnerability data...');
-  displayVulnerabilities(filteredVulnerabilities);
+  displayVulnerability(filteredVulnerability);
 }
 
 function toggleTableView() {
   alert('Toggle between table and card view (feature coming soon)');
 }
 
-// Initialize the page
 document.addEventListener('DOMContentLoaded', function() {
-  displayVulnerabilities(vulnerabilities);
+  fetchVulnerability();
   
   // Check for hash in URL to filter by severity
   const hash = window.location.hash.substring(1);

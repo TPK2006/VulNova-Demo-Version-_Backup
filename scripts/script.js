@@ -51,8 +51,8 @@ async function loadDashboardData() {
           `<tr class='hover:bg-primary-50 cursor-pointer' onclick="window.location.href='assets.html#${asset.name}'">
         <td class='py-1 px-3 border-b'>${asset.name}</td>
         <td class='py-1 px-3 border-b'>${asset.riskScore}</td>
-        <td class='py-1 px-3 border-b'>${asset.criticalVulns}</td>
-        <td class='py-1 px-3 border-b'>${asset.lastSeen}</td>
+        <td class='py-1 px-3 border-b'>${asset.criticalVulns || 0}</td>
+        <td class='py-1 px-3 border-b'>${asset.lastSeen || 'Never'}</td>
       </tr>`,
       )
       .join("")
@@ -66,7 +66,7 @@ async function loadDashboardData() {
         (threat) =>
           `<li class='bg-primary-50 rounded p-3 flex flex-col cursor-pointer hover:bg-primary-100 transition-colors' onclick="window.location.href='threat-intelligence.html#${threat._id}'">
         <span class='font-semibold text-primary-800'>${threat.headline}</span>
-        <span class='text-sm text-gray-600'>Affected assets: <span class='font-bold text-primary-700'>${threat.affectedAssets}</span></span>
+        <span class='text-sm text-gray-600'>Affected assets: <span class='font-bold text-primary-700'>${threat.affectedAssets || 0}</span></span>
         <span class='text-xs text-primary-600 mt-1'>Read more →</span>
       </li>`,
       )
