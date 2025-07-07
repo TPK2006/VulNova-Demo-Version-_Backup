@@ -132,3 +132,23 @@ body { font-family: 'Inter', system-ui, sans-serif; }
   color: #1d4ed8;
   font-weight: 600;
 }
+
+
+/* Sidebar Submenu Styles */
+.sidebar-parent .submenu-chevron {
+  transition: transform 0.2s ease;
+}
+
+.sidebar-parent .rotate-180 {
+  transform: rotate(180deg);
+}
+
+[id$="Submenu"] {
+  transition: all 0.3s ease;
+  max-height: 0;
+  overflow: hidden;
+}
+
+[id$="Submenu"]:not(.hidden) {
+  max-height: 1000px; /* Adjust based on your content */
+}

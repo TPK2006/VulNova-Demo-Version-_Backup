@@ -99,70 +99,9 @@ async function loadDashboardData() {
   }
 }
 
-// Sidebar toggle logic
-function toggleSidebar() {
-  const sidebar = document.getElementById("sidebar")
-  const mainContent = document.getElementById("mainContent")
-  const topHeader = document.getElementById("topHeader")
-
-  if (sidebar.classList.contains("w-56")) {
-    sidebar.classList.remove("w-56")
-    sidebar.classList.add("w-16")
-    mainContent.classList.remove("ml-56")
-    mainContent.classList.add("ml-16")
-    topHeader.classList.remove("left-56")
-    topHeader.classList.add("left-16")
-  } else {
-    sidebar.classList.remove("w-16")
-    sidebar.classList.add("w-56")
-    mainContent.classList.remove("ml-16")
-    mainContent.classList.add("ml-56")
-    topHeader.classList.remove("left-16")
-    topHeader.classList.add("left-56")
-  }
-
-  document.querySelectorAll(".sidebar-label").forEach((el) => el.classList.toggle("hidden"))
-  document.querySelector(".sidebar-logo").classList.toggle("hidden")
-
-  // Store the state in localStorage
-  localStorage.setItem("sidebar-collapsed", sidebar.classList.contains("w-16"))
-}
-
 // Initialize dashboard when page loads
 document.addEventListener("DOMContentLoaded", () => {
   loadDashboardData()
-
-  // Set up sidebar toggle handlers
-  const sidebarToggle = document.getElementById("sidebarToggle")
-  const sidebarHamburger = document.getElementById("sidebarHamburger")
-
-  if (sidebarToggle) sidebarToggle.onclick = toggleSidebar
-  if (sidebarHamburger) sidebarHamburger.onclick = toggleSidebar
-
-  // Check localStorage for sidebar state on load
-  const isCollapsed = localStorage.getItem("sidebar-collapsed") === "true"
-  if (isCollapsed) {
-    const sidebar = document.getElementById("sidebar")
-    const mainContent = document.getElementById("mainContent")
-    const topHeader = document.getElementById("topHeader")
-
-    sidebar.classList.add("w-16")
-    sidebar.classList.remove("w-56")
-    mainContent.classList.add("ml-16")
-    mainContent.classList.remove("ml-56")
-    topHeader.classList.add("left-16")
-    topHeader.classList.remove("left-56")
-    document.querySelectorAll(".sidebar-label").forEach((el) => el.classList.add("hidden"))
-    document.querySelector(".sidebar-logo").classList.add("hidden")
-  }
-
-  // Mobile sidebar toggle
-  if (sidebarHamburger) {
-    sidebarHamburger.onclick = () => {
-      const sidebar = document.getElementById("sidebar")
-      sidebar.classList.toggle("mobile-open")
-    }
-  }
 })
 
 // Refresh data every 5 minutes
