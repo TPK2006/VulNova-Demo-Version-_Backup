@@ -241,6 +241,147 @@
         lucide.createIcons();
       });
   </script>
+    <script>
+    // Load sidebar
+    fetch('sidebar.html')
+      .then(response => response.text())
+      .then(data => {
+        document.getElementById('sidebar-container').innerHTML = data;
+        
+        // Highlight current page in sidebar
+        const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+        document.querySelectorAll('.sidebar-link').forEach(link => {
+          const linkHref = link.getAttribute('href');
+          if (linkHref === currentPage) {
+            link.classList.add('text-primary-700', 'font-semibold');
+            link.classList.remove('text-gray-700');
+          }
+        });
+        
+        // Initialize sidebar toggle
+        const sidebar = document.getElementById('sidebar');
+        const sidebarToggle = document.getElementById('sidebarToggle');
+        const sidebarHamburger = document.getElementById('sidebarHamburger');
+        const mainContent = document.getElementById('mainContent');
+        const topHeader = document.getElementById('topHeader');
+        
+        function toggleSidebar() {
+          const isCollapsed = sidebar.classList.contains('w-16');
+          
+          if (isCollapsed) {
+            sidebar.classList.remove('w-16');
+            sidebar.classList.add('w-56');
+            mainContent.classList.remove('ml-16');
+            mainContent.classList.add('ml-56');
+            topHeader.classList.remove('left-16');
+            topHeader.classList.add('left-56');
+          } else {
+            sidebar.classList.remove('w-56');
+            sidebar.classList.add('w-16');
+            mainContent.classList.remove('ml-56');
+            mainContent.classList.add('ml-16');
+            topHeader.classList.remove('left-56');
+            topHeader.classList.add('left-16');
+          }
+          
+          document.querySelectorAll('.sidebar-label').forEach(el => el.classList.toggle('hidden'));
+          document.querySelector('.sidebar-logo').classList.toggle('hidden');
+          
+          // Store the state in localStorage
+          localStorage.setItem('sidebar-collapsed', !isCollapsed);
+        }
+        
+        // Check localStorage for sidebar state on load
+        const isCollapsed = localStorage.getItem('sidebar-collapsed') === 'true';
+        if (isCollapsed) {
+          sidebar.classList.add('w-16');
+          sidebar.classList.remove('w-56');
+          mainContent.classList.add('ml-16');
+          mainContent.classList.remove('ml-56');
+          topHeader.classList.add('left-16');
+          topHeader.classList.remove('left-56');
+          document.querySelectorAll('.sidebar-label').forEach(el => el.classList.add('hidden'));
+          document.querySelector('.sidebar-logo').classList.add('hidden');
+        }
+        
+        if (sidebarToggle) sidebarToggle.onclick = toggleSidebar;
+        if (sidebarHamburger) sidebarHamburger.onclick = toggleSidebar;
+        
+        // Mobile sidebar toggle
+        if (sidebarHamburger) {
+          sidebarHamburger.onclick = function() {
+            sidebar.classList.toggle('mobile-open');
+          };
+        }
+        
+        // Initialize Lucide icons
+        lucide.createIcons();
+      });
+  </script>
+  <script>
+  // Load sidebar
+  fetch('sidebar.html')
+    .then(response => response.text())
+    .then(data => {
+      document.getElementById('sidebar-container').innerHTML = data;
+      
+      // Initialize sidebar toggle
+      const sidebar = document.getElementById('sidebar');
+      const sidebarToggle = document.getElementById('sidebarToggle');
+      const sidebarHamburger = document.getElementById('sidebarHamburger');
+      const mainContent = document.getElementById('mainContent');
+      const topHeader = document.getElementById('topHeader');
+      
+      function toggleSidebar() {
+        const isCollapsed = sidebar.classList.contains('w-16');
+        
+        if (isCollapsed) {
+          sidebar.classList.remove('w-16');
+          sidebar.classList.add('w-56');
+          mainContent.classList.remove('ml-16');
+          mainContent.classList.add('ml-56');
+          topHeader.classList.remove('left-16');
+          topHeader.classList.add('left-56');
+        } else {
+          sidebar.classList.remove('w-56');
+          sidebar.classList.add('w-16');
+          mainContent.classList.remove('ml-56');
+          mainContent.classList.add('ml-16');
+          topHeader.classList.remove('left-56');
+          topHeader.classList.add('left-16');
+        }
+        
+        document.querySelectorAll('.sidebar-label').forEach(el => el.classList.toggle('hidden'));
+        document.querySelector('.sidebar-logo').classList.toggle('hidden');
+        
+        // Store the state in localStorage
+        localStorage.setItem('sidebar-collapsed', !isCollapsed);
+      }
+      
+      // Check localStorage for sidebar state on load
+      const isCollapsed = localStorage.getItem('sidebar-collapsed') === 'true';
+      if (isCollapsed) {
+        sidebar.classList.add('w-16');
+        sidebar.classList.remove('w-56');
+        mainContent.classList.add('ml-16');
+        mainContent.classList.remove('ml-56');
+        topHeader.classList.add('left-16');
+        topHeader.classList.remove('left-56');
+        document.querySelectorAll('.sidebar-label').forEach(el => el.classList.add('hidden'));
+        document.querySelector('.sidebar-logo').classList.add('hidden');
+      }
+      
+      if (sidebarToggle) sidebarToggle.onclick = toggleSidebar;
+      if (sidebarHamburger) sidebarHamburger.onclick = toggleSidebar;
+      
+      // Initialize sidebar functionality
+      initSidebar();
+      
+      // Initialize Lucide icons
+      lucide.createIcons();
+    });
+</script>
+<script src="scripts/sidebar.js"></script>
   <script src="scripts/threat-intelligence.js"></script>
 </body>
 </html>

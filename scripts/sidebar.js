@@ -47,6 +47,16 @@ function initSidebar() {
       }
     }
   });
+
+  // Handle sidebar link clicks
+  document.querySelectorAll('.sidebar-link[href]').forEach(link => {
+    link.addEventListener('click', function(e) {
+      if (this.getAttribute('href') && this.getAttribute('href') !== '#') {
+        e.preventDefault();
+        window.location.href = this.getAttribute('href');
+      }
+    });
+  });
 }
 
 // Initialize when DOM is loaded
