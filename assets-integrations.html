@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VulNova - Device Discovery</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <link href="styles/assets.css" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <style>
+    .progress-bar {
+      height: 16px;
+      min-width: 4px;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+  <div class="flex min-h-screen">
+    <!-- Sidebar Container - Preserved exactly as original -->
+    <div id="sidebar-container"></div>
+
+    <!-- Main Content - Preserved original sidebar spacing -->
+    <div class="flex-1 flex flex-col min-h-screen transition-all duration-300 ml-56" id="mainContent">
+      <!-- Top Bar - Preserved original styling -->
+      <header class="bg-white shadow flex items-center px-6 py-4 fixed top-0 right-0 left-56 z-20 transition-all duration-300" id="topHeader">
+        <button id="sidebarHamburger" class="md:hidden mr-4 text-gray-500 focus:outline-none">
+          <i data-lucide="menu" class="w-7 h-7"></i>
+        </button>
+        <span class="text-2xl font-extrabold text-primary-800">Device Discovery</span>
+      </header>
+      
+      <main class="flex-1 p-6 pt-20">
+        <!-- Page Header -->
+        <div class="mb-6">
+          <div class="flex items-center justify-between">
+            <div>
+              <h1 class="text-2xl font-bold text-gray-900">Device Discovery</h1>
+              <p class="text-sm text-gray-600">Inventory of devices discovered across all integrations</p>
+            </div>
+            <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm flex items-center space-x-1">
+              <i data-lucide="refresh-cw" class="w-3 h-3"></i>
+              <span>Refresh</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Discovery List -->
+        <div class="bg-white rounded-lg shadow overflow-hidden">
+          <div class="grid grid-cols-12 gap-1 p-4 bg-gray-50 border-b items-center">
+            <div class="col-span-6 font-medium text-gray-700">Integration Source</div>
+            <div class="col-span-3 font-medium text-gray-700 text-right">Count</div>
+            <div class="col-span-3 font-medium text-gray-700 text-right">Total</div>
+          </div>
+          
+          <div class="divide-y divide-gray-200">
+            <!-- ServiceNow -->
+            <div class="grid grid-cols-12 gap-1 p-4 hover:bg-gray-50 items-center">
+              <div class="col-span-6 flex items-center">
+                <div class="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center mr-3">
+                  <i data-lucide="server" class="w-4 h-4 text-blue-600"></i>
+                </div>
+                <span class="mr-3">ServiceNow</span>
+                <div class="flex-1">
+                  <div class="progress-bar bg-blue-200">
+                    <div class="progress-bar bg-blue-500" style="width: 100%"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-span-3 text-right font-mono">28,036</div>
+              <div class="col-span-3 text-right font-mono text-gray-500">28,137</div>
+            </div>
+            
+            <!-- CrowdStrike Falcon -->
+            <div class="grid grid-cols-12 gap-1 p-4 hover:bg-gray-50 items-center">
+              <div class="col-span-6 flex items-center">
+                <div class="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center mr-3">
+                  <i data-lucide="shield" class="w-4 h-4 text-green-600"></i>
+                </div>
+                <span class="mr-3">CrowdStrike Falcon</span>
+                <div class="flex-1">
+                  <div class="progress-bar bg-green-200">
+                    <div class="progress-bar bg-green-500" style="width: 98%"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-span-3 text-right font-mono">26,155</div>
+              <div class="col-span-3 text-right font-mono text-gray-500">26,584</div>
+            </div>
+            
+            <!-- Microsoft Entra ID -->
+            <div class="grid grid-cols-12 gap-1 p-4 hover:bg-gray-50 items-center">
+              <div class="col-span-6 flex items-center">
+                <div class="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center mr-3">
+                  <i data-lucide="key" class="w-4 h-4 text-purple-600"></i>
+                </div>
+                <span class="mr-3">Microsoft Entra ID</span>
+                <div class="flex-1">
+                  <div class="progress-bar bg-purple-200">
+                    <div class="progress-bar bg-purple-500" style="width: 55%"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-span-3 text-right font-mono">19,285</div>
+              <div class="col-span-3 text-right font-mono text-gray-500">34,807</div>
+            </div>
+            
+            <!-- Tenable.io -->
+            <div class="grid grid-cols-12 gap-1 p-4 hover:bg-gray-50 items-center">
+              <div class="col-span-6 flex items-center">
+                <div class="w-8 h-8 bg-red-100 rounded-lg flex items-center justify-center mr-3">
+                  <i data-lucide="bug" class="w-4 h-4 text-red-600"></i>
+                </div>
+                <span class="mr-3">Tenable.io</span>
+                <div class="flex-1">
+                  <div class="progress-bar bg-red-200">
+                    <div class="progress-bar bg-red-500" style="width: 98%"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-span-3 text-right font-mono">18,324</div>
+              <div class="col-span-3 text-right font-mono text-gray-500">18,743</div>
+            </div>
+            
+            <!-- BeyondTrust Privilege -->
+            <div class="grid grid-cols-12 gap-1 p-4 hover:bg-gray-50 items-center">
+              <div class="col-span-6 flex items-center">
+                <div class="w-8 h-8 bg-yellow-100 rounded-lg flex items-center justify-center mr-3">
+                  <i data-lucide="lock" class="w-4 h-4 text-yellow-600"></i>
+                </div>
+                <span class="mr-3">BeyondTrust Privilege</span>
+                <div class="flex-1">
+                  <div class="progress-bar bg-yellow-200">
+                    <div class="progress-bar bg-yellow-500" style="width: 87%"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-span-3 text-right font-mono">16,335</div>
+              <div class="col-span-3 text-right font-mono text-gray-500">18,752</div>
+            </div>
+            
+            <!-- Microsoft Active Directory -->
+            <div class="grid grid-cols-12 gap-1 p-4 hover:bg-gray-50 items-center">
+              <div class="col-span-6 flex items-center">
+                <div class="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center mr-3">
+                  <i data-lucide="activity" class="w-4 h-4 text-blue-600"></i>
+                </div>
+                <span class="mr-3">Microsoft Active Directory</span>
+                <div class="flex-1">
+                  <div class="progress-bar bg-blue-200">
+                    <div class="progress-bar bg-blue-500" style="width: 85%"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-span-3 text-right font-mono">15,137</div>
+              <div class="col-span-3 text-right font-mono text-gray-500">17,809</div>
+            </div>
+            
+            <!-- Zscaler Web Security -->
+            <div class="grid grid-cols-12 gap-1 p-4 hover:bg-gray-50 items-center">
+              <div class="col-span-6 flex items-center">
+                <div class="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center mr-3">
+                  <i data-lucide="globe" class="w-4 h-4 text-green-600"></i>
+                </div>
+                <span class="mr-3">Zscaler Web Security</span>
+                <div class="flex-1">
+                  <div class="progress-bar bg-green-200">
+                    <div class="progress-bar bg-green-500" style="width: 82%"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-span-3 text-right font-mono">14,578</div>
+              <div class="col-span-3 text-right font-mono text-gray-500">17,778</div>
+            </div>
+            
+            <!-- Cyberhaven -->
+            <div class="grid grid-cols-12 gap-1 p-4 hover:bg-gray-50 items-center">
+              <div class="col-span-6 flex items-center">
+                <div class="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center mr-3">
+                  <i data-lucide="eye" class="w-4 h-4 text-purple-600"></i>
+                </div>
+                <span class="mr-3">Cyberhaven</span>
+                <div class="flex-1">
+                  <div class="progress-bar bg-purple-200">
+                    <div class="progress-bar bg-purple-500" style="width: 80%"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-span-3 text-right font-mono">14,202</div>
+              <div class="col-span-3 text-right font-mono text-gray-500">17,752</div>
+            </div>
+            
+            <!-- Microsoft Endpoint Manager -->
+            <div class="grid grid-cols-12 gap-1 p-4 hover:bg-gray-50 items-center">
+              <div class="col-span-6 flex items-center">
+                <div class="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center mr-3">
+                  <i data-lucide="monitor" class="w-4 h-4 text-blue-600"></i>
+                </div>
+                <span class="mr-3">Microsoft Endpoint Manager</span>
+                <div class="flex-1">
+                  <div class="progress-bar bg-blue-200">
+                    <div class="progress-bar bg-blue-500" style="width: 79%"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-span-3 text-right font-mono">14,133</div>
+              <div class="col-span-3 text-right font-mono text-gray-500">17,890</div>
+            </div>
+            
+            <!-- Absolute -->
+            <div class="grid grid-cols-12 gap-1 p-4 hover:bg-gray-50 items-center">
+              <div class="col-span-6 flex items-center">
+                <div class="w-8 h-8 bg-red-100 rounded-lg flex items-center justify-center mr-3">
+                  <i data-lucide="shield-off" class="w-4 h-4 text-red-600"></i>
+                </div>
+                <span class="mr-3">Absolute</span>
+                <div class="flex-1">
+                  <div class="progress-bar bg-red-200">
+                    <div class="progress-bar bg-red-500" style="width: 76%"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-span-3 text-right font-mono">13,592</div>
+              <div class="col-span-3 text-right font-mono text-gray-500">17,885</div>
+            </div>
+            
+            <!-- Orca Cloud Visibility -->
+            <div class="grid grid-cols-12 gap-1 p-4 hover:bg-gray-50 items-center">
+              <div class="col-span-6 flex items-center">
+                <div class="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center mr-3">
+                  <i data-lucide="cloud" class="w-4 h-4 text-green-600"></i>
+                </div>
+                <span class="mr-3">Orca Cloud Visibility</span>
+                <div class="flex-1">
+                  <div class="progress-bar bg-green-200">
+                    <div class="progress-bar bg-green-500" style="width: 99.5%"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-span-3 text-right font-mono">6,499</div>
+              <div class="col-span-3 text-right font-mono text-gray-500">6,527</div>
+            </div>
+            
+            <!-- Google Cloud Security -->
+            <div class="grid grid-cols-12 gap-1 p-4 hover:bg-gray-50 items-center">
+              <div class="col-span-6 flex items-center">
+                <div class="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center mr-3">
+                  <i data-lucide="cloud" class="w-4 h-4 text-blue-600"></i>
+                </div>
+                <span class="mr-3">Google Cloud Security</span>
+                <div class="flex-1">
+                  <div class="progress-bar bg-blue-200">
+                    <div class="progress-bar bg-blue-500" style="width: 99.9%"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-span-3 text-right font-mono">5,771</div>
+              <div class="col-span-3 text-right font-mono text-gray-500">5,773</div>
+            </div>
+            
+            <!-- VMWare ESXi -->
+            <div class="grid grid-cols-12 gap-1 p-4 hover:bg-gray-50 items-center">
+              <div class="col-span-6 flex items-center">
+                <div class="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center mr-3">
+                  <i data-lucide="hard-drive" class="w-4 h-4 text-purple-600"></i>
+                </div>
+                <span class="mr-3">VMWare ESXi</span>
+                <div class="flex-1">
+                  <div class="progress-bar bg-purple-200">
+                    <div class="progress-bar bg-purple-500" style="width: 99.7%"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-span-3 text-right font-mono">2,743</div>
+              <div class="col-span-3 text-right font-mono text-gray-500">2,752</div>
+            </div>
+            
+            <!-- Zabbix -->
+            <div class="grid grid-cols-12 gap-1 p-4 hover:bg-gray-50 items-center">
+              <div class="col-span-6 flex items-center">
+                <div class="w-8 h-8 bg-yellow-100 rounded-lg flex items-center justify-center mr-3">
+                  <i data-lucide="bar-chart-2" class="w-4 h-4 text-yellow-600"></i>
+                </div>
+                <span class="mr-3">Zabbix</span>
+                <div class="flex-1">
+                  <div class="progress-bar bg-yellow-200">
+                    <div class="progress-bar bg-yellow-500" style="width: 98.2%"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-span-3 text-right font-mono">1,736</div>
+              <div class="col-span-3 text-right font-mono text-gray-500">1,768</div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script>
+    // Preserved original sidebar loading code exactly
+    fetch('sidebar.html')
+      .then(response => response.text())
+      .then(data => {
+        document.getElementById('sidebar-container').innerHTML = data;
+        
+        // Initialize sidebar functionality
+        const sidebar = document.getElementById('sidebar');
+        const sidebarToggle = document.getElementById('sidebarToggle');
+        const sidebarHamburger = document.getElementById('sidebarHamburger');
+        const mainContent = document.getElementById('mainContent');
+        const topHeader = document.getElementById('topHeader');
+        
+        function toggleSidebar() {
+          const isCollapsed = sidebar.classList.contains('w-16');
+          
+          if (isCollapsed) {
+            sidebar.classList.remove('w-16');
+            sidebar.classList.add('w-56');
+            mainContent.classList.remove('ml-16');
+            mainContent.classList.add('ml-56');
+            topHeader.classList.remove('left-16');
+            topHeader.classList.add('left-56');
+          } else {
+            sidebar.classList.remove('w-56');
+            sidebar.classList.add('w-16');
+            mainContent.classList.remove('ml-56');
+            mainContent.classList.add('ml-16');
+            topHeader.classList.remove('left-56');
+            topHeader.classList.add('left-16');
+          }
+          
+          document.querySelectorAll('.sidebar-label').forEach(el => el.classList.toggle('hidden'));
+        }
+        
+        if (sidebarToggle) sidebarToggle.onclick = toggleSidebar;
+        if (sidebarHamburger) sidebarHamburger.onclick = toggleSidebar;
+        
+        // Initialize Lucide icons
+        lucide.createIcons();
+      });
+  </script>
+  <script src="scripts/sidebar.js"></script>
+</body>
+</html>

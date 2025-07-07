@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VulNova - Asset Graph</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <link href="styles/assets.css" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+</head>
+<body class="bg-gray-50 min-h-screen">
+  <div class="flex min-h-screen">
+    <!-- Sidebar Container -->
+    <div id="sidebar-container"></div>
+
+    <!-- Main Content -->
+    <div class="flex-1 flex flex-col min-h-screen transition-all duration-300 ml-56" id="mainContent">
+      <!-- Top Bar -->
+      <header class="bg-white shadow flex items-center px-6 py-4 fixed top-0 right-0 left-56 z-20 transition-all duration-300" id="topHeader">
+        <button id="sidebarHamburger" class="md:hidden mr-4 text-gray-500 focus:outline-none">
+          <i data-lucide="menu" class="w-7 h-7"></i>
+        </button>
+        <span class="text-2xl font-extrabold text-primary-800">Asset Graph</span>
+      </header>
+      
+      <main class="flex-1 p-6 pt-20">
+        <!-- Page Header -->
+        <div class="mb-8">
+          <div class="flex items-center justify-between mb-4">
+            <div>
+              <h1 class="text-3xl font-bold text-gray-900 mb-2">Asset Relationship Graph</h1>
+              <p class="text-gray-600">Visualize connections and dependencies between your assets</p>
+            </div>
+            <div class="flex space-x-3">
+              <button class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg transition-colors flex items-center space-x-2">
+                <i data-lucide="download" class="w-4 h-4"></i>
+                <span>Export Graph</span>
+              </button>
+              <button class="bg-primary-600 hover:bg-primary-700 text-white px-6 py-2 rounded-lg transition-colors flex items-center space-x-2">
+                <i data-lucide="refresh-cw" class="w-4 h-4"></i>
+                <span>Refresh</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Graph Controls -->
+        <div class="bg-white rounded-xl shadow p-6 mb-8">
+          <div class="flex flex-wrap items-center gap-4">
+            <div class="flex items-center space-x-2">
+              <label class="text-sm font-medium text-gray-700">View:</label>
+              <select class="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500">
+                <option>Network Topology</option>
+                <option>Risk Relationships</option>
+                <option>Dependency Map</option>
+                <option>Communication Flow</option>
+              </select>
+            </div>
+            <div class="flex items-center space-x-2">
+              <label class="text-sm font-medium text-gray-700">Filter:</label>
+              <select class="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500">
+                <option>All Assets</option>
+                <option>Critical Assets Only</option>
+                <option>High Risk Assets</option>
+                <option>Servers Only</option>
+                <option>Network Devices</option>
+              </select>
+            </div>
+            <div class="flex items-center space-x-2">
+              <label class="text-sm font-medium text-gray-700">Layout:</label>
+              <select class="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500">
+                <option>Force-Directed</option>
+                <option>Hierarchical</option>
+                <option>Circular</option>
+                <option>Grid</option>
+              </select>
+            </div>
+            <button class="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-lg transition-colors flex items-center space-x-2">
+              <i data-lucide="search" class="w-4 h-4"></i>
+              <span>Find Asset</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Graph Visualization -->
+        <div class="bg-white rounded-xl shadow p-6 mb-8">
+          <div class="flex items-center justify-between mb-6">
+            <h2 class="text-xl font-semibold text-gray-900">Network Topology</h2>
+            <div class="flex items-center space-x-4">
+              <div class="flex items-center space-x-2">
+                <div class="w-4 h-4 bg-blue-500 rounded-full"></div>
+                <span class="text-sm text-gray-600">Servers</span>
+              </div>
+              <div class="flex items-center space-x-2">
+                <div class="w-4 h-4 bg-green-500 rounded-full"></div>
+                <span class="text-sm text-gray-600">Workstations</span>
+              </div>
+              <div class="flex items-center space-x-2">
+                <div class="w-4 h-4 bg-purple-500 rounded-full"></div>
+                <span class="text-sm text-gray-600">Network Devices</span>
+              </div>
+              <div class="flex items-center space-x-2">
+                <div class="w-4 h-4 bg-red-500 rounded-full"></div>
+                <span class="text-sm text-gray-600">Critical Risk</span>
+              </div>
+            </div>
+          </div>
+          <div id="assetGraph" class="w-full h-96 border border-gray-200 rounded-lg bg-gray-50"></div>
+        </div>
+
+        <!-- Graph Statistics -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+          <div class="bg-white rounded-xl p-6 border border-gray-200">
+            <div class="flex items-center justify-between mb-4">
+              <i data-lucide="git-branch" class="w-8 h-8 text-blue-600"></i>
+              <span class="text-2xl font-bold text-gray-900">1,247</span>
+            </div>
+            <h3 class="text-lg font-semibold text-gray-900 mb-1">Total Nodes</h3>
+            <p class="text-sm text-gray-600">Assets in graph</p>
+            <div class="mt-2 text-xs text-green-600">+23 new nodes</div>
+          </div>
+          <div class="bg-white rounded-xl p-6 border border-gray-200">
+            <div class="flex items-center justify-between mb-4">
+              <i data-lucide="link" class="w-8 h-8 text-green-600"></i>
+              <span class="text-2xl font-bold text-gray-900">3,456</span>
+            </div>
+            <h3 class="text-lg font-semibold text-gray-900 mb-1">Connections</h3>
+            <p class="text-sm text-gray-600">Asset relationships</p>
+            <div class="mt-2 text-xs text-green-600">+89 new connections</div>
+          </div>
+          <div class="bg-white rounded-xl p-6 border border-gray-200">
+            <div class="flex items-center justify-between mb-4">
+              <i data-lucide="layers" class="w-8 h-8 text-purple-600"></i>
+              <span class="text-2xl font-bold text-gray-900">12</span>
+            </div>
+            <h3 class="text-lg font-semibold text-gray-900 mb-1">Network Segments</h3>
+            <p class="text-sm text-gray-600">Isolated groups</p>
+            <div class="mt-2 text-xs text-blue-600">3 critical segments</div>
+          </div>
+          <div class="bg-white rounded-xl p-6 border border-gray-200">
+            <div class="flex items-center justify-between mb-4">
+              <i data-lucide="alert-triangle" class="w-8 h-8 text-red-600"></i>
+              <span class="text-2xl font-bold text-red-600">23</span>
+            </div>
+            <h3 class="text-lg font-semibold text-gray-900 mb-1">Risk Paths</h3>
+            <p class="text-sm text-gray-600">High-risk connections</p>
+            <div class="mt-2 text-xs text-red-600">Require attention</div>
+          </div>
+        </div>
+
+        <!-- Asset Details Panel -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <!-- Selected Asset Details -->
+          <div class="bg-white rounded-xl shadow p-6">
+            <div class="flex items-center justify-between mb-6">
+              <h2 class="text-xl font-semibold text-gray-900">Asset Details</h2>
+              <i data-lucide="info" class="w-5 h-5 text-gray-500"></i>
+            </div>
+            <div id="assetDetails" class="space-y-4">
+              <div class="text-center text-gray-500 py-8">
+                <i data-lucide="mouse-pointer-click" class="w-12 h-12 mx-auto mb-4 text-gray-300"></i>
+                <p>Click on a node in the graph to view asset details</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Connection Analysis -->
+          <div class="bg-white rounded-xl shadow p-6">
+            <div class="flex items-center justify-between mb-6">
+              <h2 class="text-xl font-semibold text-gray-900">Connection Analysis</h2>
+              <i data-lucide="network" class="w-5 h-5 text-gray-500"></i>
+            </div>
+            <div class="space-y-4">
+              <div class="flex items-center justify-between p-4 bg-red-50 rounded-lg border border-red-200">
+                <div class="flex items-center space-x-3">
+                  <i data-lucide="alert-triangle" class="w-5 h-5 text-red-600"></i>
+                  <div>
+                    <div class="font-medium text-red-900">Critical Path Detected</div>
+                    <div class="text-sm text-red-700">DB-Server-01 → Web-Server-03</div>
+                  </div>
+                </div>
+                <button class="text-red-600 hover:text-red-800 text-sm font-medium">Investigate</button>
+              </div>
+              <div class="flex items-center justify-between p-4 bg-yellow-50 rounded-lg border border-yellow-200">
+                <div class="flex items-center space-x-3">
+                  <i data-lucide="shield-alert" class="w-5 h-5 text-yellow-600"></i>
+                  <div>
+                    <div class="font-medium text-yellow-900">Unusual Connection</div>
+                    <div class="text-sm text-yellow-700">Workstation-45 → DMZ-Server-02</div>
+                  </div>
+                </div>
+                <button class="text-yellow-600 hover:text-yellow-800 text-sm font-medium">Review</button>
+              </div>
+              <div class="flex items-center justify-between p-4 bg-blue-50 rounded-lg border border-blue-200">
+                <div class="flex items-center space-x-3">
+                  <i data-lucide="info" class="w-5 h-5 text-blue-600"></i>
+                  <div>
+                    <div class="font-medium text-blue-900">New Connection</div>
+                    <div class="text-sm text-blue-700">Router-05 → Switch-12</div>
+                  </div>
+                </div>
+                <button class="text-blue-600 hover:text-blue-800 text-sm font-medium">Approve</button>
+              </div>
+              <div class="flex items-center justify-between p-4 bg-green-50 rounded-lg border border-green-200">
+                <div class="flex items-center space-x-3">
+                  <i data-lucide="check-circle" class="w-5 h-5 text-green-600"></i>
+                  <div>
+                    <div class="font-medium text-green-900">Secure Connection</div>
+                    <div class="text-sm text-green-700">Firewall-01 → Core-Switch-01</div>
+                  </div>
+                </div>
+                <span class="text-green-600 text-sm font-medium">Verified</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script>
+    // Load sidebar
+    fetch('sidebar.html')
+      .then(response => response.text())
+      .then(data => {
+        document.getElementById('sidebar-container').innerHTML = data;
+        
+        // Initialize sidebar functionality
+        const sidebar = document.getElementById('sidebar');
+        const sidebarToggle = document.getElementById('sidebarToggle');
+        const sidebarHamburger = document.getElementById('sidebarHamburger');
+        const mainContent = document.getElementById('mainContent');
+        const topHeader = document.getElementById('topHeader');
+        
+        function toggleSidebar() {
+          const isCollapsed = sidebar.classList.contains('w-16');
+          
+          if (isCollapsed) {
+            sidebar.classList.remove('w-16');
+            sidebar.classList.add('w-56');
+            mainContent.classList.remove('ml-16');
+            mainContent.classList.add('ml-56');
+            topHeader.classList.remove('left-16');
+            topHeader.classList.add('left-56');
+          } else {
+            sidebar.classList.remove('w-56');
+            sidebar.classList.add('w-16');
+            mainContent.classList.remove('ml-56');
+            mainContent.classList.add('ml-16');
+            topHeader.classList.remove('left-56');
+            topHeader.classList.add('left-16');
+          }
+          
+          document.querySelectorAll('.sidebar-label').forEach(el => el.classList.toggle('hidden'));
+        }
+        
+        if (sidebarToggle) sidebarToggle.onclick = toggleSidebar;
+        if (sidebarHamburger) sidebarHamburger.onclick = toggleSidebar;
+        
+        // Initialize Lucide icons
+        lucide.createIcons();
+        
+        // Initialize graph
+        initializeGraph();
+      });
+
+    function initializeGraph() {
+      // Sample data for the network graph
+      const nodes = [
+        {id: "firewall-01", name: "Firewall-01", type: "network", risk: "low"},
+        {id: "core-switch-01", name: "Core-Switch-01", type: "network", risk: "medium"},
+        {id: "db-server-01", name: "DB-Server-01", type: "server", risk: "critical"},
+        {id: "web-server-01", name: "Web-Server-01", type: "server", risk: "high"},
+        {id: "web-server-02", name: "Web-Server-02", type: "server", risk: "medium"},
+        {id: "workstation-01", name: "Workstation-01", type: "workstation", risk: "low"},
+        {id: "workstation-02", name: "Workstation-02", type: "workstation", risk: "medium"},
+        {id: "router-01", name: "Router-01", type: "network", risk: "low"},
+        {id: "dmz-server-01", name: "DMZ-Server-01", type: "server", risk: "high"}
+      ];
+
+      const links = [
+        {source: "firewall-01", target: "core-switch-01"},
+        {source: "core-switch-01", target: "db-server-01"},
+        {source: "core-switch-01", target: "web-server-01"},
+        {source: "core-switch-01", target: "web-server-02"},
+        {source: "core-switch-01", target: "workstation-01"},
+        {source: "core-switch-01", target: "workstation-02"},
+        {source: "firewall-01", target: "router-01"},
+        {source: "router-01", target: "dmz-server-01"},
+        {source: "web-server-01", target: "db-server-01"}
+      ];
+
+      const width = document.getElementById('assetGraph').clientWidth;
+      const height = 400;
+
+      const svg = d3.select("#assetGraph")
+        .append("svg")
+        .attr("width", width)
+        .attr("height", height);
+
+      const simulation = d3.forceSimulation(nodes)
+        .force("link", d3.forceLink(links).id(d => d.id).distance(100))
+        .force("charge", d3.forceManyBody().strength(-300))
+        .force("center", d3.forceCenter(width / 2, height / 2));
+
+      const link = svg.append("g")
+        .selectAll("line")
+        .data(links)
+        .enter().append("line")
+        .attr("stroke", "#999")
+        .attr("stroke-opacity", 0.6)
+        .attr("stroke-width", 2);
+
+      const node = svg.append("g")
+        .selectAll("circle")
+        .data(nodes)
+        .enter().append("circle")
+        .attr("r", 12)
+        .attr("fill", d => {
+          if (d.risk === "critical") return "#EF4444";
+          if (d.risk === "high") return "#F59E0B";
+          if (d.risk === "medium") return "#EAB308";
+          return "#10B981";
+        })
+        .attr("stroke", "#fff")
+        .attr("stroke-width", 2)
+        .call(d3.drag()
+          .on("start", dragstarted)
+          .on("drag", dragged)
+          .on("end", dragended))
+        .on("click", function(event, d) {
+          showAssetDetails(d);
+        });
+
+      const label = svg.append("g")
+        .selectAll("text")
+        .data(nodes)
+        .enter().append("text")
+        .text(d => d.name)
+        .attr("font-size", "10px")
+        .attr("text-anchor", "middle")
+        .attr("dy", 25);
+
+      simulation.on("tick", () => {
+        link
+          .attr("x1", d => d.source.x)
+          .attr("y1", d => d.source.y)
+          .attr("x2", d => d.target.x)
+          .attr("y2", d => d.target.y);
+
+        node
+          .attr("cx", d => d.x)
+          .attr("cy", d => d.y);
+
+        label
+          .attr("x", d => d.x)
+          .attr("y", d => d.y);
+      });
+
+      function dragstarted(event, d) {
+        if (!event.active) simulation.alphaTarget(0.3).restart();
+        d.fx = d.x;
+        d.fy = d.y;
+      }
+
+      function dragged(event, d) {
+        d.fx = event.x;
+        d.fy = event.y;
+      }
+
+      function dragended(event, d) {
+        if (!event.active) simulation.alphaTarget(0);
+        d.fx = null;
+        d.fy = null;
+      }
+    }
+
+    function showAssetDetails(asset) {
+      const detailsPanel = document.getElementById('assetDetails');
+      detailsPanel.innerHTML = `
+        <div class="space-y-4">
+          <div class="flex items-center space-x-3">
+            <div class="w-12 h-12 ${asset.risk === 'critical' ? 'bg-red-100' : asset.risk === 'high' ? 'bg-orange-100' : asset.risk === 'medium' ? 'bg-yellow-100' : 'bg-green-100'} rounded-lg flex items-center justify-center">
+              <i data-lucide="${asset.type === 'server' ? 'server' : asset.type === 'network' ? 'router' : 'laptop'}" class="w-6 h-6 ${asset.risk === 'critical' ? 'text-red-600' : asset.risk === 'high' ? 'text-orange-600' : asset.risk === 'medium' ? 'text-yellow-600' : 'text-green-600'}"></i>
+            </div>
+            <div>
+              <h3 class="text-lg font-semibold text-gray-900">${asset.name}</h3>
+              <p class="text-sm text-gray-600 capitalize">${asset.type} • ${asset.risk} risk</p>
+            </div>
+          </div>
+          <div class="grid grid-cols-2 gap-4">
+            <div class="bg-gray-50 p-3 rounded-lg">
+              <div class="text-sm font-medium text-gray-700">IP Address</div>
+              <div class="text-sm text-gray-900">192.168.1.${Math.floor(Math.random() * 254) + 1}</div>
+            </div>
+            <div class="bg-gray-50 p-3 rounded-lg">
+              <div class="text-sm font-medium text-gray-700">Status</div>
+              <div class="text-sm text-green-600">Online</div>
+            </div>
+            <div class="bg-gray-50 p-3 rounded-lg">
+              <div class="text-sm font-medium text-gray-700">Connections</div>
+              <div class="text-sm text-gray-900">${Math.floor(Math.random() * 10) + 1}</div>
+            </div>
+            <div class="bg-gray-50 p-3 rounded-lg">
+              <div class="text-sm font-medium text-gray-700">Last Seen</div>
+              <div class="text-sm text-gray-900">2 min ago</div>
+            </div>
+          </div>
+          <div class="pt-4 border-t border-gray-200">
+            <button class="w-full bg-primary-600 hover:bg-primary-700 text-white px-4 py-2 rounded-lg transition-colors">
+              View Full Details
+            </button>
+          </div>
+        </div>
+      `;
+      lucide.createIcons();
+    }
+  </script>
+  <script src="scripts/sidebar.js"></script>
+</body>
+</html>

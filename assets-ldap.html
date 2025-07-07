@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VulNova - LDAP Connections</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <link href="styles/assets.css" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+</head>
+<body class="bg-gray-50 min-h-screen">
+  <div class="flex min-h-screen">
+    <!-- Sidebar Container -->
+    <div id="sidebar-container"></div>
+
+    <!-- Main Content -->
+    <div class="flex-1 flex flex-col min-h-screen transition-all duration-300 ml-56" id="mainContent">
+      <!-- Top Bar -->
+      <header class="bg-white shadow flex items-center px-6 py-4 fixed top-0 right-0 left-56 z-20 transition-all duration-300" id="topHeader">
+        <button id="sidebarHamburger" class="md:hidden mr-4 text-gray-500 focus:outline-none">
+          <i data-lucide="menu" class="w-7 h-7"></i>
+        </button>
+        <span class="text-2xl font-extrabold text-primary-800">LDAP Connections</span>
+      </header>
+      
+      <main class="flex-1 p-6 pt-20">
+        <!-- Page Header -->
+        <div class="mb-8">
+          <div class="flex items-center justify-between mb-4">
+            <div>
+              <h1 class="text-3xl font-bold text-gray-900 mb-2">LDAP Directory Services</h1>
+              <p class="text-gray-600">Manage LDAP connections and directory synchronization for asset management</p>
+            </div>
+            <div class="flex space-x-3">
+              <button class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg transition-colors flex items-center space-x-2">
+                <i data-lucide="refresh-cw" class="w-4 h-4"></i>
+                <span>Sync Directory</span>
+              </button>
+              <button class="bg-primary-600 hover:bg-primary-700 text-white px-6 py-2 rounded-lg transition-colors flex items-center space-x-2">
+                <i data-lucide="plus" class="w-4 h-4"></i>
+                <span>Add LDAP</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- LDAP Status Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+          <div class="bg-white rounded-xl p-6 border border-gray-200">
+            <div class="flex items-center justify-between mb-4">
+              <i data-lucide="users" class="w-8 h-8 text-blue-600"></i>
+              <span class="text-2xl font-bold text-gray-900">2,456</span>
+            </div>
+            <h3 class="text-lg font-semibold text-gray-900 mb-1">Directory Users</h3>
+            <p class="text-sm text-gray-600">Synchronized accounts</p>
+            <div class="mt-2 text-xs text-green-600">+23 new users</div>
+          </div>
+          <div class="bg-white rounded-xl p-6 border border-gray-200">
+            <div class="flex items-center justify-between mb-4">
+              <i data-lucide="building" class="w-8 h-8 text-green-600"></i>
+              <span class="text-2xl font-bold text-gray-900">45</span>
+            </div>
+            <h3 class="text-lg font-semibold text-gray-900 mb-1">Organizational Units</h3>
+            <p class="text-sm text-gray-600">Active OUs</p>
+            <div class="mt-2 text-xs text-blue-600">12 departments</div>
+          </div>
+          <div class="bg-white rounded-xl p-6 border border-gray-200">
+            <div class="flex items-center justify-between mb-4">
+              <i data-lucide="laptop" class="w-8 h-8 text-purple-600"></i>
+              <span class="text-2xl font-bold text-gray-900">1,247</span>
+            </div>
+            <h3 class="text-lg font-semibold text-gray-900 mb-1">Computer Objects</h3>
+            <p class="text-sm text-gray-600">Managed devices</p>
+            <div class="mt-2 text-xs text-green-600">98.5% online</div>
+          </div>
+          <div class="bg-white rounded-xl p-6 border border-gray-200">
+            <div class="flex items-center justify-between mb-4">
+              <i data-lucide="clock" class="w-8 h-8 text-orange-500"></i>
+              <span class="text-2xl font-bold text-gray-900">5m</span>
+            </div>
+            <h3 class="text-lg font-semibold text-gray-900 mb-1">Last Sync</h3>
+            <p class="text-sm text-gray-600">Directory update</p>
+            <div class="mt-2 text-xs text-green-600">Auto-sync enabled</div>
+          </div>
+        </div>
+
+        <!-- LDAP Connections -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+          <!-- Active LDAP Servers -->
+          <div class="bg-white rounded-xl shadow p-6">
+            <div class="flex items-center justify-between mb-6">
+              <h2 class="text-xl font-semibold text-gray-900">LDAP Servers</h2>
+              <i data-lucide="server" class="w-6 h-6 text-blue-600"></i>
+            </div>
+            <div class="space-y-4">
+              <div class="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
+                <div class="flex items-center space-x-3">
+                  <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                    <i data-lucide="server" class="w-6 h-6 text-blue-600"></i>
+                  </div>
+                  <div>
+                    <div class="font-medium text-gray-900">Primary Domain Controller</div>
+                    <div class="text-sm text-gray-600">dc01.company.local • Port 389</div>
+                  </div>
+                </div>
+                <div class="flex items-center space-x-2">
+                  <span class="w-3 h-3 bg-green-500 rounded-full"></span>
+                  <span class="text-sm text-green-600">Connected</span>
+                </div>
+              </div>
+              <div class="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
+                <div class="flex items-center space-x-3">
+                  <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                    <i data-lucide="server" class="w-6 h-6 text-green-600"></i>
+                  </div>
+                  <div>
+                    <div class="font-medium text-gray-900">Secondary Domain Controller</div>
+                    <div class="text-sm text-gray-600">dc02.company.local • Port 389</div>
+                  </div>
+                </div>
+                <div class="flex items-center space-x-2">
+                  <span class="w-3 h-3 bg-green-500 rounded-full"></span>
+                  <span class="text-sm text-green-600">Connected</span>
+                </div>
+              </div>
+              <div class="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
+                <div class="flex items-center space-x-3">
+                  <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
+                    <i data-lucide="server" class="w-6 h-6 text-orange-600"></i>
+                  </div>
+                  <div>
+                    <div class="font-medium text-gray-900">Branch Office LDAP</div>
+                    <div class="text-sm text-gray-600">ldap.branch.company.local • Port 636</div>
+                  </div>
+                </div>
+                <div class="flex items-center space-x-2">
+                  <span class="w-3 h-3 bg-yellow-500 rounded-full"></span>
+                  <span class="text-sm text-yellow-600">Syncing</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Directory Structure -->
+          <div class="bg-white rounded-xl shadow p-6">
+            <div class="flex items-center justify-between mb-6">
+              <h2 class="text-xl font-semibold text-gray-900">Directory Structure</h2>
+              <i data-lucide="folder-tree" class="w-6 h-6 text-green-600"></i>
+            </div>
+            <div class="space-y-3">
+              <div class="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
+                <i data-lucide="building" class="w-5 h-5 text-blue-600"></i>
+                <div class="flex-1">
+                  <div class="font-medium text-gray-900">DC=company,DC=local</div>
+                  <div class="text-sm text-gray-600">Root domain</div>
+                </div>
+                <span class="text-sm text-gray-500">2,456 objects</span>
+              </div>
+              <div class="ml-6 space-y-2">
+                <div class="flex items-center space-x-3 p-3 bg-blue-50 rounded-lg">
+                  <i data-lucide="users" class="w-5 h-5 text-blue-600"></i>
+                  <div class="flex-1">
+                    <div class="font-medium text-gray-900">OU=Users</div>
+                    <div class="text-sm text-gray-600">User accounts</div>
+                  </div>
+                  <span class="text-sm text-blue-600">1,234 users</span>
+                </div>
+                <div class="flex items-center space-x-3 p-3 bg-green-50 rounded-lg">
+                  <i data-lucide="laptop" class="w-5 h-5 text-green-600"></i>
+                  <div class="flex-1">
+                    <div class="font-medium text-gray-900">OU=Computers</div>
+                    <div class="text-sm text-gray-600">Computer objects</div>
+                  </div>
+                  <span class="text-sm text-green-600">1,247 computers</span>
+                </div>
+                <div class="flex items-center space-x-3 p-3 bg-purple-50 rounded-lg">
+                  <i data-lucide="shield" class="w-5 h-5 text-purple-600"></i>
+                  <div class="flex-1">
+                    <div class="font-medium text-gray-900">OU=Security Groups</div>
+                    <div class="text-sm text-gray-600">Access control groups</div>
+                  </div>
+                  <span class="text-sm text-purple-600">89 groups</span>
+                </div>
+                <div class="flex items-center space-x-3 p-3 bg-orange-50 rounded-lg">
+                  <i data-lucide="briefcase" class="w-5 h-5 text-orange-600"></i>
+                  <div class="flex-1">
+                    <div class="font-medium text-gray-900">OU=Service Accounts</div>
+                    <div class="text-sm text-gray-600">Application accounts</div>
+                  </div>
+                  <span class="text-sm text-orange-600">45 accounts</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Asset-User Mapping -->
+        <div class="bg-white rounded-xl shadow p-6 mb-8">
+          <div class="flex items-center justify-between mb-6">
+            <h2 class="text-xl font-semibold text-gray-900">Asset-User Mapping</h2>
+            <button class="text-primary-600 hover:text-primary-700 text-sm font-medium">View All Mappings</button>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="min-w-full">
+              <thead class="bg-gray-50">
+                <tr>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Asset Name</th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Primary User</th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Department</th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Last Login</th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                </tr>
+              </thead>
+              <tbody class="bg-white divide-y divide-gray-200">
+                <tr>
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <div class="flex items-center">
+                      <i data-lucide="laptop" class="w-5 h-5 text-blue-600 mr-3"></i>
+                      <div class="font-medium text-gray-900">LAPTOP-JOHN-001</div>
+                    </div>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <div class="flex items-center">
+                      <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center mr-3">
+                        <span class="text-xs font-medium text-blue-600">JD</span>
+                      </div>
+                      <div>
+                        <div class="font-medium text-gray-900">John Doe</div>
+                        <div class="text-sm text-gray-600">john.doe@company.com</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">IT Department</td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">2 hours ago</td>
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">Active</span>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                    <button class="text-primary-600 hover:text-primary-900">View Details</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <div class="flex items-center">
+                      <i data-lucide="monitor" class="w-5 h-5 text-green-600 mr-3"></i>
+                      <div class="font-medium text-gray-900">DESKTOP-SARAH-002</div>
+                    </div>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <div class="flex items-center">
+                      <div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center mr-3">
+                        <span class="text-xs font-medium text-green-600">SM</span>
+                      </div>
+                      <div>
+                        <div class="font-medium text-gray-900">Sarah Miller</div>
+                        <div class="text-sm text-gray-600">sarah.miller@company.com</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Finance</td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">30 minutes ago</td>
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">Active</span>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                    <button class="text-primary-600 hover:text-primary-900">View Details</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <div class="flex items-center">
+                      <i data-lucide="laptop" class="w-5 h-5 text-orange-600 mr-3"></i>
+                      <div class="font-medium text-gray-900">LAPTOP-MIKE-003</div>
+                    </div>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <div class="flex items-center">
+                      <div class="w-8 h-8 bg-orange-100 rounded-full flex items-center justify-center mr-3">
+                        <span class="text-xs font-medium text-orange-600">MJ</span>
+                      </div>
+                      <div>
+                        <div class="font-medium text-gray-900">Mike Johnson</div>
+                        <div class="text-sm text-gray-600">mike.johnson@company.com</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Sales</td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">1 day ago</td>
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-yellow-100 text-yellow-800">Idle</span>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                    <button class="text-primary-600 hover:text-primary-900">View Details</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Sync Activity -->
+        <div class="bg-white rounded-xl shadow p-6">
+          <div class="flex items-center justify-between mb-6">
+            <h2 class="text-xl font-semibold text-gray-900">Recent Sync Activity</h2>
+            <button class="text-primary-600 hover:text-primary-700 text-sm font-medium">View Sync Logs</button>
+          </div>
+          <div class="space-y-4">
+            <div class="flex items-center space-x-4 p-4 bg-green-50 rounded-lg">
+              <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
+                <i data-lucide="check" class="w-5 h-5 text-green-600"></i>
+              </div>
+              <div class="flex-1">
+                <div class="font-medium text-gray-900">Directory sync completed successfully</div>
+                <div class="text-sm text-gray-600">Synchronized 2,456 users and 1,247 computers</div>
+              </div>
+              <div class="text-sm text-gray-500">5 minutes ago</div>
+            </div>
+            <div class="flex items-center space-x-4 p-4 bg-blue-50 rounded-lg">
+              <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
+                <i data-lucide="user-plus" class="w-5 h-5 text-blue-600"></i>
+              </div>
+              <div class="flex-1">
+                <div class="font-medium text-gray-900">New users added to directory</div>
+                <div class="text-sm text-gray-600">23 new user accounts synchronized from HR system</div>
+              </div>
+              <div class="text-sm text-gray-500">2 hours ago</div>
+            </div>
+            <div class="flex items-center space-x-4 p-4 bg-orange-50 rounded-lg">
+              <div class="w-10 h-10 bg-orange-100 rounded-full flex items-center justify-center">
+                <i data-lucide="laptop" class="w-5 h-5 text-orange-600"></i>
+              </div>
+              <div class="flex-1">
+                <div class="font-medium text-gray-900">Computer objects updated</div>
+                <div class="text-sm text-gray-600">Updated asset information for 45 computer objects</div>
+              </div>
+              <div class="text-sm text-gray-500">4 hours ago</div>
+            </div>
+            <div class="flex items-center space-x-4 p-4 bg-yellow-50 rounded-lg">
+              <div class="w-10 h-10 bg-yellow-100 rounded-full flex items-center justify-center">
+                <i data-lucide="alert-triangle" class="w-5 h-5 text-yellow-600"></i>
+              </div>
+              <div class="flex-1">
+                <div class="font-medium text-gray-900">Sync warning for branch office</div>
+                <div class="text-sm text-gray-600">Connection timeout to ldap.branch.company.local</div>
+              </div>
+              <div class="text-sm text-gray-500">6 hours ago</div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script>
+    // Load sidebar
+    fetch('sidebar.html')
+      .then(response => response.text())
+      .then(data => {
+        document.getElementById('sidebar-container').innerHTML = data;
+        
+        // Initialize sidebar functionality
+        const sidebar = document.getElementById('sidebar');
+        const sidebarToggle = document.getElementById('sidebarToggle');
+        const sidebarHamburger = document.getElementById('sidebarHamburger');
+        const mainContent = document.getElementById('mainContent');
+        const topHeader = document.getElementById('topHeader');
+        
+        function toggleSidebar() {
+          const isCollapsed = sidebar.classList.contains('w-16');
+          
+          if (isCollapsed) {
+            sidebar.classList.remove('w-16');
+            sidebar.classList.add('w-56');
+            mainContent.classList.remove('ml-16');
+            mainContent.classList.add('ml-56');
+            topHeader.classList.remove('left-16');
+            topHeader.classList.add('left-56');
+          } else {
+            sidebar.classList.remove('w-56');
+            sidebar.classList.add('w-16');
+            mainContent.classList.remove('ml-56');
+            mainContent.classList.add('ml-16');
+            topHeader.classList.remove('left-56');
+            topHeader.classList.add('left-16');
+          }
+          
+          document.querySelectorAll('.sidebar-label').forEach(el => el.classList.toggle('hidden'));
+        }
+        
+        if (sidebarToggle) sidebarToggle.onclick = toggleSidebar;
+        if (sidebarHamburger) sidebarHamburger.onclick = toggleSidebar;
+        
+        // Initialize Lucide icons
+        lucide.createIcons();
+      });
+  </script>
+  <script src="scripts/sidebar.js"></script>
+</body>
+</html>

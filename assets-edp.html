@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VulNova - EDP Connections</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <link href="styles/assets.css" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+</head>
+<body class="bg-gray-50 min-h-screen">
+  <div class="flex min-h-screen">
+    <!-- Sidebar Container -->
+    <div id="sidebar-container"></div>
+
+    <!-- Main Content -->
+    <div class="flex-1 flex flex-col min-h-screen transition-all duration-300 ml-56" id="mainContent">
+      <!-- Top Bar -->
+      <header class="bg-white shadow flex items-center px-6 py-4 fixed top-0 right-0 left-56 z-20 transition-all duration-300" id="topHeader">
+        <button id="sidebarHamburger" class="md:hidden mr-4 text-gray-500 focus:outline-none">
+          <i data-lucide="menu" class="w-7 h-7"></i>
+        </button>
+        <span class="text-2xl font-extrabold text-primary-800">EDP Connections</span>
+      </header>
+      
+      <main class="flex-1 p-6 pt-20">
+        <!-- Page Header -->
+        <div class="mb-8">
+          <div class="flex items-center justify-between mb-4">
+            <div>
+              <h1 class="text-3xl font-bold text-gray-900 mb-2">Endpoint Data Protection</h1>
+              <p class="text-gray-600">Manage data loss prevention and endpoint data security policies</p>
+            </div>
+            <div class="flex space-x-3">
+              <button class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg transition-colors flex items-center space-x-2">
+                <i data-lucide="refresh-cw" class="w-4 h-4"></i>
+                <span>Sync Policies</span>
+              </button>
+              <button class="bg-primary-600 hover:bg-primary-700 text-white px-6 py-2 rounded-lg transition-colors flex items-center space-x-2">
+                <i data-lucide="plus" class="w-4 h-4"></i>
+                <span>Add EDP</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- EDP Status Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+          <div class="bg-white rounded-xl p-6 border border-gray-200">
+            <div class="flex items-center justify-between mb-4">
+              <i data-lucide="shield-check" class="w-8 h-8 text-green-600"></i>
+              <span class="text-2xl font-bold text-gray-900">967</span>
+            </div>
+            <h3 class="text-lg font-semibold text-gray-900 mb-1">Protected Endpoints</h3>
+            <p class="text-sm text-gray-600">With DLP policies</p>
+            <div class="mt-2 text-xs text-green-600">77.5% coverage</div>
+          </div>
+          <div class="bg-white rounded-xl p-6 border border-gray-200">
+            <div class="flex items-center justify-between mb-4">
+              <i data-lucide="alert-triangle" class="w-8 h-8 text-red-600"></i>
+              <span class="text-2xl font-bold text-red-600">12</span>
+            </div>
+            <h3 class="text-lg font-semibold text-gray-900 mb-1">Policy Violations</h3>
+            <p class="text-sm text-gray-600">Last 24 hours</p>
+            <div class="mt-2 text-xs text-red-600">+3 from yesterday</div>
+          </div>
+          <div class="bg-white rounded-xl p-6 border border-gray-200">
+            <div class="flex items-center justify-between mb-4">
+              <i data-lucide="file-lock" class="w-8 h-8 text-blue-600"></i>
+              <span class="text-2xl font-bold text-gray-900">2.3TB</span>
+            </div>
+            <h3 class="text-lg font-semibold text-gray-900 mb-1">Data Protected</h3>
+            <p class="text-sm text-gray-600">Under DLP policies</p>
+            <div class="mt-2 text-xs text-green-600">+156GB this week</div>
+          </div>
+          <div class="bg-white rounded-xl p-6 border border-gray-200">
+            <div class="flex items-center justify-between mb-4">
+              <i data-lucide="eye-off" class="w-8 h-8 text-purple-600"></i>
+              <span class="text-2xl font-bold text-gray-900">89</span>
+            </div>
+            <h3 class="text-lg font-semibold text-gray-900 mb-1">Blocked Transfers</h3>
+            <p class="text-sm text-gray-600">Prevented data loss</p>
+            <div class="mt-2 text-xs text-green-600">Policy enforcement</div>
+          </div>
+        </div>
+
+        <!-- EDP Platforms -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+          <!-- Active EDP Solutions -->
+          <div class="bg-white rounded-xl shadow p-6">
+            <div class="flex items-center justify-between mb-6">
+              <h2 class="text-xl font-semibold text-gray-900">Data Protection Platforms</h2>
+              <i data-lucide="file-shield" class="w-6 h-6 text-blue-600"></i>
+            </div>
+            <div class="space-y-4">
+              <div class="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
+                <div class="flex items-center space-x-3">
+                  <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                    <i data-lucide="file-lock" class="w-6 h-6 text-blue-600"></i>
+                  </div>
+                  <div>
+                    <div class="font-medium text-gray-900">Microsoft Purview</div>
+                    <div class="text-sm text-gray-600">567 endpoints • 45 policies active</div>
+                  </div>
+                </div>
+                <div class="flex items-center space-x-2">
+                  <span class="w-3 h-3 bg-green-500 rounded-full"></span>
+                  <span class="text-sm text-green-600">Active</span>
+                </div>
+              </div>
+              <div class="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
+                <div class="flex items-center space-x-3">
+                  <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                    <i data-lucide="shield" class="w-6 h-6 text-purple-600"></i>
+                  </div>
+                  <div>
+                    <div class="font-medium text-gray-900">Symantec DLP</div>
+                    <div class="text-sm text-gray-600">234 endpoints • 23 policies active</div>
+                  </div>
+                </div>
+                <div class="flex items-center space-x-2">
+                  <span class="w-3 h-3 bg-green-500 rounded-full"></span>
+                  <span class="text-sm text-green-600">Active</span>
+                </div>
+              </div>
+              <div class="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
+                <div class="flex items-center space-x-3">
+                  <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                    <i data-lucide="file-shield" class="w-6 h-6 text-green-600"></i>
+                  </div>
+                  <div>
+                    <div class="font-medium text-gray-900">Forcepoint DLP</div>
+                    <div class="text-sm text-gray-600">166 endpoints • 18 policies active</div>
+                  </div>
+                </div>
+                <div class="flex items-center space-x-2">
+                  <span class="w-3 h-3 bg-yellow-500 rounded-full"></span>
+                  <span class="text-sm text-yellow-600">Syncing</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Policy Violations -->
+          <div class="bg-white rounded-xl shadow p-6">
+            <div class="flex items-center justify-between mb-6">
+              <h2 class="text-xl font-semibold text-gray-900">Recent Violations</h2>
+              <i data-lucide="alert-triangle" class="w-6 h-6 text-red-600"></i>
+            </div>
+            <div class="space-y-4">
+              <div class="flex items-center justify-between p-4 bg-red-50 rounded-lg border border-red-200">
+                <div class="flex items-center space-x-3">
+                  <i data-lucide="file-x" class="w-5 h-5 text-red-600"></i>
+                  <div>
+                    <div class="font-medium text-red-900">PII Data Transfer Blocked</div>
+                    <div class="text-sm text-red-700">User attempted to email SSN data</div>
+                  </div>
+                </div>
+                <button class="text-red-600 hover:text-red-800 text-sm font-medium">Review</button>
+              </div>
+              <div class="flex items-center justify-between p-4 bg-orange-50 rounded-lg border border-orange-200">
+                <div class="flex items-center space-x-3">
+                  <i data-lucide="usb" class="w-5 h-5 text-orange-600"></i>
+                  <div>
+                    <div class="font-medium text-orange-900">USB Transfer Violation</div>
+                    <div class="text-sm text-orange-700">Confidential files copied to USB</div>
+                  </div>
+                </div>
+                <button class="text-orange-600 hover:text-orange-800 text-sm font-medium">Investigate</button>
+              </div>
+              <div class="flex items-center justify-between p-4 bg-yellow-50 rounded-lg border border-yellow-200">
+                <div class="flex items-center space-x-3">
+                  <i data-lucide="cloud-off" class="w-5 h-5 text-yellow-600"></i>
+                  <div>
+                    <div class="font-medium text-yellow-900">Cloud Upload Blocked</div>
+                    <div class="text-sm text-yellow-700">Sensitive document upload prevented</div>
+                  </div>
+                </div>
+                <button class="text-yellow-600 hover:text-yellow-800 text-sm font-medium">Allow</button>
+              </div>
+              <div class="flex items-center justify-between p-4 bg-blue-50 rounded-lg border border-blue-200">
+                <div class="flex items-center space-x-3">
+                  <i data-lucide="printer" class="w-5 h-5 text-blue-600"></i>
+                  <div>
+                    <div class="font-medium text-blue-900">Print Job Monitored</div>
+                    <div class="text-sm text-blue-700">Financial report printed - logged</div>
+                  </div>
+                </div>
+                <span class="text-blue-600 text-sm font-medium">Logged</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Data Classification -->
+        <div class="bg-white rounded-xl shadow p-6 mb-8">
+          <div class="flex items-center justify-between mb-6">
+            <h2 class="text-xl font-semibold text-gray-900">Data Classification Overview</h2>
+            <button class="text-primary-600 hover:text-primary-700 text-sm font-medium">Manage Classifications</button>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="bg-red-50 p-6 rounded-lg border border-red-200">
+              <div class="flex items-center justify-between mb-4">
+                <h3 class="text-lg font-semibold text-red-900">Highly Confidential</h3>
+                <i data-lucide="lock" class="w-6 h-6 text-red-600"></i>
+              </div>
+              <div class="text-3xl font-bold text-red-600 mb-2">1.2TB</div>
+              <div class="text-sm text-red-700 mb-4">Protected data volume</div>
+              <div class="space-y-2">
+                <div class="flex justify-between text-sm">
+                  <span class="text-red-700">Financial Records</span>
+                  <span class="text-red-600 font-medium">456GB</span>
+                </div>
+                <div class="flex justify-between text-sm">
+                  <span class="text-red-700">Customer PII</span>
+                  <span class="text-red-600 font-medium">389GB</span>
+                </div>
+                <div class="flex justify-between text-sm">
+                  <span class="text-red-700">Legal Documents</span>
+                  <span class="text-red-600 font-medium">355GB</span>
+                </div>
+              </div>
+            </div>
+            <div class="bg-orange-50 p-6 rounded-lg border border-orange-200">
+              <div class="flex items-center justify-between mb-4">
+                <h3 class="text-lg font-semibold text-orange-900">Confidential</h3>
+                <i data-lucide="eye-off" class="w-6 h-6 text-orange-600"></i>
+              </div>
+              <div class="text-3xl font-bold text-orange-600 mb-2">2.8TB</div>
+              <div class="text-sm text-orange-700 mb-4">Protected data volume</div>
+              <div class="space-y-2">
+                <div class="flex justify-between text-sm">
+                  <span class="text-orange-700">HR Records</span>
+                  <span class="text-orange-600 font-medium">1.1TB</span>
+                </div>
+                <div class="flex justify-between text-sm">
+                  <span class="text-orange-700">Internal Reports</span>
+                  <span class="text-orange-600 font-medium">892GB</span>
+                </div>
+                <div class="flex justify-between text-sm">
+                  <span class="text-orange-700">Project Files</span>
+                  <span class="text-orange-600 font-medium">808GB</span>
+                </div>
+              </div>
+            </div>
+            <div class="bg-blue-50 p-6 rounded-lg border border-blue-200">
+              <div class="flex items-center justify-between mb-4">
+                <h3 class="text-lg font-semibold text-blue-900">Internal</h3>
+                <i data-lucide="users" class="w-6 h-6 text-blue-600"></i>
+              </div>
+              <div class="text-3xl font-bold text-blue-600 mb-2">4.5TB</div>
+              <div class="text-sm text-blue-700 mb-4">Monitored data volume</div>
+              <div class="space-y-2">
+                <div class="flex justify-between text-sm">
+                  <span class="text-blue-700">Team Documents</span>
+                  <span class="text-blue-600 font-medium">2.1TB</span>
+                </div>
+                <div class="flex justify-between text-sm">
+                  <span class="text-blue-700">Presentations</span>
+                  <span class="text-blue-600 font-medium">1.3TB</span>
+                </div>
+                <div class="flex justify-between text-sm">
+                  <span class="text-blue-700">Communications</span>
+                  <span class="text-blue-600 font-medium">1.1TB</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Policy Management -->
+        <div class="bg-white rounded-xl shadow p-6">
+          <div class="flex items-center justify-between mb-6">
+            <h2 class="text-xl font-semibold text-gray-900">Active DLP Policies</h2>
+            <button class="bg-primary-600 hover:bg-primary-700 text-white px-4 py-2 rounded-lg transition-colors flex items-center space-x-2">
+              <i data-lucide="plus" class="w-4 h-4"></i>
+              <span>Create Policy</span>
+            </button>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="min-w-full">
+              <thead class="bg-gray-50">
+                <tr>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Policy Name</th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Endpoints</th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Violations</th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                </tr>
+              </thead>
+              <tbody class="bg-white divide-y divide-gray-200">
+                <tr>
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <div class="font-medium text-gray-900">PII Protection Policy</div>
+                    <div class="text-sm text-gray-600">Prevents PII data exfiltration</div>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Content-based</td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">967</td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-red-600 font-medium">8</td>
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">Active</span>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                    <button class="text-primary-600 hover:text-primary-900 mr-3">Edit</button>
+                    <button class="text-blue-600 hover:text-blue-900">View</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <div class="font-medium text-gray-900">Financial Data Policy</div>
+                    <div class="text-sm text-gray-600">Protects financial information</div>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Keyword-based</td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">456</td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-red-600 font-medium">3</td>
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">Active</span>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                    <button class="text-primary-600 hover:text-primary-900 mr-3">Edit</button>
+                    <button class="text-blue-600 hover:text-blue-900">View</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <div class="font-medium text-gray-900">USB Transfer Policy</div>
+                    <div class="text-sm text-gray-600">Controls USB device usage</div>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Device Control</td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">1,247</td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-red-600 font-medium">1</td>
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">Active</span>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                    <button class="text-primary-600 hover:text-primary-900 mr-3">Edit</button>
+                    <button class="text-blue-600 hover:text-blue-900">View</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script>
+    // Load sidebar
+    fetch('sidebar.html')
+      .then(response => response.text())
+      .then(data => {
+        document.getElementById('sidebar-container').innerHTML = data;
+        
+        // Initialize sidebar functionality
+        const sidebar = document.getElementById('sidebar');
+        const sidebarToggle = document.getElementById('sidebarToggle');
+        const sidebarHamburger = document.getElementById('sidebarHamburger');
+        const mainContent = document.getElementById('mainContent');
+        const topHeader = document.getElementById('topHeader');
+        
+        function toggleSidebar() {
+          const isCollapsed = sidebar.classList.contains('w-16');
+          
+          if (isCollapsed) {
+            sidebar.classList.remove('w-16');
+            sidebar.classList.add('w-56');
+            mainContent.classList.remove('ml-16');
+            mainContent.classList.add('ml-56');
+            topHeader.classList.remove('left-16');
+            topHeader.classList.add('left-56');
+          } else {
+            sidebar.classList.remove('w-56');
+            sidebar.classList.add('w-16');
+            mainContent.classList.remove('ml-56');
+            mainContent.classList.add('ml-16');
+            topHeader.classList.remove('left-56');
+            topHeader.classList.add('left-16');
+          }
+          
+          document.querySelectorAll('.sidebar-label').forEach(el => el.classList.toggle('hidden'));
+        }
+        
+        if (sidebarToggle) sidebarToggle.onclick = toggleSidebar;
+        if (sidebarHamburger) sidebarHamburger.onclick = toggleSidebar;
+        
+        // Initialize Lucide icons
+        lucide.createIcons();
+      });
+  </script>
+  <script src="scripts/sidebar.js"></script>
+</body>
+</html>

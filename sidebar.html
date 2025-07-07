@@ -24,9 +24,9 @@
         </div>
         <ul id="assetsSubmenu" class="pl-4 mt-1 space-y-1 hidden">
           <li><a href="assets.html" class="flex items-center px-4 py-2 text-gray-700 hover:bg-primary-50 rounded transition sidebar-link"><span class="sidebar-label">Asset Profile</span></a></li>
-          <li><a href="#" class="flex items-center px-4 py-2 text-gray-700 hover:bg-primary-50 rounded transition sidebar-link"><span class="sidebar-label">Dashboards</span></a></li>
-          <li><a href="#" class="flex items-center px-4 py-2 text-gray-700 hover:bg-primary-50 rounded transition sidebar-link"><span class="sidebar-label">Integrations</span></a></li>
-          <li><a href="#" class="flex items-center px-4 py-2 text-gray-700 hover:bg-primary-50 rounded transition sidebar-link"><span class="sidebar-label">Asset Graph</span></a></li>
+          <li><a href="assets-dashboards.html" class="flex items-center px-4 py-2 text-gray-700 hover:bg-primary-50 rounded transition sidebar-link"><span class="sidebar-label">Dashboards</span></a></li>
+          <li><a href="assets-integrations.html" class="flex items-center px-4 py-2 text-gray-700 hover:bg-primary-50 rounded transition sidebar-link"><span class="sidebar-label">Integrations</span></a></li>
+          <li><a href="assets-graph.html" class="flex items-center px-4 py-2 text-gray-700 hover:bg-primary-50 rounded transition sidebar-link"><span class="sidebar-label">Asset Graph</span></a></li>
           
           <!-- Adapter Connections Submenu -->
           <li class="sidebar-parent">
@@ -41,7 +41,7 @@
                   <i data-lucide="chevron-down" class="w-4 h-4 transition-transform submenu-chevron"></i>
                 </div>
                 <ul id="edrSubmenu" class="pl-4 mt-1 space-y-1 hidden">
-                  <li><a href="#" class="flex items-center px-4 py-2 text-gray-700 hover:bg-primary-50 rounded transition sidebar-link"><span class="sidebar-label">Google Cloud</span></a></li>
+                  <li><a href="assets-edr.html" class="flex items-center px-4 py-2 text-gray-700 hover:bg-primary-50 rounded transition sidebar-link"><span class="sidebar-label">Google Cloud</span></a></li>
                 </ul>
               </li>
               <li class="sidebar-parent">
@@ -50,27 +50,25 @@
                   <i data-lucide="chevron-down" class="w-4 h-4 transition-transform submenu-chevron"></i>
                 </div>
                 <ul id="edpSubmenu" class="pl-4 mt-1 space-y-1 hidden">
-                  <li><a href="#" class="flex items-center px-4 py-2 text-gray-700 hover:bg-primary-50 rounded transition sidebar-link"><span class="sidebar-label">Google Cloud</span></a></li>
+                  <li><a href="assets-edp.html" class="flex items-center px-4 py-2 text-gray-700 hover:bg-primary-50 rounded transition sidebar-link"><span class="sidebar-label">Google Cloud</span></a></li>
                 </ul>
               </li> 
 
-                        <!-- LDAP Section -->
-          <li class="sidebar-parent">
-            <div class="flex items-center px-4 py-2 text-gray-700 hover:bg-primary-50 rounded transition cursor-pointer sidebar-link" onclick="toggleSubmenu('ldapSubmenu', this)">
-              <span class="sidebar-label flex-1">LDAP</span>
-              <i data-lucide="chevron-down" class="w-4 h-4 transition-transform submenu-chevron"></i>
-            </div>
-            <ul id="ldapSubmenu" class="pl-4 mt-1 space-y-1 hidden">
-              <!-- LDAP items would go here -->
+              <!-- LDAP Section -->
+              <li class="sidebar-parent">
+                <div class="flex items-center px-4 py-2 text-gray-700 hover:bg-primary-50 rounded transition cursor-pointer sidebar-link" onclick="toggleSubmenu('ldapSubmenu', this)">
+                  <span class="sidebar-label flex-1">LDAP</span>
+                  <i data-lucide="chevron-down" class="w-4 h-4 transition-transform submenu-chevron"></i>
+                </div>
+                <ul id="ldapSubmenu" class="pl-4 mt-1 space-y-1 hidden">
+                  <li><a href="assets-ldap.html" class="flex items-center px-4 py-2 text-gray-700 hover:bg-primary-50 rounded transition sidebar-link"><span class="sidebar-label">Directory Services</span></a></li>
+                </ul>
+              </li>
             </ul>
           </li>
-            </ul>
-          </li>
-          
-
           
           <!-- Custom Data Section -->
-          <li><a href="#" class="flex items-center px-4 py-2 text-gray-700 hover:bg-primary-50 rounded transition sidebar-link"><span class="sidebar-label">Custom Data</span></a></li>
+          <li><a href="assets-custom-data.html" class="flex items-center px-4 py-2 text-gray-700 hover:bg-primary-50 rounded transition sidebar-link"><span class="sidebar-label">Custom Data</span></a></li>
         </ul>
       </li>
       
