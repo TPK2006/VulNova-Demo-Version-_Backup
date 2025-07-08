@@ -25,7 +25,7 @@
       </header>
       <main class="flex-1 p-6 pt-20">
         <!-- Risk Score and Vuln Summary Row -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8 items-center">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8 items-stretch">
           <!-- Risk Score Gauge -->
           <div class="bg-white rounded-xl shadow p-6 flex flex-col items-center justify-center">
             <svg class="gauge" viewBox="0 0 400 220" width="400" height="220">
@@ -80,9 +80,9 @@
             </div>
           </div>
           <!-- Unified Vulnerability Summary Box -->
-          <div class="bg-white rounded-xl shadow p-6 flex flex-col items-center justify-center">
+          <div class="bg-white rounded-xl shadow p-6 flex flex-col items-center justify-between">
             <h3 class="text-lg font-bold mb-4 text-primary-800">Vulnerability Summary</h3>
-            <div class="grid grid-cols-2 gap-3 w-full">
+            <div class="grid grid-cols-2 gap-3 w-full flex-1 content-center">
               <div class="bg-red-50 rounded-lg p-3 flex flex-col items-center justify-center cursor-pointer hover:bg-red-100 transition-colors" onclick="window.location.href='vulnerabilities.html#critical'">
                 <i data-lucide="alert-triangle" class="w-5 h-5 text-red-600 mb-1"></i>
                 <span class="text-lg font-bold text-red-600">0</span>
@@ -103,6 +103,9 @@
                 <span class="text-lg font-bold text-green-600">0</span>
                 <span class="text-green-700 text-xs">Low</span>
               </div>
+            </div>
+            <div class="mt-4 text-sm text-gray-600 text-center">
+              Total vulnerabilities across all assets
             </div>
           </div>
         </div>
