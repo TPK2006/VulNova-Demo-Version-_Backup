@@ -36,27 +36,26 @@ async function connectToMongoDB() {
 
 app.get("/api/dashboard-summary", async (req, res) => {
   try {
-    const criticalCount = await db.collection("vulnerabilities").countDocuments({ severity: "Critical" });
-    const highCount = await db.collection("vulnerabilities").countDocuments({ severity: "High" });
-    const mediumCount = await db.collection("vulnerabilities").countDocuments({ severity: "Medium" });
-    const lowCount = await db.collection("vulnerabilities").countDocuments({ severity: "Low" });
+    const criticalCount = await db.collection("vulnerability").countDocuments({ severity: "Critical" });
+    const highCount = await db.collection("vulnerability").countDocuments({ severity: "High" });
+    const mediumCount = await db.collection("vulnerability").countDocuments({ severity: "Medium" });
+    const lowCount = await db.collection("vulnerability").countDocuments({ severity: "Low" });
 
-    // Get the actual risk score from assets collection
-    const highestRiskAsset = await db.collection("assets")
-      .find({})
-      .sort({ riskScore: -1 })
-      .limit(1)
-      .toArray();
+    // Calculate average riskScore from assets collection
+    const avgRiskResult = await db.collection("assets").aggregate([
+      { $group: { _id: null, avgRisk: { $avg: "$riskScore" } } }
+    ]).toArray();
 
-    const riskScore = highestRiskAsset.length > 0 ? highestRiskAsset[0].riskScore : 
-      Math.min(1000, criticalCount * 8 + highCount * 2 + mediumCount * 0.5 + lowCount * 0.1);
+    const riskScore = avgRiskResult.length > 0
+      ? Math.floor(avgRiskResult[0].avgRisk)
+      : Math.floor(Math.min(1000, criticalCount * 8 + highCount * 2 + mediumCount * 0.5 + lowCount * 0.1));
 
     let riskStatus = "Low Risk";
     if (riskScore > 700) riskStatus = "High Risk";
     else if (riskScore > 300) riskStatus = "Medium Risk";
 
     res.json({
-      riskScore: Math.round(riskScore),
+      riskScore,
       riskStatus,
       vulnerabilities: {
         critical: criticalCount,
@@ -70,6 +69,7 @@ app.get("/api/dashboard-summary", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
+
 
 // Update the /api/riskiest-assets endpoint
 app.get("/api/riskiest-assets", async (req, res) => {
