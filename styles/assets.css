@@ -1,8 +1,16 @@
 /* Assets Page Specific Styles */
-body { font-family: 'Inter', system-ui, sans-serif; }
-.sidebar-collapsed { width: 64px !important; }
-.sidebar-expanded { width: 220px !important; }
-.sidebar-icon { min-width: 2rem; }
+body {
+  font-family: "Inter", system-ui, sans-serif;
+}
+.sidebar-collapsed {
+  width: 64px !important;
+}
+.sidebar-expanded {
+  width: 220px !important;
+}
+.sidebar-icon {
+  min-width: 2rem;
+}
 
 .sidebar-logo {
   transition: opacity 0.2s ease;
@@ -70,7 +78,7 @@ body { font-family: 'Inter', system-ui, sans-serif; }
 .sidebar-link.text-primary-700 {
   color: #1d4ed8;
   font-weight: 600;
-} 
+}
 
 /* Sidebar Submenu Styles */
 .sidebar-parent .submenu-chevron {
@@ -108,4 +116,86 @@ body { font-family: 'Inter', system-ui, sans-serif; }
 .sidebar-link.text-primary-700 {
   color: #1d4ed8;
   font-weight: 600;
+}
+
+/* AI Search Styles */
+.ai-search-container {
+  position: relative;
+}
+
+.ai-search-input {
+  padding-right: 3rem;
+}
+
+.ai-search-button {
+  position: absolute;
+  right: 0.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border: none;
+  border-radius: 0.375rem;
+  padding: 0.5rem;
+  color: white;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.ai-search-button:hover {
+  background: linear-gradient(135deg, #5a67d8 0%, #6b46c1 100%);
+  transform: translateY(-50%) scale(1.05);
+}
+
+.ai-search-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: translateY(-50%);
+}
+
+.ai-search-loading {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: translateY(-50%) rotate(0deg);
+  }
+  to {
+    transform: translateY(-50%) rotate(360deg);
+  }
+}
+
+.ai-search-suggestions {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  z-index: 50;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.ai-search-suggestion {
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+  border-bottom: 1px solid #f3f4f6;
+  transition: background-color 0.2s;
+}
+
+.ai-search-suggestion:hover {
+  background-color: #f9fafb;
+}
+
+.ai-search-suggestion:last-child {
+  border-bottom: none;
+}
+
+.ai-search-example {
+  font-size: 0.875rem;
+  color: #6b7280;
+  font-style: italic;
 }

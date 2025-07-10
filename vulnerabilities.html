@@ -84,125 +84,181 @@
           </div>
         </div>
 
-<!-- Filters and Search -->
-<div class="bg-white rounded-xl shadow p-4 mb-8">
-  <div class="flex items-end gap-4 flex-wrap">
-    <!-- Search -->
-    <div class="flex-1 min-w-[200px]">
-      <label class="block text-xs font-medium text-gray-500 mb-1">Search</label>
-      <input type="text" id="searchVulns" placeholder="Search vulnerabilities..." 
-             class="px-3 py-1.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 w-full"
-             onkeyup="filterVulnerabilities()">
-    </div>
-    
-    <!-- Severity -->
-    <div class="w-32">
-      <label class="block text-xs font-medium text-gray-500 mb-1">Severity</label>
-      <select id="severityFilter" class="px-3 py-1.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 w-full"
-              onchange="filterVulnerabilities()">
-        <option value="">All Severities</option>
-        <option value="Critical">Critical</option>
-        <option value="High">High</option>
-        <option value="Medium">Medium</option>
-        <option value="Low">Low</option>
-      </select>
-    </div>
-    
-    <!-- Asset Name -->
-    <div class="w-36">
-      <label class="block text-xs font-medium text-gray-500 mb-1">Asset Name</label>
-      <input type="text" id="assetNameFilter" placeholder="Filter by asset"
-             class="px-3 py-1.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 w-full"
-             onkeyup="applyAdvancedFilters()">
-    </div>
-    
-    <!-- IP Address -->
-    <div class="w-36">
-      <label class="block text-xs font-medium text-gray-500 mb-1">IP Address</label>
-      <input type="text" id="ipAddressFilter" placeholder="Filter by IP"
-             class="px-3 py-1.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 w-full"
-             onkeyup="applyAdvancedFilters()">
-    </div>
-    
-    <!-- Asset Group -->
-    <div class="w-40">
-      <label class="block text-xs font-medium text-gray-500 mb-1">Asset Group</label>
-      <select id="assetGroupFilter" class="px-3 py-1.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 w-full"
-              onchange="applyAdvancedFilters()">
-        <option value="">All Groups</option>
-        <option value="Business Unit">Business Unit</option>
-        <option value="Environment">Environment</option>
-        <option value="Region">Region</option>
-      </select>
-    </div>
-    
-    <!-- Exploit Status -->
-    <div class="w-40">
-      <label class="block text-xs font-medium text-gray-500 mb-1">Exploit Status</label>
-      <select id="exploitStatusFilter" class="px-3 py-1.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 w-full"
-              onchange="applyAdvancedFilters()">
-        <option value="">All Status</option>
-        <option value="Known Exploits">Known Exploits</option>
-        <option value="Active Exploit">Active Exploit</option>
-      </select>
-    </div>
-    
-    <!-- Adapter Source -->
-    <div class="w-40">
-      <label class="block text-xs font-medium text-gray-500 mb-1">Adapter Source</label>
-      <select id="adapterSourceFilter" class="px-3 py-1.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 w-full"
-              onchange="applyAdvancedFilters()">
-        <option value="">All Sources</option>
-        <option value="Tenable">Tenable</option>
-        <option value="Wiz">Wiz</option>
-        <option value="Bitsight">Bitsight</option>
-        <option value="SonarQube">SonarQube</option>
-        <option value="Jamf">Jamf</option>
-        <option value="SCCM">SCCM</option>
-      </select>
-    </div>
-    
-    <!-- MITRE Attack Framework -->
-    <div class="w-48">
-      <label class="block text-xs font-medium text-gray-500 mb-1">MITRE Framework</label>
-      <select id="mitreFilter" class="px-3 py-1.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 w-full"
-              onchange="applyAdvancedFilters()">
-        <option value="">All Tactics</option>
-        <option value="Initial Access">Initial Access</option>
-        <option value="Execution">Execution</option>
-        <option value="Persistence">Persistence</option>
-        <option value="Privilege Escalation">Privilege Escalation</option>
-        <option value="Defense Evasion">Defense Evasion</option>
-        <option value="Credential Access">Credential Access</option>
-        <option value="Discovery">Discovery</option>
-        <option value="Lateral Movement">Lateral Movement</option>
-        <option value="Collection">Collection</option>
-        <option value="Command and Control">Command and Control</option>
-        <option value="Exfiltration">Exfiltration</option>
-        <option value="Impact">Impact</option>
-      </select>
-    </div>
-    
-    <!-- Threat Actor -->
-    <div class="w-48">
-      <label class="block text-xs font-medium text-gray-500 mb-1">Threat Actor</label>
-      <select id="threatActorFilter" class="px-3 py-1.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 w-full"
-              onchange="applyAdvancedFilters()">
-        <option value="">All Actors</option>
-        <option value="APT29 (Cozy Bear)">APT29 (Cozy Bear)</option>
-        <option value="Lazarus Group">Lazarus Group</option>
-        <option value="FIN7">FIN7</option>
-      </select>
-    </div>
-  </div>
-  
-  <!-- Showing Count -->
-  <div class="mt-2 flex justify-end">
-    <span class="text-xs text-gray-600">
-      Showing <span id="showingVulnsCount">3,760</span> of <span id="totalVulnsCount">3,760</span> vulnerabilities
-    </span>
-  </div>
-</div>
+        <!-- AI-Powered Search and Filters -->
+        <div class="bg-white rounded-xl shadow p-4 mb-8">
+          <!-- AI Search Section -->
+          <div class="mb-6">
+            <label class="block text-sm font-medium text-gray-700 mb-2">
+              <i data-lucide="sparkles" class="w-4 h-4 inline mr-1"></i>
+              AI-Powered Search
+            </label>
+            <div class="ai-search-container">
+              <input 
+                type="text" 
+                id="aiSearchInput" 
+                placeholder="Try: 'Show me critical vulnerabilities with exploits available' or 'Find SQL injection vulnerabilities on web servers'"
+                class="ai-search-input px-4 py-3 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 w-full pr-12"
+                onkeypress="handleAISearchKeyPress(event)"
+              >
+              <button 
+                id="aiSearchButton"
+                onclick="performAISearch()" 
+                class="ai-search-button"
+                title="Search with AI"
+              >
+                <i data-lucide="sparkles" class="w-4 h-4"></i>
+              </button>
+              <div id="aiSearchSuggestions" class="ai-search-suggestions hidden"></div>
+            </div>
+            <div class="mt-2 flex flex-wrap gap-2">
+              <button onclick="setAISearchExample('Show me all critical vulnerabilities with active exploits')" class="text-xs bg-gray-100 hover:bg-gray-200 px-2 py-1 rounded transition-colors">
+                Critical with exploits
+              </button>
+              <button onclick="setAISearchExample('Find SQL injection vulnerabilities on database servers')" class="text-xs bg-gray-100 hover:bg-gray-200 px-2 py-1 rounded transition-colors">
+                SQL injection on databases
+              </button>
+              <button onclick="setAISearchExample('Show vulnerabilities from Tenable scanner with high CVSS scores')" class="text-xs bg-gray-100 hover:bg-gray-200 px-2 py-1 rounded transition-colors">
+                Tenable high CVSS
+              </button>
+              <button onclick="setAISearchExample('Find privilege escalation vulnerabilities in Windows systems')" class="text-xs bg-gray-100 hover:bg-gray-200 px-2 py-1 rounded transition-colors">
+                Windows privilege escalation
+              </button>
+            </div>
+          </div>
+
+          <!-- Traditional Filters -->
+          <div class="border-t pt-4">
+            <div class="flex items-center justify-between mb-3">
+              <h3 class="text-sm font-medium text-gray-700">Advanced Filters</h3>
+              <button onclick="toggleAdvancedFilters()" class="text-xs text-primary-600 hover:text-primary-700">
+                <span id="filterToggleText">Show Filters</span>
+                <i data-lucide="chevron-down" class="w-3 h-3 inline ml-1" id="filterToggleIcon"></i>
+              </button>
+            </div>
+            <div id="advancedFilters" class="hidden">
+              <div class="flex items-end gap-4 flex-wrap">
+                <!-- Traditional Search -->
+                <div class="flex-1 min-w-[200px]">
+                  <label class="block text-xs font-medium text-gray-500 mb-1">Traditional Search</label>
+                  <input type="text" id="searchVulns" placeholder="Search vulnerabilities..." 
+                         class="px-3 py-1.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 w-full"
+                         onkeyup="filterVulnerabilities()">
+                </div>
+                
+                <!-- Severity -->
+                <div class="w-32">
+                  <label class="block text-xs font-medium text-gray-500 mb-1">Severity</label>
+                  <select id="severityFilter" class="px-3 py-1.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 w-full"
+                          onchange="filterVulnerabilities()">
+                    <option value="">All Severities</option>
+                    <option value="Critical">Critical</option>
+                    <option value="High">High</option>
+                    <option value="Medium">Medium</option>
+                    <option value="Low">Low</option>
+                  </select>
+                </div>
+                
+                <!-- Asset Name -->
+                <div class="w-36">
+                  <label class="block text-xs font-medium text-gray-500 mb-1">Asset Name</label>
+                  <input type="text" id="assetNameFilter" placeholder="Filter by asset"
+                         class="px-3 py-1.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 w-full"
+                         onkeyup="applyAdvancedFilters()">
+                </div>
+                
+                <!-- IP Address -->
+                <div class="w-36">
+                  <label class="block text-xs font-medium text-gray-500 mb-1">IP Address</label>
+                  <input type="text" id="ipAddressFilter" placeholder="Filter by IP"
+                         class="px-3 py-1.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 w-full"
+                         onkeyup="applyAdvancedFilters()">
+                </div>
+                
+                <!-- Asset Group -->
+                <div class="w-40">
+                  <label class="block text-xs font-medium text-gray-500 mb-1">Asset Group</label>
+                  <select id="assetGroupFilter" class="px-3 py-1.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 w-full"
+                          onchange="applyAdvancedFilters()">
+                    <option value="">All Groups</option>
+                    <option value="Business Unit">Business Unit</option>
+                    <option value="Environment">Environment</option>
+                    <option value="Region">Region</option>
+                  </select>
+                </div>
+                
+                <!-- Exploit Status -->
+                <div class="w-40">
+                  <label class="block text-xs font-medium text-gray-500 mb-1">Exploit Status</label>
+                  <select id="exploitStatusFilter" class="px-3 py-1.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 w-full"
+                          onchange="applyAdvancedFilters()">
+                    <option value="">All Status</option>
+                    <option value="Known Exploits">Known Exploits</option>
+                    <option value="Active Exploit">Active Exploit</option>
+                  </select>
+                </div>
+                
+                <!-- Adapter Source -->
+                <div class="w-40">
+                  <label class="block text-xs font-medium text-gray-500 mb-1">Adapter Source</label>
+                  <select id="adapterSourceFilter" class="px-3 py-1.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 w-full"
+                          onchange="applyAdvancedFilters()">
+                    <option value="">All Sources</option>
+                    <option value="Tenable">Tenable</option>
+                    <option value="Wiz">Wiz</option>
+                    <option value="Bitsight">Bitsight</option>
+                    <option value="SonarQube">SonarQube</option>
+                    <option value="Jamf">Jamf</option>
+                    <option value="SCCM">SCCM</option>
+                  </select>
+                </div>
+                
+                <!-- MITRE Attack Framework -->
+                <div class="w-48">
+                  <label class="block text-xs font-medium text-gray-500 mb-1">MITRE Framework</label>
+                  <select id="mitreFilter" class="px-3 py-1.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 w-full"
+                          onchange="applyAdvancedFilters()">
+                    <option value="">All Tactics</option>
+                    <option value="Initial Access">Initial Access</option>
+                    <option value="Execution">Execution</option>
+                    <option value="Persistence">Persistence</option>
+                    <option value="Privilege Escalation">Privilege Escalation</option>
+                    <option value="Defense Evasion">Defense Evasion</option>
+                    <option value="Credential Access">Credential Access</option>
+                    <option value="Discovery">Discovery</option>
+                    <option value="Lateral Movement">Lateral Movement</option>
+                    <option value="Collection">Collection</option>
+                    <option value="Command and Control">Command and Control</option>
+                    <option value="Exfiltration">Exfiltration</option>
+                    <option value="Impact">Impact</option>
+                  </select>
+                </div>
+                
+                <!-- Threat Actor -->
+                <div class="w-48">
+                  <label class="block text-xs font-medium text-gray-500 mb-1">Threat Actor</label>
+                  <select id="threatActorFilter" class="px-3 py-1.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 w-full"
+                          onchange="applyAdvancedFilters()">
+                    <option value="">All Actors</option>
+                    <option value="APT29 (Cozy Bear)">APT29 (Cozy Bear)</option>
+                    <option value="Lazarus Group">Lazarus Group</option>
+                    <option value="FIN7">FIN7</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Showing Count -->
+          <div class="mt-4 flex justify-between items-center">
+            <div id="aiSearchStatus" class="text-sm text-gray-600 hidden">
+              <i data-lucide="sparkles" class="w-4 h-4 inline mr-1"></i>
+              <span id="aiSearchStatusText">AI search results</span>
+            </div>
+            <span class="text-xs text-gray-600">
+              Showing <span id="showingVulnsCount">3,760</span> of <span id="totalVulnsCount">3,760</span> vulnerabilities
+            </span>
+          </div>
+        </div>
 
         <!-- Vulnerabilities Table -->
         <div class="bg-white rounded-xl shadow overflow-hidden">
@@ -274,108 +330,37 @@
           </div>
           
           <!-- Pagination -->
-<div class="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6 pagination-container">
-  <div class="flex-1 flex justify-between sm:hidden">
-    <button onclick="changePage(currentPage > 1 ? currentPage - 1 : 1)" 
-            class="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
-      Previous
-    </button>
-    <button onclick="changePage(currentPage < Math.ceil(totalVulnerabilities / itemsPerPage) ? currentPage + 1 : currentPage)" 
-            class="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
-      Next
-    </button>
-  </div>
-</div>
+          <div class="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6 pagination-container">
+            <div class="flex-1 flex justify-between sm:hidden">
+              <button onclick="changePage(currentPage > 1 ? currentPage - 1 : 1)" 
+                      class="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                Previous
+              </button>
+              <button onclick="changePage(currentPage < Math.ceil(totalVulnerabilities / itemsPerPage) ? currentPage + 1 : currentPage)" 
+                      class="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                Next
+              </button>
+            </div>
+          </div>
         </div>
       </main>
      </div>
   </div>
 
   <script>
-    // Load sidebar
-    fetch('sidebar.html')
-      .then(response => response.text())
-      .then(data => {
-        document.getElementById('sidebar-container').innerHTML = data;
-        
-        // Highlight current page in sidebar
-        const currentPage = window.location.pathname.split('/').pop() || 'index.html';
-        document.querySelectorAll('.sidebar-link').forEach(link => {
-          const linkHref = link.getAttribute('href');
-          if (linkHref === currentPage) {
-            link.classList.add('text-primary-700', 'font-semibold');
-            link.classList.remove('text-gray-700');
-          }
-        });
-        
-        // Initialize sidebar toggle
-        const sidebar = document.getElementById('sidebar');
-        const sidebarToggle = document.getElementById('sidebarToggle');
-        const sidebarHamburger = document.getElementById('sidebarHamburger');
-        const mainContent = document.getElementById('mainContent');
-        const topHeader = document.getElementById('topHeader');
-        
-        function toggleSidebar() {
-          const isCollapsed = sidebar.classList.contains('w-16');
-          
-          if (isCollapsed) {
-            sidebar.classList.remove('w-16');
-            sidebar.classList.add('w-56');
-            mainContent.classList.remove('ml-16');
-            mainContent.classList.add('ml-56');
-            topHeader.classList.remove('left-16');
-            topHeader.classList.add('left-56');
-          } else {
-            sidebar.classList.remove('w-56');
-            sidebar.classList.add('w-16');
-            mainContent.classList.remove('ml-56');
-            mainContent.classList.add('ml-16');
-            topHeader.classList.remove('left-56');
-            topHeader.classList.add('left-16');
-          }
-          
-          document.querySelectorAll('.sidebar-label').forEach(el => el.classList.toggle('hidden'));
-          document.querySelector('.sidebar-logo').classList.toggle('hidden');
-          
-          // Store the state in localStorage
-          localStorage.setItem('sidebar-collapsed', !isCollapsed);
+    // Initialize sidebar functionality
+    function initializeSidebar() {
+      // Highlight current page in sidebar
+      const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+      document.querySelectorAll('.sidebar-link').forEach(link => {
+        const linkHref = link.getAttribute('href');
+        if (linkHref === currentPage) {
+          link.classList.add('text-primary-700', 'font-semibold');
+          link.classList.remove('text-gray-700');
         }
-        
-        // Check localStorage for sidebar state on load
-        const isCollapsed = localStorage.getItem('sidebar-collapsed') === 'true';
-        if (isCollapsed) {
-          sidebar.classList.add('w-16');
-          sidebar.classList.remove('w-56');
-          mainContent.classList.add('ml-16');
-          mainContent.classList.remove('ml-56');
-          topHeader.classList.add('left-16');
-          topHeader.classList.remove('left-56');
-          document.querySelectorAll('.sidebar-label').forEach(el => el.classList.add('hidden'));
-          document.querySelector('.sidebar-logo').classList.add('hidden');
-        }
-        
-        if (sidebarToggle) sidebarToggle.onclick = toggleSidebar;
-        if (sidebarHamburger) sidebarHamburger.onclick = toggleSidebar;
-        
-        // Mobile sidebar toggle
-        if (sidebarHamburger) {
-          sidebarHamburger.onclick = function() {
-            sidebar.classList.toggle('mobile-open');
-          };
-        }
-        
-        // Initialize Lucide icons
-        lucide.createIcons();
       });
-  </script>
-  <script>
-  // Load sidebar
-  fetch('sidebar.html')
-    .then(response => response.text())
-    .then(data => {
-      document.getElementById('sidebar-container').innerHTML = data;
       
-      // Initialize sidebar toggle
+      // Initialize sidebar toggle functionality
       const sidebar = document.getElementById('sidebar');
       const sidebarToggle = document.getElementById('sidebarToggle');
       const sidebarHamburger = document.getElementById('sidebarHamburger');
@@ -383,26 +368,37 @@
       const topHeader = document.getElementById('topHeader');
       
       function toggleSidebar() {
+        if (!sidebar) return;
+        
         const isCollapsed = sidebar.classList.contains('w-16');
         
         if (isCollapsed) {
           sidebar.classList.remove('w-16');
           sidebar.classList.add('w-56');
-          mainContent.classList.remove('ml-16');
-          mainContent.classList.add('ml-56');
-          topHeader.classList.remove('left-16');
-          topHeader.classList.add('left-56');
+          if (mainContent) {
+            mainContent.classList.remove('ml-16');
+            mainContent.classList.add('ml-56');
+          }
+          if (topHeader) {
+            topHeader.classList.remove('left-16');
+            topHeader.classList.add('left-56');
+          }
         } else {
           sidebar.classList.remove('w-56');
           sidebar.classList.add('w-16');
-          mainContent.classList.remove('ml-56');
-          mainContent.classList.add('ml-16');
-          topHeader.classList.remove('left-56');
-          topHeader.classList.add('left-16');
+          if (mainContent) {
+            mainContent.classList.remove('ml-56');
+            mainContent.classList.add('ml-16');
+          }
+          if (topHeader) {
+            topHeader.classList.remove('left-56');
+            topHeader.classList.add('left-16');
+          }
         }
         
         document.querySelectorAll('.sidebar-label').forEach(el => el.classList.toggle('hidden'));
-        document.querySelector('.sidebar-logo').classList.toggle('hidden');
+        const sidebarLogo = document.querySelector('.sidebar-logo');
+        if (sidebarLogo) sidebarLogo.classList.toggle('hidden');
         
         // Store the state in localStorage
         localStorage.setItem('sidebar-collapsed', !isCollapsed);
@@ -410,28 +406,65 @@
       
       // Check localStorage for sidebar state on load
       const isCollapsed = localStorage.getItem('sidebar-collapsed') === 'true';
-      if (isCollapsed) {
+      if (isCollapsed && sidebar) {
         sidebar.classList.add('w-16');
         sidebar.classList.remove('w-56');
-        mainContent.classList.add('ml-16');
-        mainContent.classList.remove('ml-56');
-        topHeader.classList.add('left-16');
-        topHeader.classList.remove('left-56');
+        if (mainContent) {
+          mainContent.classList.add('ml-16');
+          mainContent.classList.remove('ml-56');
+        }
+        if (topHeader) {
+          topHeader.classList.add('left-16');
+          topHeader.classList.remove('left-56');
+        }
         document.querySelectorAll('.sidebar-label').forEach(el => el.classList.add('hidden'));
-        document.querySelector('.sidebar-logo').classList.add('hidden');
+        const sidebarLogo = document.querySelector('.sidebar-logo');
+        if (sidebarLogo) sidebarLogo.classList.add('hidden');
       }
       
       if (sidebarToggle) sidebarToggle.onclick = toggleSidebar;
       if (sidebarHamburger) sidebarHamburger.onclick = toggleSidebar;
       
-      // Initialize sidebar functionality
-      initSidebar();
-      
-      // Initialize Lucide icons
-      lucide.createIcons();
-    });
-</script>
-<script src="scripts/sidebar.js"></script>
+      // Mobile sidebar toggle
+      if (sidebarHamburger) {
+        sidebarHamburger.onclick = function() {
+          if (sidebar) sidebar.classList.toggle('mobile-open');
+        };
+      }
+    }
+
+    // Load sidebar
+    fetch('sidebar.html')
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Sidebar not found');
+        }
+        return response.text();
+      })
+      .then(data => {
+        document.getElementById('sidebar-container').innerHTML = data;
+        
+        // Initialize sidebar functionality after loading
+        initializeSidebar();
+        
+        // Initialize Lucide icons with delay
+        setTimeout(() => {
+          if (window.lucide && typeof window.lucide.createIcons === 'function') {
+            window.lucide.createIcons();
+          }
+        }, 200);
+      })
+      .catch(error => {
+        console.warn('Sidebar not loaded:', error);
+        // Continue without sidebar and initialize icons
+        setTimeout(() => {
+          if (window.lucide && typeof window.lucide.createIcons === 'function') {
+            window.lucide.createIcons();
+          }
+        }, 200);
+      });
+  </script>
+  <script src="scripts/sidebar.js"></script>
   <script src="scripts/vulnerabilities.js"></script>
 </body>
 </html>

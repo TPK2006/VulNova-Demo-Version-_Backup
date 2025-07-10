@@ -190,39 +190,116 @@
           </div>
         </div>
 
-        <!-- Filters and Search -->
-        <div class="bg-white rounded-xl shadow p-6 mb-8">
-          <div class="flex flex-col md:flex-row gap-4 items-center justify-between">
-            <div class="flex flex-col md:flex-row gap-4 flex-1">
-              <input type="text" id="searchAssets" placeholder="Search assets by name, IP, or hostname..." 
-                     class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
-                     onkeyup="filterAssets()">
-              <select id="categoryFilter" class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
-                      onchange="filterAssets()">
-                <option value="">All Categories</option>
-                <option value="Server">Servers</option>
-                <option value="Workstation">Workstations</option>
-                <option value="Mobile">Mobile Devices</option>
-                <option value="Network">Network Devices</option>
-                <option value="IoT">IoT Devices</option>
-              </select>
-              <select id="osFilter" class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
-                      onchange="filterAssets()">
-                <option value="">All OS</option>
-                <option value="Windows">Windows</option>
-                <option value="Linux">Linux</option>
-                <option value="macOS">macOS</option>
-                <option value="Android">Android</option>
-                <option value="iOS">iOS</option>
-              </select>
-              <select id="riskFilter" class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
-                      onchange="filterAssets()">
-                <option value="">All Risk Levels</option>
-                <option value="Critical">Critical</option>
-                <option value="High">High</option>
-                <option value="Medium">Medium</option>
-                <option value="Low">Low</option>
-              </select>
+        <!-- AI-Powered Search and Filters -->
+        <div class="bg-white rounded-xl shadow p-4 mb-8">
+          <!-- AI Search Section -->
+          <div class="mb-6">
+            <label class="block text-sm font-medium text-gray-700 mb-2">
+              <i data-lucide="sparkles" class="w-4 h-4 inline mr-1"></i>
+              AI-Powered Asset Search
+            </label>
+            <div class="ai-search-container">
+              <input 
+                type="text" 
+                id="aiSearchInput" 
+                placeholder="Try: 'Show me high risk Windows servers' or 'Find unprotected assets in production environment'"
+                class="ai-search-input px-4 py-3 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 w-full pr-12"
+                onkeypress="handleAISearchKeyPress(event)"
+              >
+              <button 
+                id="aiSearchButton"
+                onclick="performAISearch()" 
+                class="ai-search-button"
+                title="Search with AI"
+              >
+                <i data-lucide="sparkles" class="w-4 h-4"></i>
+              </button>
+            </div>
+            <div class="mt-2 flex flex-wrap gap-2">
+              <button onclick="setAISearchExample('Show me all high risk Windows servers')" class="text-xs bg-gray-100 hover:bg-gray-200 px-2 py-1 rounded transition-colors">
+                High risk Windows servers
+              </button>
+              <button onclick="setAISearchExample('Find unprotected assets without EDR')" class="text-xs bg-gray-100 hover:bg-gray-200 px-2 py-1 rounded transition-colors">
+                Unprotected assets
+              </button>
+              <button onclick="setAISearchExample('Show offline servers in production')" class="text-xs bg-gray-100 hover:bg-gray-200 px-2 py-1 rounded transition-colors">
+                Offline production servers
+              </button>
+              <button onclick="setAISearchExample('Find Linux workstations with critical vulnerabilities')" class="text-xs bg-gray-100 hover:bg-gray-200 px-2 py-1 rounded transition-colors">
+                Linux critical vulnerabilities
+              </button>
+            </div>
+          </div>
+
+          <!-- Traditional Filters -->
+          <div class="border-t pt-4">
+            <div class="flex items-center justify-between mb-3">
+              <h3 class="text-sm font-medium text-gray-700">Advanced Filters</h3>
+              <button onclick="toggleAdvancedFilters()" class="text-xs text-primary-600 hover:text-primary-700">
+                <span id="filterToggleText">Show Filters</span>
+                <i data-lucide="chevron-down" class="w-3 h-3 inline ml-1" id="filterToggleIcon"></i>
+              </button>
+            </div>
+            <div id="advancedFilters" class="hidden">
+              <div class="flex flex-col md:flex-row gap-4 items-center justify-between">
+                <div class="flex flex-col md:flex-row gap-4 flex-1">
+                  <input type="text" id="searchAssets" placeholder="Search by name, IP, or hostname..." 
+                         class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                         onkeyup="filterAssets()">
+                  <select id="categoryFilter" class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                          onchange="filterAssets()">
+                    <option value="">All Categories</option>
+                    <option value="Server">Servers</option>
+                    <option value="Workstation">Workstations</option>
+                    <option value="Mobile">Mobile Devices</option>
+                    <option value="Network">Network Devices</option>
+                    <option value="IoT">IoT Devices</option>
+                  </select>
+                  <select id="osFilter" class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                          onchange="filterAssets()">
+                    <option value="">All OS</option>
+                    <option value="Windows">Windows</option>
+                    <option value="Linux">Linux</option>
+                    <option value="macOS">macOS</option>
+                    <option value="Android">Android</option>
+                    <option value="iOS">iOS</option>
+                  </select>
+                  <select id="riskFilter" class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                          onchange="filterAssets()">
+                    <option value="">All Risk Levels</option>
+                    <option value="Critical">Critical</option>
+                    <option value="High">High</option>
+                    <option value="Medium">Medium</option>
+                    <option value="Low">Low</option>
+                  </select>
+                  <select id="statusFilter" class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                          onchange="filterAssets()">
+                    <option value="">All Status</option>
+                    <option value="Online">Online</option>
+                    <option value="Offline">Offline</option>
+                  </select>
+                  <select id="vulnFilter" class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                          onchange="filterAssets()">
+                    <option value="">Vulnerability Level</option>
+                    <option value="critical">Has Critical</option>
+                    <option value="high">Has High</option>
+                    <option value="medium">Has Medium</option>
+                    <option value="none">No Vulnerabilities</option>
+                  </select>
+                  <input type="date" id="lastSeenFilter" placeholder="Last seen after..." 
+                         class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                         onchange="filterAssets()">
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Showing Count and AI Status -->
+          <div class="mt-4 flex justify-between items-center">
+            <div id="aiSearchStatus" class="text-sm text-gray-600 hidden">
+              <i data-lucide="sparkles" class="w-4 h-4 inline mr-1"></i>
+              <span id="aiSearchStatusText">AI search results</span>
+              <button onclick="clearAISearch()" class="ml-2 text-xs text-red-600 hover:text-red-700 underline">Clear AI Search</button>
             </div>
             <div class="flex items-center space-x-4">
               <span class="text-sm text-gray-600">
