@@ -641,12 +641,6 @@ function displayVulnerability(vulns) {
         <input type="checkbox" class="vuln-checkbox" value="${vuln.id}">
       </td>
       <td class="px-6 py-4 whitespace-nowrap">
-        <div class="text-sm text-gray-900">${vuln.assetName}</div>
-      </td>
-      <td class="px-6 py-4 whitespace-nowrap">
-        <div class="text-sm text-gray-500">${vuln.ipAddress}</div>
-      </td>
-      <td class="px-6 py-4 whitespace-nowrap">
         <div class="text-sm text-blue-600 hover:underline cursor-pointer" onclick="showCVEDetails('${vuln.cve}')">${vuln.cve}</div>
       </td>
       <td class="px-6 py-4 whitespace-nowrap">
